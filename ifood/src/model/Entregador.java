@@ -1,0 +1,94 @@
+package model;
+
+import java.time.LocalDate;
+
+public class Entregador extends Usuario {
+    private LocalDate dataNascimento;
+    private Long telefone;
+    private String nome;
+    private Long cpf;
+    private Long cnh;
+
+    public Entregador(String email, String senha, LocalDate dataNascimento, Long telefone, String nome, Long cpf, Long cnh) {
+        super(email, senha);
+        this.dataNascimento = dataNascimento;
+        this.telefone = telefone;
+        this.nome = nome;
+        this.cpf = cpf;
+        this.cnh = cnh;
+    }
+
+    public Entregador() {
+    	
+    }
+
+    public LocalDate getDataNascimento() {
+        return dataNascimento;
+    }
+
+    public void setDataNascimento(LocalDate dataNascimento) {
+        this.dataNascimento = dataNascimento;
+    }
+
+    public Long getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(Long telefone) {
+        this.telefone = telefone;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public Long getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(Long cpf) {
+        this.cpf = cpf;
+    }
+
+    public Long getCnh() {
+        return cnh;
+    }
+
+    public void setCnh(Long cnh) {
+        this.cnh = cnh;
+    }
+
+    public void aceitarEntrega() {
+        // Implementar lógica para aceitar entrega
+        System.out.println("Entrega aceita pelo entregador");
+    }
+
+    public void escolherRota() {
+        // Implementar lógica para escolher a rota
+        System.out.println("Rota escolhida pelo entregador");
+    }
+
+    public void editarDados(LocalDate dataNascimento, Long telefone, String nome, Long cpf, Long cnh) {
+        setDataNascimento(dataNascimento);
+        setTelefone(telefone);
+        setNome(nome);
+        setCpf(cpf);
+        setCnh(cnh);
+        System.out.println("Dados do entregador editados: " + this.toString());
+    }
+
+    @Override
+    public String toString() {
+        return "Entregador" +
+               "\nNome: " + nome +
+               "\nData de Nascimento: " + dataNascimento +
+               "\nTelefone: " + telefone +
+               "\nCPF: " + cpf +
+               "\nCNH: " + cnh +
+               "\nEmail: " + getEmail();
+    }
+}
