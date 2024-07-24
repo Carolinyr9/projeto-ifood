@@ -37,8 +37,8 @@ public class MainPage {
 		Display display = Display.getDefault();
 		createContents();
 		
-		showHome();
-		
+		//showHome();
+		showHomeEmployee();
 		shell.open();
 		shell.layout();
 		while (!shell.isDisposed()) {
@@ -48,7 +48,7 @@ public class MainPage {
 		}
 	}
 
-	private void showMenuBar() {
+	private void showMenuBarClient() {
 		MenuBarClient menuBarClient = new MenuBarClient(shell, this);
 		FormData fd_menuBarClient = new FormData();
 		fd_menuBarClient.bottom = new FormAttachment(100);
@@ -57,17 +57,27 @@ public class MainPage {
 		fd_menuBarClient.top = new FormAttachment(96, -50);  
 		menuBarClient.setLayoutData(fd_menuBarClient);
 	}
+	
+	private void showMenuBarEmployee() {
+		MenuBarEmployee menuBarEmployee = new MenuBarEmployee(shell, this);
+		FormData fd_menuBarEmployee = new FormData();
+		fd_menuBarEmployee.bottom = new FormAttachment(100);
+		fd_menuBarEmployee.left = new FormAttachment(0);
+		fd_menuBarEmployee.right = new FormAttachment(100);
+		fd_menuBarEmployee.top = new FormAttachment(96, -50);  
+		menuBarEmployee.setLayoutData(fd_menuBarEmployee);
+	}
 
 	private void showHome() {
 		clearShell();
 		Home home = new Home(shell, this);
-		FormData fd_home = new FormData();
-		fd_home.top = new FormAttachment(0);
-		fd_home.left = new FormAttachment(0);
-		fd_home.right = new FormAttachment(100);
-		fd_home.bottom = new FormAttachment(90, -50);  
-		home.setLayoutData(fd_home);
-		showMenuBar();
+		FormData fd_homeFuncionario = new FormData();
+		fd_homeFuncionario.top = new FormAttachment(0);
+		fd_homeFuncionario.left = new FormAttachment(0);
+		fd_homeFuncionario.right = new FormAttachment(100);
+		fd_homeFuncionario.bottom = new FormAttachment(90, -50);  
+		home.setLayoutData(fd_homeFuncionario);
+		showMenuBarClient();
 		shell.layout();
 	}
 
@@ -78,12 +88,64 @@ public class MainPage {
 		fd_infoProduct.left = new FormAttachment(0);
 		fd_infoProduct.right = new FormAttachment(100);
 		fd_infoProduct.top = new FormAttachment(0);
-		fd_infoProduct.bottom = new FormAttachment(100, -50); 
+		fd_infoProduct.bottom = new FormAttachment(90, -50); 
 		infoProduct.setLayoutData(fd_infoProduct);
-		showMenuBar();
+		showMenuBarClient();
 		shell.layout();
 	}
 
+	private void showHomeEmployee() {
+		clearShell();
+		HomeFuncionario homeFuncionario = new HomeFuncionario(shell, this);
+		FormData fd_homeFuncionario = new FormData();
+		fd_homeFuncionario.top = new FormAttachment(0);
+		fd_homeFuncionario.left = new FormAttachment(0);
+		fd_homeFuncionario.right = new FormAttachment(100);
+		fd_homeFuncionario.bottom = new FormAttachment(90, -50);  
+		homeFuncionario.setLayoutData(fd_homeFuncionario);
+		showMenuBarEmployee();
+		shell.layout();
+	}
+	
+	private void showCardapioInfo() {
+		clearShell();
+		CardapioInfo cadCardapioInfo = new CardapioInfo(shell, this);
+		FormData fd_cadapioInfo = new FormData();
+		fd_cadapioInfo.left = new FormAttachment(0);
+		fd_cadapioInfo.right = new FormAttachment(100);
+		fd_cadapioInfo.top = new FormAttachment(0);
+		fd_cadapioInfo.bottom = new FormAttachment(90, -50); 
+		cadCardapioInfo.setLayoutData(fd_cadapioInfo);
+		showMenuBarEmployee();
+		shell.layout();
+	}
+	
+	private void showItemCardapioInfo() {
+		clearShell();
+		ItemCardapioInfo itemCardapioInfo = new ItemCardapioInfo(shell, this);
+		FormData fd_itemCardapioInfo = new FormData();
+		fd_itemCardapioInfo.left = new FormAttachment(0);
+		fd_itemCardapioInfo.right = new FormAttachment(100);
+		fd_itemCardapioInfo.top = new FormAttachment(0);
+		fd_itemCardapioInfo.bottom = new FormAttachment(90, -50); 
+		itemCardapioInfo.setLayoutData(fd_itemCardapioInfo);
+		showMenuBarEmployee();
+		shell.layout();
+	}
+	
+	private void showCadItemCardapio() {
+		clearShell();
+		CadItemCardapio cadItemCardapio = new CadItemCardapio(shell, this);
+		FormData fd_cadItemCardapio = new FormData();
+		fd_cadItemCardapio.left = new FormAttachment(0);
+		fd_cadItemCardapio.right = new FormAttachment(100);
+		fd_cadItemCardapio.top = new FormAttachment(0);
+		fd_cadItemCardapio.bottom = new FormAttachment(90, -50); 
+		cadItemCardapio.setLayoutData(fd_cadItemCardapio);
+		showMenuBarEmployee();
+		shell.layout();
+	}
+	
 	protected void navigateToScreen(int screenNumber) {
 		switch (screenNumber) {
 		case 1:
@@ -97,12 +159,33 @@ public class MainPage {
 			break;
 		}
 	}
+	
+	protected void navigateToScreenEmployee(int screenNumber) {
+		switch (screenNumber) {
+		case 1:
+			showHomeEmployee();
+			break;
+		case 2:
+			showCardapioInfo();
+			break;
+		case 3:
+			showItemCardapioInfo();
+			break;
+		case 4:
+			showCadItemCardapio();
+			break;
+		default:
+			showHomeEmployee();
+			break;
+		}
+	}
+	
 
 	protected void createContents() {
 		shell = new Shell();
 		createResourceManager();
 		shell.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255,255,255))));
-		shell.setSize(482, 814);
+		shell.setSize(482, 874);
 		shell.setText("Início");
 		shell.setLayout(new FormLayout());
 	}
