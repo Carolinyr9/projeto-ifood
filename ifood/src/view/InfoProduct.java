@@ -46,6 +46,7 @@ public class InfoProduct extends Composite {
 		super(parent, SWT.NONE);
 		createResourceManager();
 		setLayout(new FormLayout());
+		
 		setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));		
 
 		productBannerImage = new Image(display, "./src/assets/images/productBanner.png");
@@ -177,7 +178,7 @@ public class InfoProduct extends Composite {
         btnBack.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseDown(MouseEvent e) {
-                System.out.println("Botão 'Voltar' clicado");
+            	mainPage.navigateToScreen(1);
             }
         });
 	}
