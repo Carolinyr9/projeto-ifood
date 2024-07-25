@@ -17,10 +17,6 @@ public class MainPage {
 	protected Shell shell;
 	private LocalResourceManager localResourceManager;
 
-	/**
-	 * Launch the application.
-	 * @param args
-	 */
 	public static void main(String[] args) {
 		try {
 			MainPage window = new MainPage();
@@ -30,9 +26,6 @@ public class MainPage {
 		}
 	}
 
-	/**
-	 * Open the window.
-	 */
 	public void open() {
 		Display display = Display.getDefault();
 		createContents();
@@ -91,6 +84,19 @@ public class MainPage {
 		fd_infoProduct.bottom = new FormAttachment(90, -50); 
 		infoProduct.setLayoutData(fd_infoProduct);
 		showMenuBarClient();
+		shell.layout();
+	}
+	
+	private void showCarrinho() {
+		clearShell();
+		Carrinho carrinho = new Carrinho(shell, this);
+		FormData fd_carrinho = new FormData();
+		fd_carrinho.left = new FormAttachment(0);
+		fd_carrinho.right = new FormAttachment(100);
+		fd_carrinho.top = new FormAttachment(0);
+		fd_carrinho.bottom = new FormAttachment(90, -50); 
+		carrinho.setLayoutData(fd_carrinho);
+		showMenuBarEmployee();
 		shell.layout();
 	}
 
@@ -166,6 +172,9 @@ public class MainPage {
 			break;
 		case 2:
 			showInfoProduct();
+			break;
+		case 3:
+			showCarrinho();
 			break;
 		default:
 			showHome();
