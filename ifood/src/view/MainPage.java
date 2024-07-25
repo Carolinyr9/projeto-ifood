@@ -146,6 +146,19 @@ public class MainPage {
 		shell.layout();
 	}
 	
+	private void showCadCardapio() {
+		clearShell();
+		CadCardapio cadCardapio = new CadCardapio(shell, this);
+		FormData fd_cadCardapio = new FormData();
+		fd_cadCardapio.left = new FormAttachment(0);
+		fd_cadCardapio.right = new FormAttachment(100);
+		fd_cadCardapio.top = new FormAttachment(0);
+		fd_cadCardapio.bottom = new FormAttachment(90, -50); 
+		cadCardapio.setLayoutData(fd_cadCardapio);
+		showMenuBarEmployee();
+		shell.layout();
+	}
+	
 	protected void navigateToScreen(int screenNumber) {
 		switch (screenNumber) {
 		case 1:
@@ -173,6 +186,9 @@ public class MainPage {
 			break;
 		case 4:
 			showCadItemCardapio();
+			break;
+		case 5:
+			showCadCardapio();
 			break;
 		default:
 			showHomeEmployee();
