@@ -62,6 +62,7 @@ public class HomeFuncionario extends Composite {
 		btnAdicionarCardapio.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				mainPage.navigateToScreenEmployee(5);
 			}
 		});
 		btnAdicionarCardapio.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
