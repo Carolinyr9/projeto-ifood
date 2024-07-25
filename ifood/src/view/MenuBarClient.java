@@ -118,7 +118,7 @@ public class MenuBarClient extends Composite {
 		btnImageBag.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				System.out.println("Bag clicada");
+				mainPage.navigateToScreen(3);
 			}
 		});
 		/* Função para adicionar imagem e tirar bordas */
