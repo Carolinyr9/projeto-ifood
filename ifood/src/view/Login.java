@@ -16,6 +16,8 @@ import org.eclipse.jface.resource.LocalResourceManager;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.resource.ColorDescriptor;
 import org.eclipse.jface.resource.FontDescriptor;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 
 /* Ainda tenho que transformar essa tela em um componente para colocar na tela principal*/
 
@@ -30,6 +32,8 @@ public class Login {
 	private ViewForm viewForm;
 	private Label lblSenha;
 	private Text txtSenha;
+	private Button btnSouEntregador;
+	private Label lblSaudacao;
 
 	/**
 	 * Launch the application.
@@ -83,15 +87,15 @@ public class Login {
 		lbLogin.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
 		lbLogin.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 100, 148))));
 		lbLogin.setText("Login");
-		lbLogin.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 16, SWT.BOLD)));
+		lbLogin.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 18, SWT.BOLD)));
 		lbLogin.setBounds(191, 10, 78, 37);
 		
 		lblEmail = new Label(shell, SWT.NONE);
 		lblEmail.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 14, SWT.NORMAL)));
 		lblEmail.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
 		FormData fd_lblEmail = new FormData();
-		fd_lblEmail.right = new FormAttachment(100, -259);
-		fd_lblEmail.left = new FormAttachment(0, 96);
+		fd_lblEmail.left = new FormAttachment(0, 95);
+		fd_lblEmail.right = new FormAttachment(100, -260);
 		lblEmail.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 100, 148))));
 		lblEmail.setLayoutData(fd_lblEmail);
 		lblEmail.setText("Email");
@@ -103,43 +107,91 @@ public class Login {
 		viewForm.setLayoutData(fd_viewForm);
 		
 		textEmail = new Text(shell, SWT.BORDER);
-		fd_lblEmail.bottom = new FormAttachment(100, -463);
+		fd_lblEmail.bottom = new FormAttachment(100, -491);
 		FormData fd_textEmail = new FormData();
 		fd_textEmail.top = new FormAttachment(lblEmail, 6);
-		fd_textEmail.left = new FormAttachment(viewForm, 90);
-		fd_textEmail.bottom = new FormAttachment(0, 307);
+		fd_textEmail.left = new FormAttachment(lblEmail, 0, SWT.LEFT);
 		fd_textEmail.right = new FormAttachment(100, -108);
 		textEmail.setLayoutData(fd_textEmail);
 		
 		lblSenha = new Label(shell, SWT.NONE);
+		fd_textEmail.bottom = new FormAttachment(lblSenha, -35);
 		lblSenha.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 14, SWT.NORMAL)));
 		lblSenha.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
 		FormData fd_lblSenha = new FormData();
-		fd_lblSenha.top = new FormAttachment(textEmail, 30);
-		fd_lblSenha.left = new FormAttachment(lblEmail, 0, SWT.LEFT);
+		fd_lblSenha.left = new FormAttachment(0, 96);
 		lblSenha.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 100, 148))));
 		lblSenha.setLayoutData(fd_lblSenha);
 		lblSenha.setText("Senha");
 		
 		txtSenha = new Text(shell, SWT.BORDER);
+		fd_lblSenha.bottom = new FormAttachment(100, -388);
 		FormData fd_txtSenha = new FormData();
-		fd_txtSenha.bottom = new FormAttachment(lblSenha, 37, SWT.BOTTOM);
-		fd_txtSenha.right = new FormAttachment(0, 357);
 		fd_txtSenha.top = new FormAttachment(lblSenha, 6);
-		fd_txtSenha.left = new FormAttachment(0, 96);
+		fd_txtSenha.left = new FormAttachment(lblEmail, 0, SWT.LEFT);
+		fd_txtSenha.right = new FormAttachment(0, 356);
 		txtSenha.setLayoutData(fd_txtSenha);
 		
 		Button btnConcluir = new Button(shell, SWT.CENTER);
+		btnConcluir.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+			}
+		});
 		btnConcluir.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 12, SWT.NORMAL)));
 		FormData fd_btnConcluir = new FormData();
-		fd_btnConcluir.top = new FormAttachment(txtSenha, 70);
-		fd_btnConcluir.left = new FormAttachment(0, 175);
+		fd_btnConcluir.left = new FormAttachment(0, 173);
+		fd_btnConcluir.bottom = new FormAttachment(100, -197);
 		btnConcluir.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 100, 148))));
-		fd_btnConcluir.right = new FormAttachment(100, -180);
-		fd_btnConcluir.bottom = new FormAttachment(100, -221);
+		fd_btnConcluir.right = new FormAttachment(100, -182);
 		btnConcluir.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
 		btnConcluir.setLayoutData(fd_btnConcluir);
 		btnConcluir.setText("Concluir");
+		
+		Button btnSouCliente = new Button(shell, SWT.RADIO);
+		fd_txtSenha.bottom = new FormAttachment(100, -351);
+		lblSenha.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
+		btnSouCliente.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+			}
+		});
+		FormData fd_btnSouCliente = new FormData();
+		fd_btnSouCliente.left = new FormAttachment(lblEmail, 0, SWT.LEFT);
+		btnSouCliente.setLayoutData(fd_btnSouCliente);
+		btnSouCliente.setText("Sou cliente");
+		
+		Button btnSouFuncionrio = new Button(shell, SWT.RADIO);
+		btnSouFuncionrio.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
+		fd_btnConcluir.top = new FormAttachment(btnSouFuncionrio, 22);
+		FormData fd_btnSouFuncionrio = new FormData();
+		fd_btnSouFuncionrio.left = new FormAttachment(lblEmail, 0, SWT.LEFT);
+		btnSouFuncionrio.setLayoutData(fd_btnSouFuncionrio);
+		btnSouFuncionrio.setText("Sou funcionário");
+		
+		btnSouEntregador = new Button(shell, SWT.RADIO);
+		btnSouEntregador.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
+		fd_btnSouFuncionrio.top = new FormAttachment(btnSouEntregador, 6);
+		fd_btnSouCliente.bottom = new FormAttachment(100, -308);
+		btnSouEntregador.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+			}
+		});
+		FormData fd_btnSouEntregador = new FormData();
+		fd_btnSouEntregador.top = new FormAttachment(btnSouCliente, 6);
+		fd_btnSouEntregador.left = new FormAttachment(lblEmail, 0, SWT.LEFT);
+		btnSouEntregador.setLayoutData(fd_btnSouEntregador);
+		btnSouEntregador.setText("Sou entregador");
+		
+		lblSaudacao = new Label(shell, SWT.NONE);
+		lblSaudacao.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
+		lblSaudacao.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
+		FormData fd_lblSaudacao = new FormData();
+		fd_lblSaudacao.top = new FormAttachment(composite, 58);
+		fd_lblSaudacao.right = new FormAttachment(100, -149);
+		lblSaudacao.setLayoutData(fd_lblSaudacao);
+		lblSaudacao.setText("Bem vindo ao ______!");
 
 	}
 	private void createResourceManager() {

@@ -32,6 +32,8 @@ public class CardapioInfo extends Composite {
 	private LocalResourceManager localResourceManager;
 	private Image arrowIcon;
 	private Display display = getDisplay();
+	private String nomeCardapio;
+	
 
 	private void createResourceManager() {
 		localResourceManager = new LocalResourceManager(JFaceResources.getResources(), this);
@@ -44,6 +46,7 @@ public class CardapioInfo extends Composite {
 		setLayout(new FormLayout());
 		
 		arrowIcon = new Image(display, "./src/assets/images/backArrow.png");
+		nomeCardapio = "Cardapio #2";
 		
 		Composite compositeHeader = new Composite(this, SWT.NONE);
 		compositeHeader.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 100, 145))));
@@ -54,13 +57,13 @@ public class CardapioInfo extends Composite {
 		fd_compositeHeader.right = new FormAttachment(0, 468);
 		compositeHeader.setLayoutData(fd_compositeHeader);
 		
-		Label lblCardapios = new Label(compositeHeader, SWT.CENTER);
-		lblCardapios.setAlignment(SWT.CENTER);
-		lblCardapios.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(232, 241, 242))));
-		lblCardapios.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 100, 145))));
-		lblCardapios.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 16, SWT.NORMAL)));
-		lblCardapios.setBounds(85, 12, 155, 51);
-		lblCardapios.setText("Cardápio #1");
+		Label lblTelaCardapioTitulo = new Label(compositeHeader, SWT.CENTER);
+		lblTelaCardapioTitulo.setAlignment(SWT.LEFT);
+		lblTelaCardapioTitulo.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(232, 241, 242))));
+		lblTelaCardapioTitulo.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 100, 145))));
+		lblTelaCardapioTitulo.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 16, SWT.NORMAL)));
+		lblTelaCardapioTitulo.setBounds(85, 12, 336, 51);
+		lblTelaCardapioTitulo.setText(nomeCardapio);
 		
 		Button btnAdicionarItem = new Button(this, SWT.NONE);
 		btnAdicionarItem.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
@@ -124,18 +127,18 @@ public class CardapioInfo extends Composite {
 			}
 		});
 		
-		Composite compositeItens = new Composite(this, SWT.NONE);
-		compositeItens.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-		compositeItens.setLayout(new GridLayout(1, false));
-		FormData fd_compositeItens = new FormData();
-		fd_compositeItens.top = new FormAttachment(btnAdicionarItem, 22);
-		fd_compositeItens.left = new FormAttachment(0, 48);
-		fd_compositeItens.bottom = new FormAttachment(100, -28);
-		fd_compositeItens.right = new FormAttachment(0, 420);
-		compositeItens.setLayoutData(fd_compositeItens);
+		Composite compositeItensCardapio = new Composite(this, SWT.NONE);
+		compositeItensCardapio.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
+		compositeItensCardapio.setLayout(new GridLayout(1, false));
+		FormData fd_compositeItensCardapio = new FormData();
+		fd_compositeItensCardapio.top = new FormAttachment(btnAdicionarItem, 22);
+		fd_compositeItensCardapio.left = new FormAttachment(0, 48);
+		fd_compositeItensCardapio.bottom = new FormAttachment(100, -28);
+		fd_compositeItensCardapio.right = new FormAttachment(0, 420);
+		compositeItensCardapio.setLayoutData(fd_compositeItensCardapio);
 		
 		
-		Composite compositeItem1 = new Composite(compositeItens, SWT.NONE);
+		Composite compositeItem1 = new Composite(compositeItensCardapio, SWT.NONE);
 		compositeItem1.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
 		GridData gd_compositeItem1 = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_compositeItem1.heightHint = 68;
@@ -159,28 +162,28 @@ public class CardapioInfo extends Composite {
             }
         });
 		
-		Label lblItem1 = new Label(compositeItem1, SWT.NONE);
-		lblItem1.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 0, 0))));
-		lblItem1.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-		lblItem1.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 12, SWT.BOLD)));
-		lblItem1.setBounds(25, 23, 187, 28);
-		lblItem1.setText("Item #1");
-		lblItem1.addMouseListener(new MouseAdapter() {
+		Label lblItemTitulo = new Label(compositeItem1, SWT.NONE);
+		lblItemTitulo.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 0, 0))));
+		lblItemTitulo.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
+		lblItemTitulo.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 12, SWT.BOLD)));
+		lblItemTitulo.setBounds(25, 23, 187, 28);
+		lblItemTitulo.setText("Item #1");
+		lblItemTitulo.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseDown(MouseEvent e) {
                 mainPage.navigateToScreenEmployee(3);
             }
         });
 		
-		Label lblPreco = new Label(compositeItem1, SWT.NONE);
-		lblPreco.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
-		lblPreco.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_DARK_RED));
-		lblPreco.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-		lblPreco.setBounds(252, 26, 74, 28);
-		lblPreco.setText("R$19.77");
-		new Label(compositeItens, SWT.NONE);
+		Label lblPrecoItem1 = new Label(compositeItem1, SWT.NONE);
+		lblPrecoItem1.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
+		lblPrecoItem1.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_DARK_RED));
+		lblPrecoItem1.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
+		lblPrecoItem1.setBounds(252, 26, 74, 28);
+		lblPrecoItem1.setText("R$19.77");
+		new Label(compositeItensCardapio, SWT.NONE);
 		
-		Composite compositeItem2 = new Composite(compositeItens, SWT.NONE);
+		Composite compositeItem2 = new Composite(compositeItensCardapio, SWT.NONE);
 		GridData gd_compositeItem2 = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_compositeItem2.heightHint = 66;
 		gd_compositeItem2.widthHint = 359;
@@ -204,25 +207,25 @@ public class CardapioInfo extends Composite {
             }
         });
 		
-		Label lblItem2 = new Label(compositeItem2, SWT.NONE);
-		lblItem2.setText("Item #2");
-		lblItem2.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 0, 0))));
-		lblItem2.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 12, SWT.BOLD)));
-		lblItem2.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-		lblItem2.setBounds(25, 23, 224, 28);
-		lblItem2.addMouseListener(new MouseAdapter() {
+		Label lblItemTitulo2 = new Label(compositeItem2, SWT.NONE);
+		lblItemTitulo2.setText("Item #2");
+		lblItemTitulo2.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 0, 0))));
+		lblItemTitulo2.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 12, SWT.BOLD)));
+		lblItemTitulo2.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
+		lblItemTitulo2.setBounds(25, 23, 224, 28);
+		lblItemTitulo2.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseDown(MouseEvent e) {
             	mainPage.navigateToScreenEmployee(3);
             }
         });
 		
-		Label lblPreco_1 = new Label(compositeItem2, SWT.NONE);
-		lblPreco_1.setText("R$19.77");
-		lblPreco_1.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_DARK_RED));
-		lblPreco_1.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
-		lblPreco_1.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-		lblPreco_1.setBounds(255, 26, 74, 28);
+		Label lblPrecoItem2 = new Label(compositeItem2, SWT.NONE);
+		lblPrecoItem2.setText("R$19.77");
+		lblPrecoItem2.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_DARK_RED));
+		lblPrecoItem2.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
+		lblPrecoItem2.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
+		lblPrecoItem2.setBounds(255, 26, 74, 28);
 
 	}
 }

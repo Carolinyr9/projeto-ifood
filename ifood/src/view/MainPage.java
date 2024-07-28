@@ -30,8 +30,8 @@ public class MainPage {
 		Display display = Display.getDefault();
 		createContents();
 		
-		//showHome();
-		showHomeEmployee();
+		showHomeCliente();
+		//showHomeEmployee();
 		shell.open();
 		shell.layout();
 		while (!shell.isDisposed()) {
@@ -61,9 +61,9 @@ public class MainPage {
 		menuBarEmployee.setLayoutData(fd_menuBarEmployee);
 	}
 
-	private void showHome() {
+	private void showHomeCliente() {
 		clearShell();
-		Home home = new Home(shell, this);
+		HomeCliente home = new HomeCliente(shell, this);
 		FormData fd_homeFuncionario = new FormData();
 		fd_homeFuncionario.top = new FormAttachment(0);
 		fd_homeFuncionario.left = new FormAttachment(0);
@@ -168,7 +168,7 @@ public class MainPage {
 	protected void navigateToScreen(int screenNumber) {
 		switch (screenNumber) {
 		case 1:
-			showHome();
+			showHomeCliente();
 			break;
 		case 2:
 			showInfoProduct();
@@ -177,7 +177,7 @@ public class MainPage {
 			showCarrinho();
 			break;
 		default:
-			showHome();
+			showHomeCliente();
 			break;
 		}
 	}

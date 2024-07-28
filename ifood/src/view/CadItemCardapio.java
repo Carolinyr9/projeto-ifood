@@ -53,13 +53,13 @@ public class CadItemCardapio extends Composite {
 		fd_compositeHeader.right = new FormAttachment(0, 468);
 		compositeHeader.setLayoutData(fd_compositeHeader);
 		
-		Label lblCadastrarItem = new Label(compositeHeader, SWT.CENTER);
-		lblCadastrarItem.setAlignment(SWT.CENTER);
-		lblCadastrarItem.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(232, 241, 242))));
-		lblCadastrarItem.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 100, 145))));
-		lblCadastrarItem.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 16, SWT.NORMAL)));
-		lblCadastrarItem.setBounds(86, 12, 182, 51);
-		lblCadastrarItem.setText("Cadastrar item");
+		Label lblTelaTitulo = new Label(compositeHeader, SWT.CENTER);
+		lblTelaTitulo.setAlignment(SWT.CENTER);
+		lblTelaTitulo.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(232, 241, 242))));
+		lblTelaTitulo.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 100, 145))));
+		lblTelaTitulo.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 16, SWT.NORMAL)));
+		lblTelaTitulo.setBounds(86, 12, 182, 51);
+		lblTelaTitulo.setText("Cadastrar item");
 		
 		Button btnBack = new Button(compositeHeader, SWT.NONE);
 		btnBack.addSelectionListener(new SelectionAdapter() {
