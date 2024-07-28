@@ -110,18 +110,18 @@ public class HomeFuncionario extends Composite {
 		compositeCasdapios.setLayoutData(fd_compositeCasdapios);
 		
 		
-		Composite compositeCardapio = new Composite(compositeCasdapios, SWT.NONE);
-		compositeCardapio.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-		GridData gd_compositeCardapio = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-		gd_compositeCardapio.heightHint = 112;
-		gd_compositeCardapio.widthHint = 360;
-		compositeCardapio.setLayoutData(gd_compositeCardapio);
-		compositeCardapio.addPaintListener(new PaintListener() {
+		Composite compositeCardapio1 = new Composite(compositeCasdapios, SWT.NONE);
+		compositeCardapio1.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
+		GridData gd_compositeCardapio1 = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_compositeCardapio1.heightHint = 112;
+		gd_compositeCardapio1.widthHint = 360;
+		compositeCardapio1.setLayoutData(gd_compositeCardapio1);
+		compositeCardapio1.addPaintListener(new PaintListener() {
 			@Override
 			public void paintControl(PaintEvent e) {
 				GC gc = e.gc;
                 gc.setAntialias(SWT.ON);
-                Rectangle bounds = compositeCardapio.getClientArea();
+                Rectangle bounds = compositeCardapio1.getClientArea();
                 int arcWidth = 20;
                 int arcHeight = 20;
                 gc.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
@@ -130,25 +130,25 @@ public class HomeFuncionario extends Composite {
                 gc.drawRoundRectangle(0, 0, bounds.width - 1, bounds.height - 1, arcWidth, arcHeight);
 			}
 		});
-		compositeCardapio.addMouseListener(new MouseAdapter() {
+		compositeCardapio1.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseDown(MouseEvent e) {
             	mainPage.navigateToScreenEmployee(2);
             }
         });
 		
-		Label lblCardapio1 = new Label(compositeCardapio, SWT.NONE);
-		lblCardapio1.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 0, 0))));
-		lblCardapio1.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-		lblCardapio1.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 12, SWT.BOLD)));
-		lblCardapio1.setBounds(25, 23, 115, 28);
-		lblCardapio1.setText("Cardápio #1");
+		Label lblCardapioTitulo = new Label(compositeCardapio1, SWT.NONE);
+		lblCardapioTitulo.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 0, 0))));
+		lblCardapioTitulo.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
+		lblCardapioTitulo.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 12, SWT.BOLD)));
+		lblCardapioTitulo.setBounds(25, 23, 115, 28);
+		lblCardapioTitulo.setText("Cardápio #1");
 		
-		Label lblsemItens = new Label(compositeCardapio, SWT.NONE);
-		lblsemItens.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_DARK_RED));
-		lblsemItens.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-		lblsemItens.setBounds(23, 70, 70, 20);
-		lblsemItens.setText("*sem itens");
+		Label lblPossuiItens = new Label(compositeCardapio1, SWT.NONE);
+		lblPossuiItens.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_DARK_RED));
+		lblPossuiItens.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
+		lblPossuiItens.setBounds(23, 70, 70, 20);
+		lblPossuiItens.setText("*sem itens");
 
 	}
 }
