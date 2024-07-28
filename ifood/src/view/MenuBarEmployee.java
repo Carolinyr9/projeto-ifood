@@ -57,14 +57,15 @@ public class MenuBarEmployee extends Composite {
 		gd_composite_1.widthHint = 25;
 		composite_1.setLayoutData(gd_composite_1);
 		
-		Button btnImageLupa = new Button(this, SWT.TRANSPARENT);
-		btnImageLupa.addSelectionListener(new SelectionAdapter() {
+		Button btnImageRestaurant = new Button(this, SWT.TRANSPARENT);
+		btnImageRestaurant.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				System.out.println("Lupa clicada");
+				mainPage.navigateToScreenEmployee(1);
 			}
 		});
-		btnImageLupa.addPaintListener( new PaintListener() {
+		btnImageRestaurant.addPaintListener( new PaintListener() {
 			  @Override
 			  public void paintControl( PaintEvent event ) {
 			    event.gc.setBackground( event.display.getSystemColor( SWT.COLOR_WHITE ) );
@@ -72,20 +73,19 @@ public class MenuBarEmployee extends Composite {
 			    event.gc.drawImage(restaurantIcon, 26, 8);
 			  }
 			} );
-		GridData gd_btnImageLupa = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-		gd_btnImageLupa.widthHint = 95;
-		gd_btnImageLupa.heightHint = 60;
-		btnImageLupa.setLayoutData(gd_btnImageLupa);
+		GridData gd_btnImageRestaurant = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_btnImageRestaurant.widthHint = 95;
+		gd_btnImageRestaurant.heightHint = 60;
+		btnImageRestaurant.setLayoutData(gd_btnImageRestaurant);
 		
-		Button btnImageHouse = new Button(this, SWT.PUSH);
-		btnImageHouse.addSelectionListener(new SelectionAdapter() {
+		Button btnImageStar = new Button(this, SWT.PUSH);
+		btnImageStar.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				System.out.println("House clicada");
-				mainPage.navigateToScreen(1);
 			}
 		});
-		btnImageHouse.addPaintListener( new PaintListener() {
+		btnImageStar.addPaintListener( new PaintListener() {
 			  @Override
 			  public void paintControl( PaintEvent event ) {
 			    event.gc.setBackground( event.display.getSystemColor( SWT.COLOR_WHITE ) );
@@ -93,19 +93,19 @@ public class MenuBarEmployee extends Composite {
 			    event.gc.drawImage(starIcon, 20, 3);
 			  }
 			} );
-		GridData gd_btnImageHouse = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-		gd_btnImageHouse.widthHint = 95;
-		gd_btnImageHouse.heightHint = 60;
-		btnImageHouse.setLayoutData(gd_btnImageHouse);
+		GridData gd_btnImageStar = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_btnImageStar.widthHint = 95;
+		gd_btnImageStar.heightHint = 60;
+		btnImageStar.setLayoutData(gd_btnImageStar);
 		
-		Button btnImageBag = new Button(this, SWT.NONE);
-		btnImageBag.addSelectionListener(new SelectionAdapter() {
+		Button btnImageTasks = new Button(this, SWT.NONE);
+		btnImageTasks.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				System.out.println("Bag clicada");
 			}
 		});
-		btnImageBag.addPaintListener( new PaintListener() {
+		btnImageTasks.addPaintListener( new PaintListener() {
 			  @Override
 			  public void paintControl( PaintEvent event ) {
 			    event.gc.setBackground( event.display.getSystemColor( SWT.COLOR_WHITE ) );
@@ -113,10 +113,10 @@ public class MenuBarEmployee extends Composite {
 			    event.gc.drawImage(taskIcon, 20, 6);
 			  }
 			} );
-		GridData gd_btnImageBag = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-		gd_btnImageBag.widthHint = 95;
-		gd_btnImageBag.heightHint = 60;
-		btnImageBag.setLayoutData(gd_btnImageBag);
+		GridData gd_btnImageTasks = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_btnImageTasks.widthHint = 95;
+		gd_btnImageTasks.heightHint = 60;
+		btnImageTasks.setLayoutData(gd_btnImageTasks);
 		
 		Button btnImagePerson = new Button(this, SWT.NONE);
 		btnImagePerson.addSelectionListener(new SelectionAdapter() {
