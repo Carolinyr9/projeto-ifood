@@ -21,7 +21,7 @@ import org.eclipse.jface.resource.JFaceResources;
 import java.nio.file.Paths;
 import java.nio.file.Path;
 
-public class MenuBarEmployee extends Composite {
+public class MenuBarFuncionario extends Composite {
 
     private LocalResourceManager localResourceManager;
     private Image restaurantIcon;
@@ -33,7 +33,7 @@ public class MenuBarEmployee extends Composite {
     private void createResourceManager() {
     	localResourceManager = new LocalResourceManager(JFaceResources.getResources(), this);
     }
-    public MenuBarEmployee(Composite parent, MainPage mainPage) {
+    public MenuBarFuncionario(Composite parent, MainPage mainPage) {
 		super(parent, SWT.NONE);
         createResourceManager();
         addTopBorderPaintListener();
@@ -102,7 +102,7 @@ public class MenuBarEmployee extends Composite {
 		btnImageTasks.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				System.out.println("Bag clicada");
+				mainPage.navigateToScreenEmployee(3);
 			}
 		});
 		btnImageTasks.addPaintListener( new PaintListener() {

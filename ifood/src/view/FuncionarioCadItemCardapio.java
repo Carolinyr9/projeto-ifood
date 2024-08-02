@@ -23,7 +23,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-public class ItemCardapioInfo extends Composite {
+public class FuncionarioCadItemCardapio extends Composite {
 		
 	private LocalResourceManager localResourceManager;
 	private Display display = getDisplay();
@@ -36,10 +36,9 @@ public class ItemCardapioInfo extends Composite {
 		localResourceManager = new LocalResourceManager(JFaceResources.getResources(), this);
 	}
 
-
-    public ItemCardapioInfo(Composite parent, MainPage mainPage) {
+    public FuncionarioCadItemCardapio(Composite parent, MainPage mainPage) {
 		super(parent, SWT.NONE);
-		createResourceManager();
+		createResourceManager();		
 		setSize(468, 714);
 		setLayout(new FormLayout());
 		
@@ -54,13 +53,13 @@ public class ItemCardapioInfo extends Composite {
 		fd_compositeHeader.right = new FormAttachment(0, 468);
 		compositeHeader.setLayoutData(fd_compositeHeader);
 		
-		Label lblItem1 = new Label(compositeHeader, SWT.CENTER);
-		lblItem1.setAlignment(SWT.CENTER);
-		lblItem1.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(232, 241, 242))));
-		lblItem1.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 100, 145))));
-		lblItem1.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 16, SWT.NORMAL)));
-		lblItem1.setBounds(86, 12, 96, 51);
-		lblItem1.setText("Item #1");
+		Label lblTelaTitulo = new Label(compositeHeader, SWT.CENTER);
+		lblTelaTitulo.setAlignment(SWT.CENTER);
+		lblTelaTitulo.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(232, 241, 242))));
+		lblTelaTitulo.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 100, 145))));
+		lblTelaTitulo.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 16, SWT.NORMAL)));
+		lblTelaTitulo.setBounds(86, 12, 182, 51);
+		lblTelaTitulo.setText("Cadastrar item");
 		
 		Button btnBack = new Button(compositeHeader, SWT.NONE);
 		btnBack.addSelectionListener(new SelectionAdapter() {
@@ -100,7 +99,6 @@ public class ItemCardapioInfo extends Composite {
 		txtTitulo.setBounds(63, 64, 114, 36);
 		txtTitulo.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 10, SWT.NORMAL)));
 		txtTitulo.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-		txtTitulo.setText("Titulo");
 		
 		Label lblPreco = new Label(compositeForm, SWT.NONE);
 		lblPreco.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 100, 142))));
@@ -111,9 +109,15 @@ public class ItemCardapioInfo extends Composite {
 		
 		textPreco = new Text(compositeForm, SWT.BORDER);
 		textPreco.setBounds(63, 170, 114, 36);
-		textPreco.setText("Preço");
 		textPreco.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 10, SWT.NORMAL)));
 		textPreco.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
+		
+		txtIngredientes = new Text(compositeForm, SWT.BORDER);
+		txtIngredientes.setBounds(63, 269, 351, 105);
+		txtIngredientes.setEnabled(false);
+		txtIngredientes.setEditable(false);
+		txtIngredientes.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 10, SWT.NORMAL)));
+		txtIngredientes.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
 		
 		Button btnTemIngredientes = new Button(compositeForm, SWT.CHECK);
 		btnTemIngredientes.setBounds(63, 236, 184, 28);
@@ -134,14 +138,6 @@ public class ItemCardapioInfo extends Composite {
 		});
 		btnTemIngredientes.setText("Tem ingredientes");
 		
-		txtIngredientes = new Text(compositeForm, SWT.BORDER);
-		txtIngredientes.setBounds(63, 269, 351, 105);
-		txtIngredientes.setEnabled(false);
-		txtIngredientes.setEditable(false);
-		txtIngredientes.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 10, SWT.NORMAL)));
-		txtIngredientes.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-		txtIngredientes.setText("ingredientes");
-		
 		Label lblDescricao = new Label(compositeForm, SWT.NONE);
 		lblDescricao.setBounds(63, 404, 96, 28);
 		lblDescricao.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 12, SWT.BOLD)));
@@ -153,7 +149,6 @@ public class ItemCardapioInfo extends Composite {
 		txtDescricao.setBounds(63, 437, 350, 103);
 		txtDescricao.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 10, SWT.NORMAL)));
 		txtDescricao.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-		txtDescricao.setText("Descrição");
 		
 		Button btnEditar = new Button(compositeForm, SWT.NONE);
 		btnEditar.setBounds(63, 570, 96, 35);
@@ -190,7 +185,6 @@ public class ItemCardapioInfo extends Composite {
 				white.dispose();
 			}
 		});
-		
-		
 	}
+
 }

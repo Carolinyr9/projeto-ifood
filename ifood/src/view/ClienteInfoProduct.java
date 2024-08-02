@@ -25,12 +25,83 @@ import org.eclipse.jface.resource.FontDescriptor;
 
 /*Essa classe está utilizando o Composite como pai, para herdar seu tipo e para que no final ele fique que nem um 
  * componente e apenas seja adicionado na página principal*/
-public class InfoProduct extends Composite {
+
+/* TODO
+ * [] - criar função para puxar os dados da tabela de carrinho
+ * [] - criar função de settar os dados do carrinho para as variáveis locais  
+ * [] - editar parâmetros da chamada da função de mostrar a tela de carrinho*/ 
+
+
+public class ClienteInfoProduct extends Composite {
 
 	private Image productBannerImage;
 	private Image backArrowImage;
 	private Image addProductBagImage;
+	private String nomeProduto;
+	private Integer idRestaurante;
+	private Double preco;
+	private String descricao;
+	private Integer idProduto;
+	private String nomeRestaurante;
+	private String enderecoRestaurante;
 	
+	public String getNomeProduto() {
+		return nomeProduto;
+	}
+
+	public void setNomeProduto(String nomeProduto) {
+		this.nomeProduto = nomeProduto;
+	}
+
+	public Double getPreco() {
+		return preco;
+	}
+
+	public void setPreco(Double preco) {
+		this.preco = preco;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+
+	public Integer getIdProduto() {
+		return idProduto;
+	}
+
+	public void setIdProduto(Integer idProduto) {
+		this.idProduto = idProduto;
+	}
+	
+	public Integer getIdRestaurante() {
+		return idRestaurante;
+	}
+
+	public void setIdRestaurante(Integer idRestaurante) {
+		this.idRestaurante = idRestaurante;
+	}
+
+	public String getNomeRestaurante() {
+		return nomeRestaurante;
+	}
+
+	public void setNomeRestaurante(String nomeRestaurante) {
+		this.nomeRestaurante = nomeRestaurante;
+	}
+
+	public String getEnderecoRestaurante() {
+		return enderecoRestaurante;
+	}
+
+	public void setEnderecoRestaurante(String enderecoRestaurante) {
+		this.enderecoRestaurante = enderecoRestaurante;
+	}
+
+
 	//Variável para poder utilizar tamanho de letras e cores diferentes
 	private LocalResourceManager localResourceManager;
 	
@@ -42,13 +113,19 @@ public class InfoProduct extends Composite {
 		localResourceManager = new LocalResourceManager(JFaceResources.getResources(), this);
 	}
 
-	public InfoProduct(Composite parent, MainPage mainPage) {
+	public ClienteInfoProduct(Composite parent, MainPage mainPage) {
 		super(parent, SWT.NONE);
 		createResourceManager();
 		setLayout(new FormLayout());
-		
 		setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));		
 
+		setNomeProduto("Pizza Meia Margherita Meio Frango");
+		setPreco(65.66);
+		setDescricao("A \"Pizza Meia Margherita Meio Frango com Azeitonas Pretas e Tomate\" da Boa Pizza combina o clássico sabor da Margherita com a ousadia do frango.");
+		setIdProduto(1);
+		setNomeRestaurante("Pizzaria Manoel");
+		setEnderecoRestaurante("Rua das flores, 79");
+		
 		productBannerImage = new Image(display, "./src/assets/images/productBanner.png");
 		backArrowImage = new Image(display, "./src/assets/images/backArrow.png");
 		addProductBagImage = new Image(display, "./src/assets/images/addProductBag.png");
@@ -85,7 +162,7 @@ public class InfoProduct extends Composite {
         GridData gd_lblItemTitulo = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
         gd_lblItemTitulo.widthHint = 459;
         lblItemTitulo.setLayoutData(gd_lblItemTitulo);
-        lblItemTitulo.setText("Pizza Meia Margherita Meio Frango");
+        lblItemTitulo.setText(getNomeProduto());
 
         Label lblItemPreco = new Label(compositeItemInfo, SWT.NONE);
         lblItemPreco.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
@@ -96,7 +173,7 @@ public class InfoProduct extends Composite {
         gd_lblItemPreco.heightHint = 42;
         gd_lblItemPreco.widthHint = 455;
         lblItemPreco.setLayoutData(gd_lblItemPreco);
-        lblItemPreco.setText("R$54,99");
+        lblItemPreco.setText("R$" + getPreco().toString());
 
         Label lblItemDescricao = new Label(compositeItemInfo, SWT.WRAP | SWT.CENTER);
         lblItemDescricao.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
@@ -106,7 +183,7 @@ public class InfoProduct extends Composite {
         gd_lblItemDescricao.widthHint = 355;
         lblItemDescricao.setLayoutData(gd_lblItemDescricao);
         lblItemDescricao.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-        lblItemDescricao.setText("A \"Pizza Meia Margherita Meio Frango com Azeitonas Pretas e Tomate\" da Boa Pizza combina o clássico sabor da Margherita com a ousadia do frango.");
+        lblItemDescricao.setText(getDescricao());
 
         Composite compositeBtnAddCarinho = new Composite(compositeItemInfo, SWT.NONE);
         compositeBtnAddCarinho.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
@@ -118,7 +195,7 @@ public class InfoProduct extends Composite {
         compositeBtnAddCarinho.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseDown(MouseEvent e) {
-                System.out.println("Composite clicado");
+                mainPage.showClienteCarrinho(getIdProduto(),getNomeProduto(),getDescricao(),getPreco(),getNomeRestaurante(),getEnderecoRestaurante());
             }
         });
 
@@ -150,7 +227,7 @@ public class InfoProduct extends Composite {
         lblAddProductBag.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseDown(MouseEvent e) {
-                System.out.println("Composite clicado");
+            	mainPage.showClienteCarrinho(getIdProduto(),getNomeProduto(),getDescricao(),getPreco(),getNomeRestaurante(),getEnderecoRestaurante());
             }
         });
 
@@ -165,7 +242,7 @@ public class InfoProduct extends Composite {
         lblAdicionarAoCarrinho.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseDown(MouseEvent e) {
-                System.out.println("Composite clicado");
+            	mainPage.showClienteCarrinho(getIdProduto(),getNomeProduto(),getDescricao(),getPreco(),getNomeRestaurante(),getEnderecoRestaurante());
             }
         });
 

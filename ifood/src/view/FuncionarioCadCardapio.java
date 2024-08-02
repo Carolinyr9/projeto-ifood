@@ -23,7 +23,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-public class CadCardapio extends Composite {
+public class FuncionarioCadCardapio extends Composite {
 		
 	private LocalResourceManager localResourceManager;
 	private Display display = getDisplay();
@@ -34,7 +34,7 @@ public class CadCardapio extends Composite {
 	}
 
 
-    public CadCardapio(Composite parent, MainPage mainPage) {
+    public FuncionarioCadCardapio(Composite parent, MainPage mainPage) {
 		super(parent, SWT.NONE);
 		createResourceManager();
 		setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
