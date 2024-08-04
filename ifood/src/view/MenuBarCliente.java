@@ -13,31 +13,33 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.PaintEvent;
+
+import java.nio.file.Path;
+
 import org.eclipse.jface.resource.ColorDescriptor;
 import org.eclipse.jface.resource.LocalResourceManager;
 import org.eclipse.jface.resource.JFaceResources;
 
-/*Essa classe está utilizando o Composite como pai, para herdar seu tipo e para que no final ele fique que nem um 
- * componente e apenas seja adicionado na página principal*/
-public class MenuBarClient extends Composite {
+public class MenuBarCliente extends Composite {
 
     private LocalResourceManager localResourceManager;
-    private Image lupaIcon;
+    private Image pedidosIcon;
     private Image houseIcon;
     private Image perfilIcon;
     private Image bagIcon;
     private Display display = getDisplay();
+    
 
     private void createResourceManager() {
     	localResourceManager = new LocalResourceManager(JFaceResources.getResources(), this);
     }
-    public MenuBarClient(Composite parent, MainPage mainPage) {
+    public MenuBarCliente(Composite parent, MainPage mainPage) {
 		super(parent, SWT.NONE);
         createResourceManager();
         addTopBorderPaintListener();
         
-        lupaIcon = new Image(display, "./src/assets/images/lupaIcon.png");
         houseIcon = new Image(display, "./src/assets/images/houseIcon.png");
+        pedidosIcon = new Image(display, "./src/assets/images/taskIcon.png");
         perfilIcon = new Image(display, "./src/assets/images/perfilIcon.png");
         bagIcon = new Image(display, "./src/assets/images/bagIcon.png");
 
@@ -50,37 +52,14 @@ public class MenuBarClient extends Composite {
 		gd_composite_1.widthHint = 25;
 		composite_1.setLayoutData(gd_composite_1);
 		
-		Button btnImageLupa = new Button(this, SWT.TRANSPARENT);
-		btnImageLupa.addSelectionListener(new SelectionAdapter() {
+		Button btnImageHome = new Button(this, SWT.TRANSPARENT);
+		btnImageHome.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				System.out.println("Lupa clicada");
+				mainPage.navigateToScreenCliente(1);
 			}
 		});
-		/* Função para adicionar imagem e tirar bordas */
-		btnImageLupa.addPaintListener( new PaintListener() {
-			  @Override
-			  public void paintControl( PaintEvent event ) {
-			    event.gc.setBackground( event.display.getSystemColor( SWT.COLOR_WHITE ) );
-			    event.gc.fillRectangle( event.x, event.y, event.width, event.height );
-			    event.gc.drawImage(lupaIcon, 20, 6);
-			  }
-			} );
-		GridData gd_btnImageLupa = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-		gd_btnImageLupa.widthHint = 95;
-		gd_btnImageLupa.heightHint = 60;
-		btnImageLupa.setLayoutData(gd_btnImageLupa);
-		
-		Button btnImageHouse = new Button(this, SWT.PUSH);
-		btnImageHouse.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				System.out.println("House clicada");
-				mainPage.navigateToScreen(1);
-			}
-		});
-		/* Função para adicionar imagem e tirar bordas */
-		btnImageHouse.addPaintListener( new PaintListener() {
+		btnImageHome.addPaintListener( new PaintListener() {
 			  @Override
 			  public void paintControl( PaintEvent event ) {
 			    event.gc.setBackground( event.display.getSystemColor( SWT.COLOR_WHITE ) );
@@ -88,16 +67,36 @@ public class MenuBarClient extends Composite {
 			    event.gc.drawImage(houseIcon, 20, 6);
 			  }
 			} );
-		GridData gd_btnImageHouse = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-		gd_btnImageHouse.widthHint = 95;
-		gd_btnImageHouse.heightHint = 60;
-		btnImageHouse.setLayoutData(gd_btnImageHouse);
+		GridData gd_btnImageHome = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_btnImageHome.widthHint = 95;
+		gd_btnImageHome.heightHint = 60;
+		btnImageHome.setLayoutData(gd_btnImageHome);
+		
+		Button btnImagePedidos = new Button(this, SWT.PUSH);
+		btnImagePedidos.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				mainPage.navigateToScreenCliente(5);
+			}
+		});
+		btnImagePedidos.addPaintListener( new PaintListener() {
+			  @Override
+			  public void paintControl( PaintEvent event ) {
+			    event.gc.setBackground( event.display.getSystemColor( SWT.COLOR_WHITE ) );
+			    event.gc.fillRectangle( event.x, event.y, event.width, event.height );
+			    event.gc.drawImage(pedidosIcon, 20, 6);
+			  }
+			} );
+		GridData gd_btnImagePedidos = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_btnImagePedidos.widthHint = 95;
+		gd_btnImagePedidos.heightHint = 60;
+		btnImagePedidos.setLayoutData(gd_btnImagePedidos);
 		
 		Button btnImagePerson = new Button(this, SWT.NONE);
 		btnImagePerson.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				System.out.println("Perfil clicada");
+				mainPage.navigateToScreenCliente(4);
 			}
 		});
 		/* Função para adicionar imagem e tirar bordas */
@@ -118,7 +117,7 @@ public class MenuBarClient extends Composite {
 		btnImageBag.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				mainPage.navigateToScreen(3);
+				mainPage.navigateToScreenCliente(3);
 			}
 		});
 		/* Função para adicionar imagem e tirar bordas */
@@ -142,7 +141,6 @@ public class MenuBarClient extends Composite {
 		composite_2.setLayoutData(gd_composite_2);
     }
     
-    /* Função para adicionar uma borda no top do MenuBarClient */
     private void addTopBorderPaintListener() {
         addPaintListener(new PaintListener() {
             @Override
@@ -150,7 +148,7 @@ public class MenuBarClient extends Composite {
                 GC gc = e.gc;
                 gc.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(232, 241, 242))));
                 int width = getClientArea().width;
-                gc.drawLine(0, 0, width, 0); // Draw top border
+                gc.drawLine(0, 0, width, 0); 
             }
         });
     }
