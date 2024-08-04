@@ -9,8 +9,11 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -189,8 +192,28 @@ public class EntregadorInfoPedido extends Composite {
 			public void widgetSelected(SelectionEvent e) {
 			}
 		});
-		btnPedidoEntregue.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 10, SWT.NORMAL)));
-		btnPedidoEntregue.setBounds(109, 75, 145, 30);
+		btnPedidoEntregue.addPaintListener(new PaintListener() {
+			@Override
+			public void paintControl(PaintEvent e) {
+				GC gc = e.gc;
+				Rectangle rect = btnPedidoEntregue.getBounds();
+				Color white = new Color(getDisplay(), new RGB(255, 255, 255));
+				
+				gc.setAntialias(SWT.ON);
+				gc.setBackground(white);
+				gc.fillRoundRectangle(0, 0, rect.width, rect.height, 20, 20);
+				
+				gc.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
+				String text = "Pedido entregue";
+				int textWidth = gc.textExtent(text).x;
+				int textHeight = gc.textExtent(text).y;
+				gc.drawText(text, (rect.width - textWidth) / 2, (rect.height - textHeight) / 2, true);
+				
+				white.dispose();
+			}
+		});
+		btnPedidoEntregue.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
+		btnPedidoEntregue.setBounds(109, 75, 161, 30);
 		btnPedidoEntregue.setText("Pedido entregue");
 		
 		Composite compositeItensPedido = new Composite(compositePedido, SWT.NONE);
@@ -266,11 +289,57 @@ public class EntregadorInfoPedido extends Composite {
 		btnCalcularRota.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 100, 141))));
 		btnCalcularRota.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
 		btnCalcularRota.setText("Calcular rota");
+		btnCalcularRota.addPaintListener(new PaintListener() {
+			@Override
+			public void paintControl(PaintEvent e) {
+				GC gc = e.gc;
+				Rectangle rect = btnCalcularRota.getBounds();
+				Color blue = new Color(getDisplay(), new RGB(0, 100, 141));
+				Color white = new Color(getDisplay(), new RGB(255, 255, 255));
+				
+				gc.setAntialias(SWT.ON);
+				gc.setBackground(blue);
+				gc.fillRoundRectangle(0, 0, rect.width, rect.height, 20, 20);
+				
+				gc.setForeground(white);
+				gc.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
+				String text = "Calcular rota";
+				int textWidth = gc.textExtent(text).x;
+				int textHeight = gc.textExtent(text).y;
+				gc.drawText(text, (rect.width - textWidth) / 2, (rect.height - textHeight) / 2, true);
+				
+				blue.dispose();
+				white.dispose();
+			}
+		});
 		
 		Button btnReportarErro = new Button(compositeButtons, SWT.NONE);
 		btnReportarErro.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+			}
+		});
+		btnReportarErro.addPaintListener(new PaintListener() {
+			@Override
+			public void paintControl(PaintEvent e) {
+				GC gc = e.gc;
+				Rectangle rect = btnReportarErro.getBounds();
+				Color blue = new Color(getDisplay(), new RGB(0, 100, 141));
+				Color white = new Color(getDisplay(), new RGB(255, 255, 255));
+				
+				gc.setAntialias(SWT.ON);
+				gc.setBackground(blue);
+				gc.fillRoundRectangle(0, 0, rect.width, rect.height, 20, 20);
+				
+				gc.setForeground(white);
+				gc.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
+				String text = "Reportar erro";
+				int textWidth = gc.textExtent(text).x;
+				int textHeight = gc.textExtent(text).y;
+				gc.drawText(text, (rect.width - textWidth) / 2, (rect.height - textHeight) / 2, true);
+				
+				blue.dispose();
+				white.dispose();
 			}
 		});
 		btnReportarErro.setBounds(203, 5, 133, 35);
