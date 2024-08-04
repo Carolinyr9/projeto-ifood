@@ -25,84 +25,19 @@ import org.eclipse.swt.layout.GridData;
 
 public class ClienteCarrinho extends Composite {
 	
-	private Integer idProduto;
-	private String nomeProduto;
-	private String descricao;
-	private Double preco;
-	private String nomeRestaurante;
-	private String enderecoRestaurante;
 	private LocalResourceManager localResourceManager;
-
-    public Integer getIdProduto() {
-		return idProduto;
-	}
-
-	public void setIdProduto(Integer idProduto) {
-		this.idProduto = idProduto;
-	}
-
-	public String getNomeProduto() {
-		return nomeProduto;
-	}
-
-	public void setNomeProduto(String nomeProduto) {
-		this.nomeProduto = nomeProduto;
-	}
-
-	public String getDescricao() {
-		return descricao;
-	}
-
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
-
-	public Double getPreco() {
-		return preco;
-	}
-
-	public void setPreco(Double preco) {
-		this.preco = preco;
-	}
 
 	private void createResourceManager() {
 		localResourceManager = new LocalResourceManager(JFaceResources.getResources(), this);
 	}
-	
-	public String getNomeRestaurante() {
-		return nomeRestaurante;
-	}
 
-	public void setNomeRestaurante(String nomeRestaurante) {
-		this.nomeRestaurante = nomeRestaurante;
-	}
-
-	public String getEnderecoRestaurante() {
-		return enderecoRestaurante;
-	}
-
-	public void setEnderecoRestaurante(String enderecoRestaurante) {
-		this.enderecoRestaurante = enderecoRestaurante;
-	}
-
-	private void setVariables(Integer idProduto,String nomeProduto,String descricao,Double preco,String nomeRestaurante,String enderecoRestaurante) {
-		setIdProduto(idProduto);
-		setNomeProduto(nomeProduto);
-		setDescricao(descricao);
-		setPreco(preco);
-		setNomeRestaurante(nomeRestaurante);
-		setEnderecoRestaurante(enderecoRestaurante);
-	}
-
-
-    public ClienteCarrinho(Composite parent, MainPage mainPage,Integer idProduto,String nomeProduto,String descricao,Double preco,String nomeRestaurante,String enderecoRestaurante) {
+    public ClienteCarrinho(Composite parent, MainPage mainPage) {
 		super(parent, SWT.NONE);
 		createResourceManager();
 		setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-		setSize(482, 740);
+		setSize(482, 836);
 		setLayout(new FormLayout());
 		
-		setVariables(idProduto, nomeProduto, descricao, preco, nomeRestaurante, enderecoRestaurante);
 		Integer numItens = 4;
 
         ScrolledComposite scrolledComposite = new ScrolledComposite(this, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
@@ -140,14 +75,14 @@ public class ClienteCarrinho extends Composite {
         lblRestauranteNome.setLayoutData(gd_lblRestauranteNome);
         lblRestauranteNome.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 13, SWT.BOLD)));
         lblRestauranteNome.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-        lblRestauranteNome.setText(getNomeRestaurante());
+        lblRestauranteNome.setText("Dominos Pizza");
 
         Label lblRestauranteEndereco = new Label(compositeRestauranteInfo, SWT.WRAP);
         GridData gd_lblRestauranteEndereco = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
         gd_lblRestauranteEndereco.widthHint = 357;
         gd_lblRestauranteEndereco.heightHint = 41;
         lblRestauranteEndereco.setLayoutData(gd_lblRestauranteEndereco);
-        lblRestauranteEndereco.setText(getEnderecoRestaurante());
+        lblRestauranteEndereco.setText("Rua Benedita");
         lblRestauranteEndereco.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
 
         Label lblItens = new Label(compositeCarrinho, SWT.NONE);
@@ -179,13 +114,13 @@ public class ClienteCarrinho extends Composite {
             lblNomeItem.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
             lblNomeItem.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
             lblNomeItem.setBounds(10, 10, 252, 51);
-            lblNomeItem.setText(getNomeProduto());
+            lblNomeItem.setText("Pizza Napolitana");
 
             Label lblPrecoItem = new Label(compositeCardItem, SWT.NONE);
             lblPrecoItem.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.BOLD)));
             lblPrecoItem.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
             lblPrecoItem.setBounds(279, 10, 76, 30);
-            lblPrecoItem.setText("R$" + getPreco().toString());
+            lblPrecoItem.setText("R$");
 
             Label lblRemoverItem = new Label(compositeCardItem, SWT.NONE);
             lblRemoverItem.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
@@ -228,7 +163,7 @@ public class ClienteCarrinho extends Composite {
         lblPrecoSubtotal.setBounds(274, 29, 70, 20);
         lblPrecoSubtotal.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 10, SWT.NORMAL)));
         lblPrecoSubtotal.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-        lblPrecoSubtotal.setText("R$" + getPreco().toString());
+        lblPrecoSubtotal.setText("R$");
 
         Label lblPrecoTaxaEntrega = new Label(compositePrecoTotal, SWT.NONE);
         lblPrecoTaxaEntrega.setBounds(274, 66, 70, 20);
@@ -243,7 +178,7 @@ public class ClienteCarrinho extends Composite {
         lblPrecoTotal.setText("R$23,77");
 
         Button btnFinalizarPedido = new Button(compositePrecoTotal, SWT.NONE);
-        btnFinalizarPedido.setBounds(10, 150, 135, 30);
+        btnFinalizarPedido.setBounds(10, 150, 144, 30);
         btnFinalizarPedido.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
@@ -261,7 +196,7 @@ public class ClienteCarrinho extends Composite {
 
 				gc.setAntialias(SWT.ON);
 				gc.setBackground(blue);
-				gc.fillRoundRectangle(0, 0, rect.width, rect.height, 30, 30);
+				gc.fillRoundRectangle(0, 0, rect.width, rect.height, 20, 20);
 
 				gc.setForeground(white);
 				gc.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
