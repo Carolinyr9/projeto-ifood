@@ -190,7 +190,7 @@ public class FuncionarioPedidos extends Composite {
 				
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					mainPage.navigateToScreenEmployee(6);
+					mainPage.navigateToScreenFuncionario(6);
 					System.out.println(pedidosEmAndamentoList.get(iNum).get(0));
 					iNum = iNum + 1;
 				}
@@ -306,7 +306,7 @@ public class FuncionarioPedidos extends Composite {
 					
 					gc.setAntialias(SWT.ON);
 					gc.setBackground(blue);
-					gc.fillRoundRectangle(0, 0, rect.width, rect.height, 30, 30);
+					gc.fillRoundRectangle(0, 0, rect.width, rect.height, 20, 20);
 					
 					gc.setForeground(white);
 					gc.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));

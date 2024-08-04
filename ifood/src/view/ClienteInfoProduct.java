@@ -23,15 +23,6 @@ import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.resource.ColorDescriptor;
 import org.eclipse.jface.resource.FontDescriptor;
 
-/*Essa classe está utilizando o Composite como pai, para herdar seu tipo e para que no final ele fique que nem um 
- * componente e apenas seja adicionado na página principal*/
-
-/* TODO
- * [] - criar função para puxar os dados da tabela de carrinho
- * [] - criar função de settar os dados do carrinho para as variáveis locais  
- * [] - editar parâmetros da chamada da função de mostrar a tela de carrinho*/ 
-
-
 public class ClienteInfoProduct extends Composite {
 
 	private Image productBannerImage;
@@ -101,14 +92,10 @@ public class ClienteInfoProduct extends Composite {
 		this.enderecoRestaurante = enderecoRestaurante;
 	}
 
-
-	//Variável para poder utilizar tamanho de letras e cores diferentes
 	private LocalResourceManager localResourceManager;
 	
-	//Variável para poder utilizar imagens
 	private Display display = getDisplay();
 
-	//Esse método tem que ser chamado na função principal para que se possa usar letras maiores e de cor diferente usando RGB
     private void createResourceManager() {
 		localResourceManager = new LocalResourceManager(JFaceResources.getResources(), this);
 	}
@@ -195,20 +182,17 @@ public class ClienteInfoProduct extends Composite {
         compositeBtnAddCarinho.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseDown(MouseEvent e) {
-                mainPage.showClienteCarrinho(getIdProduto(),getNomeProduto(),getDescricao(),getPreco(),getNomeRestaurante(),getEnderecoRestaurante());
+                mainPage.showClienteCarrinho();
             }
         });
-
-        /* Função para deixar as bordas redondas */
         compositeBtnAddCarinho.addPaintListener(new PaintListener() {
             @Override
             public void paintControl(PaintEvent e) {
                 GC gc = e.gc;
                 gc.setAntialias(SWT.ON);
                 Rectangle bounds = compositeBtnAddCarinho.getClientArea();
-                /* Aqui eu coloco quanto eu quero deixar redondo */
-                int arcWidth = 40;
-                int arcHeight = 40;
+                int arcWidth = 20;
+                int arcHeight = 20;
                 gc.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 100, 148))));
                 gc.fillRoundRectangle(0, 0, bounds.width, bounds.height, arcWidth, arcHeight);
                 gc.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 100, 148))));
@@ -227,7 +211,7 @@ public class ClienteInfoProduct extends Composite {
         lblAddProductBag.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseDown(MouseEvent e) {
-            	mainPage.showClienteCarrinho(getIdProduto(),getNomeProduto(),getDescricao(),getPreco(),getNomeRestaurante(),getEnderecoRestaurante());
+            	mainPage.showClienteCarrinho();
             }
         });
 
@@ -242,7 +226,7 @@ public class ClienteInfoProduct extends Composite {
         lblAdicionarAoCarrinho.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseDown(MouseEvent e) {
-            	mainPage.showClienteCarrinho(getIdProduto(),getNomeProduto(),getDescricao(),getPreco(),getNomeRestaurante(),getEnderecoRestaurante());
+            	mainPage.showClienteCarrinho();
             }
         });
 
@@ -255,7 +239,7 @@ public class ClienteInfoProduct extends Composite {
         btnBack.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseDown(MouseEvent e) {
-            	mainPage.navigateToScreen(1);
+            	mainPage.navigateToScreenCliente(1);
             }
         });
 	}

@@ -122,7 +122,7 @@ public class FuncionarioItemCardapioInfo extends Composite {
 		btnBack.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				mainPage.navigateToScreenEmployee(2);
+				mainPage.navigateToScreenFuncionario(2);
 			}
 		});
 		btnBack.addPaintListener( new PaintListener() {
@@ -229,13 +229,9 @@ public class FuncionarioItemCardapioInfo extends Composite {
 				Rectangle rect = btnEditar.getBounds();
 				Color blue = new Color(getDisplay(), new RGB(19, 41, 61));
 				Color white = new Color(getDisplay(), new RGB(255, 255, 255));
-
-				// Desenhando o fundo azul com bordas arredondadas
 				gc.setAntialias(SWT.ON);
 				gc.setBackground(blue);
-				gc.fillRoundRectangle(0, 0, rect.width, rect.height, 40, 40);
-
-				// Desenhando o texto branco
+				gc.fillRoundRectangle(0, 0, rect.width, rect.height, 20, 20);
 				gc.setForeground(white);
 				gc.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
 				String text = "Editar";

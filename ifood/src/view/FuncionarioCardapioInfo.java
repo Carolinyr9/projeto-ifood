@@ -8,6 +8,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Rectangle;
@@ -49,6 +50,7 @@ public class FuncionarioCardapioInfo extends Composite {
 
 	public FuncionarioCardapioInfo(Composite parent, MainPage mainPage) {
 		super(parent, SWT.NONE);
+        Shell shell = new Shell(display);
 		createResourceManager();		
 		setSize(468, 714);
 		setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
@@ -88,7 +90,7 @@ public class FuncionarioCardapioInfo extends Composite {
 		btnAdicionarItem.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				mainPage.navigateToScreenEmployee(4);
+				openRadioDialog(shell,mainPage);
 			}
 		});
 		btnAdicionarItem.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
@@ -100,11 +102,10 @@ public class FuncionarioCardapioInfo extends Composite {
 		btnBack.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				mainPage.navigateToScreenEmployee(1);
+				mainPage.navigateToScreenFuncionario(1);
 			}
 		});
 		btnBack.setBounds(20, 10, 60, 53);
-		/* Função para adicionar imagem e tirar bordas */
 		btnBack.addPaintListener( new PaintListener() {
 		  @Override
 		  public void paintControl( PaintEvent event ) {
@@ -144,13 +145,9 @@ public class FuncionarioCardapioInfo extends Composite {
 				Rectangle rect = btnAdicionarItem.getBounds();
 				Color blue = new Color(getDisplay(), new RGB(19, 41, 61));
 				Color white = new Color(getDisplay(), new RGB(255, 255, 255));
-
-				// Desenhando o fundo azul com bordas arredondadas
 				gc.setAntialias(SWT.ON);
 				gc.setBackground(blue);
-				gc.fillRoundRectangle(0, 0, rect.width, rect.height, 40, 40);
-
-				// Desenhando o texto branco
+				gc.fillRoundRectangle(0, 0, rect.width, rect.height, 20, 20);
 				gc.setForeground(white);
 				gc.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
 				String text = "Adicionar Item";
@@ -228,4 +225,51 @@ public class FuncionarioCardapioInfo extends Composite {
 		}
 		
 	}
+	
+	private static void openRadioDialog(Shell parent,MainPage mainPage) {
+        Shell dialog = new Shell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+        dialog.setText("Escolha uma opção");
+        GridLayout gl_dialog = new GridLayout(1, false);
+        gl_dialog.verticalSpacing = 10;
+        gl_dialog.marginTop = 20;
+        gl_dialog.marginLeft = 30;
+        dialog.setLayout(gl_dialog);
+        
+        Label lblTipo = new Label(dialog, SWT.CENTER);
+        lblTipo.setText("Que tipo de item deseja adicionar?");
+
+        // Adiciona opções de rádio buttons
+        Button optionPrato = new Button(dialog, SWT.RADIO);
+        optionPrato.setText("Prato");
+        optionPrato.setSelection(true); // Seleciona a primeira opção por padrão
+
+        Button optionProduto = new Button(dialog, SWT.RADIO);
+        optionProduto.setText("Produto");
+
+        // Botão OK
+        Button okButton = new Button(dialog, SWT.PUSH);
+        okButton.setText("Prosseguir");
+        GridData gridData = new GridData(SWT.CENTER, SWT.CENTER, true, false);
+        okButton.setLayoutData(gridData);
+
+        okButton.addListener(SWT.Selection, event -> {
+            if (optionPrato.getSelection()) {
+                pratoSelecionado(mainPage);
+            } else if (optionProduto.getSelection()) {
+            	produtoSelecionado(mainPage);
+            }
+            dialog.close();
+        });
+
+        dialog.setSize(350, 250);
+        dialog.open();
+    }
+
+    private static void pratoSelecionado(MainPage mainPage) {
+    	mainPage.navigateToScreenFuncionario(4);
+    }
+
+    private static void produtoSelecionado(MainPage mainPage) {
+    	mainPage.navigateToScreenFuncionario(8);
+    }
 }

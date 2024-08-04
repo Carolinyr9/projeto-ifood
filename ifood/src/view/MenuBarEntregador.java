@@ -122,7 +122,7 @@ public class MenuBarEntregador extends Composite {
 		btnImagePerson.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				System.out.println("Perfil clicada");
+				mainPage.navigateToScreenEntregador(5);
 			}
 		});
 		btnImagePerson.addPaintListener( new PaintListener() {

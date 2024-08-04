@@ -64,7 +64,7 @@ public class FuncionarioCadCardapio extends Composite {
 		btnBack.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				mainPage.navigateToScreenEmployee(1);
+				mainPage.navigateToScreenFuncionario(1);
 			}
 		});
 		btnBack.addPaintListener( new PaintListener() {
@@ -109,7 +109,7 @@ public class FuncionarioCadCardapio extends Composite {
 				Color white = new Color(getDisplay(), new RGB(255, 255, 255));
 				gc.setAntialias(SWT.ON);
 				gc.setBackground(blue);
-				gc.fillRoundRectangle(0, 0, rect.width, rect.height, 40, 40);
+				gc.fillRoundRectangle(0, 0, rect.width, rect.height, 20, 20);
 				gc.setForeground(white);
 				gc.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
 				String text = "Concluir";

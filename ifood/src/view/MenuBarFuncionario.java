@@ -62,7 +62,7 @@ public class MenuBarFuncionario extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				System.out.println("Lupa clicada");
-				mainPage.navigateToScreenEmployee(1);
+				mainPage.navigateToScreenFuncionario(1);
 			}
 		});
 		btnImageRestaurant.addPaintListener( new PaintListener() {
@@ -102,7 +102,7 @@ public class MenuBarFuncionario extends Composite {
 		btnImageTasks.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				mainPage.navigateToScreenEmployee(3);
+				mainPage.navigateToScreenFuncionario(3);
 			}
 		});
 		btnImageTasks.addPaintListener( new PaintListener() {
@@ -122,7 +122,7 @@ public class MenuBarFuncionario extends Composite {
 		btnImagePerson.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				System.out.println("Perfil clicada");
+				mainPage.navigateToScreenFuncionario(7);
 			}
 		});
 		btnImagePerson.addPaintListener( new PaintListener() {
