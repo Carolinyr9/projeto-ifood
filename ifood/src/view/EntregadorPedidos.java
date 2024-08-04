@@ -195,7 +195,7 @@ public EntregadorPedidos(Composite parent, MainPage mainPage) {
 				
 				gc.setAntialias(SWT.ON);
 				gc.setBackground(blue);
-				gc.fillRoundRectangle(0, 0, rect.width, rect.height, 30, 30);
+				gc.fillRoundRectangle(0, 0, rect.width, rect.height, 20, 20);
 				
 				gc.setForeground(white);
 				gc.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));

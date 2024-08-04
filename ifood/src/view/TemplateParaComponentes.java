@@ -22,7 +22,7 @@ public class TemplateParaComponentes extends Composite {
 		super(parent, SWT.NONE);
 		createResourceManager();
 		//Pagrão de largura e altura das telas de componente
-		setSize(468, 774);
+		setSize(482, 774);
 		setLayout(new FormLayout());
 		
 		

@@ -74,7 +74,7 @@ public class HomeFuncionario extends Composite {
 		btnAdicionarCardapio.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				mainPage.navigateToScreenEmployee(5);
+				mainPage.navigateToScreenFuncionario(5);
 			}
 		});
 		btnAdicionarCardapio.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
@@ -96,7 +96,7 @@ public class HomeFuncionario extends Composite {
 				// Desenhando o fundo azul com bordas arredondadas
 				gc.setAntialias(SWT.ON);
 				gc.setBackground(blue);
-				gc.fillRoundRectangle(0, 0, rect.width, rect.height, 40, 40);
+				gc.fillRoundRectangle(0, 0, rect.width, rect.height, 20, 20);
 
 				// Desenhando o texto branco
 				gc.setForeground(white);
@@ -152,7 +152,7 @@ public class HomeFuncionario extends Composite {
 			compositeCardapio1.addMouseListener(new MouseAdapter() {
 	            @Override
 	            public void mouseDown(MouseEvent e) {
-	            	mainPage.navigateToScreenEmployee(2);
+	            	mainPage.navigateToScreenFuncionario(2);
 	            }
 	        });
 			
