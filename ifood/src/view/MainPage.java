@@ -15,7 +15,7 @@ public class MainPage {
 
 	protected Shell shell;
 	private LocalResourceManager localResourceManager;
-
+	
 	public static void main(String[] args) {
 		try {
 			MainPage window = new MainPage();
@@ -42,7 +42,7 @@ public class MainPage {
 	}
 
 	private void showMenuBarClient() {
-		MenuBarClient menuBarClient = new MenuBarClient(shell, this);
+		MenuBarCliente menuBarClient = new MenuBarCliente(shell, this);
 		FormData fd_menuBarClient = new FormData();
 		fd_menuBarClient.bottom = new FormAttachment(100);
 		fd_menuBarClient.left = new FormAttachment(0);
@@ -59,7 +59,7 @@ public class MainPage {
 		fd_homeFuncionario.top = new FormAttachment(0);
 		fd_homeFuncionario.left = new FormAttachment(0);
 		fd_homeFuncionario.right = new FormAttachment(100);
-		fd_homeFuncionario.bottom = new FormAttachment(90, -50);  
+		fd_homeFuncionario.bottom = new FormAttachment(90, -5);  
 		home.setLayoutData(fd_homeFuncionario);
 		showMenuBarClient();
 		shell.layout();
@@ -72,21 +72,47 @@ public class MainPage {
 		fd_infoProduct.left = new FormAttachment(0);
 		fd_infoProduct.right = new FormAttachment(100);
 		fd_infoProduct.top = new FormAttachment(0);
-		fd_infoProduct.bottom = new FormAttachment(90, -50); 
+		fd_infoProduct.bottom = new FormAttachment(90, -5); 
 		infoProduct.setLayoutData(fd_infoProduct);
 		showMenuBarClient();
 		shell.layout();
 	}
 	
-	public void showClienteCarrinho(Integer idProduto,String nomeProduto,String descricao,Double preco,String nomeRestaurante,String enderecoRestaurante) {
+	public void showClienteCarrinho() {
 		clearShell();
-		ClienteCarrinho carrinho = new ClienteCarrinho(shell, this, idProduto, nomeProduto, descricao, preco, nomeRestaurante, enderecoRestaurante);
+		ClienteCarrinho carrinho = new ClienteCarrinho(shell, this);
 		FormData fd_carrinho = new FormData();
 		fd_carrinho.left = new FormAttachment(0);
 		fd_carrinho.right = new FormAttachment(100);
 		fd_carrinho.top = new FormAttachment(0);
-		fd_carrinho.bottom = new FormAttachment(90, -50); 
+		fd_carrinho.bottom = new FormAttachment(90, -5); 
 		carrinho.setLayoutData(fd_carrinho);
+		showMenuBarFuncionario();
+		shell.layout();
+	}
+	
+	public void showClientePedidos() {
+		clearShell();
+		ClientePedidos clientePedidos = new ClientePedidos(shell, this);
+		FormData fd_clientePedidos = new FormData();
+		fd_clientePedidos.left = new FormAttachment(0);
+		fd_clientePedidos.right = new FormAttachment(100);
+		fd_clientePedidos.top = new FormAttachment(0);
+		fd_clientePedidos.bottom = new FormAttachment(90, -5); 
+		clientePedidos.setLayoutData(fd_clientePedidos);
+		showMenuBarFuncionario();
+		shell.layout();
+	}
+	
+	public void showClienteInfoPedido() {
+		clearShell();
+		ClienteInfoPedido clienteInfoPedido = new ClienteInfoPedido(shell, this);
+		FormData fd_clienteInfoPedido = new FormData();
+		fd_clienteInfoPedido.left = new FormAttachment(0);
+		fd_clienteInfoPedido.right = new FormAttachment(100);
+		fd_clienteInfoPedido.top = new FormAttachment(0);
+		fd_clienteInfoPedido.bottom = new FormAttachment(90, -5); 
+		clienteInfoPedido.setLayoutData(fd_clienteInfoPedido);
 		showMenuBarFuncionario();
 		shell.layout();
 	}
@@ -108,7 +134,7 @@ public class MainPage {
 		fd_homeFuncionario.top = new FormAttachment(0);
 		fd_homeFuncionario.left = new FormAttachment(0);
 		fd_homeFuncionario.right = new FormAttachment(100);
-		fd_homeFuncionario.bottom = new FormAttachment(90, -50);  
+		fd_homeFuncionario.bottom = new FormAttachment(90, -5);  
 		homeFuncionario.setLayoutData(fd_homeFuncionario);
 		showMenuBarFuncionario();
 		shell.layout();
@@ -121,7 +147,7 @@ public class MainPage {
 		fd_cadapioInfo.left = new FormAttachment(0);
 		fd_cadapioInfo.right = new FormAttachment(100);
 		fd_cadapioInfo.top = new FormAttachment(0);
-		fd_cadapioInfo.bottom = new FormAttachment(90, -50); 
+		fd_cadapioInfo.bottom = new FormAttachment(90, -5); 
 		cadCardapioInfo.setLayoutData(fd_cadapioInfo);
 		showMenuBarFuncionario();
 		shell.layout();
@@ -134,21 +160,34 @@ public class MainPage {
 		fd_itemCardapioInfo.left = new FormAttachment(0);
 		fd_itemCardapioInfo.right = new FormAttachment(100);
 		fd_itemCardapioInfo.top = new FormAttachment(0);
-		fd_itemCardapioInfo.bottom = new FormAttachment(90, -50); 
+		fd_itemCardapioInfo.bottom = new FormAttachment(90, -5); 
 		itemCardapioInfo.setLayoutData(fd_itemCardapioInfo);
 		showMenuBarFuncionario();
 		shell.layout();
 	}
 	
-	private void showFuncionarioCadItemCardapio() {
+	private void showFuncionarioCadPratoCardapio() {
 		clearShell();
-		FuncionarioCadItemCardapio cadItemCardapio = new FuncionarioCadItemCardapio(shell, this);
-		FormData fd_cadItemCardapio = new FormData();
-		fd_cadItemCardapio.left = new FormAttachment(0);
-		fd_cadItemCardapio.right = new FormAttachment(100);
-		fd_cadItemCardapio.top = new FormAttachment(0);
-		fd_cadItemCardapio.bottom = new FormAttachment(90, -50); 
-		cadItemCardapio.setLayoutData(fd_cadItemCardapio);
+		FuncionarioCadPratoCardapio cadPratoCardapio = new FuncionarioCadPratoCardapio(shell, this);
+		FormData fd_cadPratoCardapio = new FormData();
+		fd_cadPratoCardapio.left = new FormAttachment(0);
+		fd_cadPratoCardapio.right = new FormAttachment(100);
+		fd_cadPratoCardapio.top = new FormAttachment(0);
+		fd_cadPratoCardapio.bottom = new FormAttachment(90, -3); 
+		cadPratoCardapio.setLayoutData(fd_cadPratoCardapio);
+		showMenuBarFuncionario();
+		shell.layout();
+	}
+	
+	private void showFuncionarioCadProdutoCardapio() {
+		clearShell();
+		FuncionarioCadProdutoCardapio cadProdutoCardapio = new FuncionarioCadProdutoCardapio(shell, this);
+		FormData fd_cadProdutoCardapio = new FormData();
+		fd_cadProdutoCardapio.left = new FormAttachment(0);
+		fd_cadProdutoCardapio.right = new FormAttachment(100);
+		fd_cadProdutoCardapio.top = new FormAttachment(0);
+		fd_cadProdutoCardapio.bottom = new FormAttachment(90, -3); 
+		cadProdutoCardapio.setLayoutData(fd_cadProdutoCardapio);
 		showMenuBarFuncionario();
 		shell.layout();
 	}
@@ -160,7 +199,7 @@ public class MainPage {
 		fd_cadCardapio.left = new FormAttachment(0);
 		fd_cadCardapio.right = new FormAttachment(100);
 		fd_cadCardapio.top = new FormAttachment(0);
-		fd_cadCardapio.bottom = new FormAttachment(90, -50); 
+		fd_cadCardapio.bottom = new FormAttachment(90, -5); 
 		cadCardapio.setLayoutData(fd_cadCardapio);
 		showMenuBarFuncionario();
 		shell.layout();
@@ -173,7 +212,7 @@ public class MainPage {
 		fd_pedidosFuncionario.left = new FormAttachment(0);
 		fd_pedidosFuncionario.right = new FormAttachment(100);
 		fd_pedidosFuncionario.top = new FormAttachment(0);
-		fd_pedidosFuncionario.bottom = new FormAttachment(90, -50); 
+		fd_pedidosFuncionario.bottom = new FormAttachment(90, -5); 
 		pedidosFuncionario.setLayoutData(fd_pedidosFuncionario);
 		showMenuBarFuncionario();
 		shell.layout();
@@ -186,7 +225,7 @@ public class MainPage {
 		fd_funcionarioInfoPedido.left = new FormAttachment(0);
 		fd_funcionarioInfoPedido.right = new FormAttachment(100);
 		fd_funcionarioInfoPedido.top = new FormAttachment(0);
-		fd_funcionarioInfoPedido.bottom = new FormAttachment(90, -50); 
+		fd_funcionarioInfoPedido.bottom = new FormAttachment(90, -5); 
 		funcionarioInfoPedido.setLayoutData(fd_funcionarioInfoPedido);
 		showMenuBarEntregador();
 		shell.layout();
@@ -209,7 +248,7 @@ public class MainPage {
 		fd_homeEntregador.left = new FormAttachment(0);
 		fd_homeEntregador.right = new FormAttachment(100);
 		fd_homeEntregador.top = new FormAttachment(0);
-		fd_homeEntregador.bottom = new FormAttachment(90, -50); 
+		fd_homeEntregador.bottom = new FormAttachment(90, -5); 
 		homeEntregador.setLayoutData(fd_homeEntregador);
 		showMenuBarEntregador();
 		shell.layout();
@@ -222,7 +261,7 @@ public class MainPage {
 		fd_entregadorPedidos.left = new FormAttachment(0);
 		fd_entregadorPedidos.right = new FormAttachment(100);
 		fd_entregadorPedidos.top = new FormAttachment(0);
-		fd_entregadorPedidos.bottom = new FormAttachment(90, -50); 
+		fd_entregadorPedidos.bottom = new FormAttachment(90, -5); 
 		entregadorPedidos.setLayoutData(fd_entregadorPedidos);
 		showMenuBarEntregador();
 		shell.layout();
@@ -235,13 +274,25 @@ public class MainPage {
 		fd_entregadorInfoPedido.left = new FormAttachment(0);
 		fd_entregadorInfoPedido.right = new FormAttachment(100);
 		fd_entregadorInfoPedido.top = new FormAttachment(0);
-		fd_entregadorInfoPedido.bottom = new FormAttachment(90, -50); 
+		fd_entregadorInfoPedido.bottom = new FormAttachment(90, -5); 
 		entregadorInfoPedido.setLayoutData(fd_entregadorInfoPedido);
 		showMenuBarEntregador();
 		shell.layout();
 	}
 	
-	protected void navigateToScreen(int screenNumber) {
+	private void showUsuarioPerfil() {
+		clearShell();
+		UsuarioPerfil usuarioPerfil = new UsuarioPerfil(shell, this);
+		FormData fd_usuarioPerfil = new FormData();
+		fd_usuarioPerfil.left = new FormAttachment(0);
+		fd_usuarioPerfil.right = new FormAttachment(100);
+		fd_usuarioPerfil.top = new FormAttachment(0);
+		fd_usuarioPerfil.bottom = new FormAttachment(90, -5); 
+		usuarioPerfil.setLayoutData(fd_usuarioPerfil);
+		shell.layout();
+	}
+	
+	protected void navigateToScreenCliente(int screenNumber) {
 		switch (screenNumber) {
 		case 1:
 			showHomeCliente();
@@ -250,7 +301,16 @@ public class MainPage {
 			showClienteInfoProduct();
 			break;
 		case 3:
-//			showClienteCarrinho();
+			showClienteCarrinho();
+			break;
+		case 4:
+			showUsuarioPerfil();
+			break;
+		case 5:
+			showClientePedidos();
+			break;
+		case 6:
+			showClienteInfoPedido();
 			break;
 		default:
 			showHomeCliente();
@@ -258,7 +318,7 @@ public class MainPage {
 		}
 	}
 	
-	protected void navigateToScreenEmployee(int screenNumber) {
+	protected void navigateToScreenFuncionario(int screenNumber) {
 		switch (screenNumber) {
 		case 1:
 			showHomeFuncionario();
@@ -270,13 +330,19 @@ public class MainPage {
 			showFuncionarioPedidos();
 			break;
 		case 4:
-			showFuncionarioCadItemCardapio();
+			showFuncionarioCadPratoCardapio();
 			break;
 		case 5:
 			showFuncionarioCadCardapio();
 			break;
 		case 6:
 			showFuncionarioInfoPedido();
+			break;
+		case 7:
+			showUsuarioPerfil();
+			break;
+		case 8:
+			showFuncionarioCadProdutoCardapio();
 			break;
 		default:
 			showHomeFuncionario();
@@ -298,6 +364,9 @@ public class MainPage {
 		case 4:
 //			showEntregadorInfoPedido();
 			break;
+		case 5:
+			showUsuarioPerfil();
+			break;
 		default:
 			showHomeEntregador();
 			break;
@@ -316,7 +385,7 @@ public class MainPage {
 
 	private void clearShell() {
 		for (Control control : shell.getChildren()) {
-			if (!(control instanceof MenuBarClient)) {
+			if (!(control instanceof MenuBarCliente)) {
 				control.dispose();
 			}
 		}
