@@ -9,10 +9,6 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-
-import model.Cardapio;
-import model.Prato;
-
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Rectangle;
@@ -95,7 +91,6 @@ public class FuncionarioCardapioInfo extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				openRadioDialog(shell,mainPage);
-				
 			}
 		});
 		btnAdicionarItem.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
@@ -271,12 +266,10 @@ public class FuncionarioCardapioInfo extends Composite {
     }
 
     private static void pratoSelecionado(MainPage mainPage) {
-    	//Prato prato = new Prato();
     	mainPage.navigateToScreenFuncionario(4);
     }
 
     private static void produtoSelecionado(MainPage mainPage) {
-    	//Produto produto = new Produto();
     	mainPage.navigateToScreenFuncionario(8);
     }
 }

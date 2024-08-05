@@ -138,7 +138,6 @@ public class MainPage {
 		homeFuncionario.setLayoutData(fd_homeFuncionario);
 		showMenuBarFuncionario();
 		shell.layout();
-		
 	}
 	
 	private void showFuncionarioCardapioInfo() {

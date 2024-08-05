@@ -19,9 +19,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-
-import model.Produto;
-
 import org.eclipse.swt.custom.ScrolledComposite;
 
 import org.eclipse.swt.widgets.FileDialog;
@@ -187,10 +184,6 @@ public class FuncionarioCadProdutoCardapio extends Composite {
 					System.out.println("Selected file: " + selectedFile);
 					saveFile(selectedFile, "./src/assets/images/"); // Salvar no diretório especificado
 				}
-				
-				Produto produto = new Produto(Double.parseDouble(textPreco.getText()), txtTitulo.getText());
-				// // cria o bd e chama o insert na tabela de produto
-				// insert na tabela de cardapio
 			}
 		});
 		btnConcluir.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));

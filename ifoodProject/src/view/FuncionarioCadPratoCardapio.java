@@ -6,7 +6,6 @@ import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.resource.LocalResourceManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
-import java.util.Arrays;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -20,17 +19,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-
-import model.Prato;
-
 import org.eclipse.swt.custom.ScrolledComposite;
 
 import org.eclipse.swt.widgets.FileDialog;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.List;
-
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.GridData;
 
@@ -205,12 +199,6 @@ public class FuncionarioCadPratoCardapio extends Composite {
 					System.out.println("Selected file: " + selectedFile);
 					saveFile(selectedFile, "./src/assets/images/"); // Salvar no diretório especificado
 				}
-				
-				String[] ingredientesArray = txtIngredientes.getText().split(" ");
-				List<String> ingredientes = Arrays.asList(ingredientesArray);
-				Prato prato = new Prato(Double.parseDouble(textPreco.getText()), txtTitulo.getText(), txtDescricao.getText(), ingredientes);
-				// cria o bd e chama o insert na tabela de prato
-				// insert na tabela de cardapio
 			}
 		});
 		btnConcluir.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
