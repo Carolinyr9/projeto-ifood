@@ -61,7 +61,7 @@ public class CardapioBanco {
         try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
             stmt.setInt(1, id);
             stmt.setInt(2, cardapio.getIdRestaurante());
-            stmt.setInt(3, cardapio.getIdPrato());
+            stmt.setInt(3, cardapio.getidPrato(id));
             stmt.setInt(4, cardapio.getIdProduto());
 
             stmt.execute();

@@ -1,51 +1,44 @@
 package model;
 
 public class ItemCardapio {
-    private Double preco;
-    private boolean ativo;
-
-    public ItemCardapio(Double preco) {
-        this.preco = preco;
-        this.ativo = true;
-    }
-
-    public ItemCardapio() {
-        this.ativo = true; 
-    }
-
-    public Double getPreco() {
-        return preco;
-    }
-
-    public void setPreco(Double preco) {
-        this.preco = preco;
-    }
-    
-    public boolean isAtivo() {
-        return ativo;
-    }
-
-    public void adicionarItemAoCardapio() {
-        // Implementar lógica para adicionar item ao cardápio
-        // Isso pode envolver adicioná-lo a uma coleção ou banco de dados
-        this.ativo = true;
-        System.out.println("Item adicionado ao cardápio: " + this.toString());
-    }
-
-    public void desativarItemDoCardapio() {
-        // Implementar lógica para desativar item do cardápio
-        this.ativo = false;
-        System.out.println("Item desativado: " + this.toString());
-    }
-    
-    public void editarItem() {
-    	
-    }
-
-	public String toString() {
-		return "Item do Cardápio"
-				+ "\nPreço: "+ preco 
-				+ "\nSituação (está ativo?): " + ativo;
+	private int idRestaurante;
+	private int idPrato;
+	private int idProduto;
+	
+	public ItemCardapio(int idRestaurante, int idPrato, int idProduto) {
+		super();
+		this.idRestaurante = idRestaurante;
+		this.idPrato = idPrato;
+		this.idProduto = idProduto;
 	}
+
+	public ItemCardapio() {
+		
+	}
+
+	public int getIdRestaurante() {
+		return idRestaurante;
+	}
+
+	public void setIdRestaurante(int idRestaurante) {
+		this.idRestaurante = idRestaurante;
+	}
+
+	public int getIdPrato() {
+		return idPrato;
+	}
+
+	public void setIdPrato(int idPrato) {
+		this.idPrato = idPrato;
+	}
+
+	public int getIdProduto() {
+		return idProduto;
+	}
+
+	public void setIdProduto(int idProduto) {
+		this.idProduto = idProduto;
+	}
+	
 }
 

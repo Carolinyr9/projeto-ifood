@@ -19,7 +19,6 @@ public class PedidoBanco {
 
         try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
             stmt.setString(1, pedido.getStatus());
-            stmt.setInt(2, pedido.getIdCarrinho());
             stmt.setInt(3, pedido.getIdCliente());
             stmt.setInt(4, pedido.getIdEntregador());
             stmt.setTimestamp(5, Timestamp.valueOf(pedido.getDataPedido()));

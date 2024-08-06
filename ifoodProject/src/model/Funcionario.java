@@ -1,14 +1,16 @@
 package model;
 
 public class Funcionario extends Usuario {
-	private Integer codFuncional;
+	private String codFuncional;
 	private String nome;
+	private int idRestaurante;
 	private Long cpf;
 	
-	public Funcionario(String email, String senha, Integer codFuncional, String nome, Long cpf) {
+	public Funcionario(String email, String senha, String codFuncional, String nome, int idRestaurante, Long cpf) {
 		super(email, senha);
 		this.codFuncional = codFuncional;
 		this.nome = nome;
+		this.idRestaurante = idRestaurante;
 		this.cpf = cpf;
 	}
 	
@@ -16,11 +18,11 @@ public class Funcionario extends Usuario {
 		
 	}
 
-	public Integer getCodFuncional() {
+	public String getCodFuncional() {
 		return codFuncional;
 	}
 
-	public void setCodFuncional(Integer codFuncional) {
+	public void setCodFuncional(String codFuncional) {
 		this.codFuncional = codFuncional;
 	}
 
@@ -40,11 +42,27 @@ public class Funcionario extends Usuario {
 		this.cpf = cpf;
 	}
 	
+	public int getIdRestaurante() {
+		return idRestaurante;
+	}
+
+	public void setIdRestaurante(int idRestaurante) {
+		this.idRestaurante = idRestaurante;
+	}
+
+	public Long getCpf() {
+		return cpf;
+	}
+
+	public void setCpf(Long cpf) {
+		this.cpf = cpf;
+	}
+
 	public void aceitarPedido() {
 		
 	}
 	
-	public void editarDados(String email, String senha, Integer codFuncional, String nome, Long cpf) {
+	public void editarDados(String email, String senha, String codFuncional, String nome, Long cpf) {
 		setCodFuncional(codFuncional);
 	}
 	

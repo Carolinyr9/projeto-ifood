@@ -1,5 +1,6 @@
 package model;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,28 +9,52 @@ public class Pedido {
     private List<ItemCardapio> itens;
     private Double precoTotal;
     private StatusPedido status;
+    private LocalDateTime dataPedido;
     private String endereco;
     private Double estimativaTempo;
-    private Cliente cliente;
-    private Restaurante restaurante;
+    private int idCliente;
+    private int idRestaurante;
+    private int idEntregador;
+    private int idCarrinho;
 
-    public Pedido() {
+	public Pedido() {
         this.itens = new ArrayList<>();
     }
 
-    public Pedido(Integer id, List<ItemCardapio> itens, Double precoTotal, StatusPedido status,
-                  String endereco, Double estimativaTempo, Cliente cliente, Restaurante restaurante) {
-        this.id = id;
-        this.itens = itens;
-        this.precoTotal = precoTotal;
-        this.status = status;
-        this.endereco = endereco;
-        this.estimativaTempo = estimativaTempo;
-        this.cliente = cliente;
-        this.restaurante = restaurante;
-    }
+	public Pedido(Integer id, List<ItemCardapio> itens, Double precoTotal, StatusPedido status,
+			LocalDateTime dataPedido, String endereco, Double estimativaTempo, int idCliente, int idRestaurante,
+			int idEntregador, int idCarrinho) {
+		super();
+		this.id = id;
+		this.itens = itens;
+		this.precoTotal = precoTotal;
+		this.status = status;
+		this.dataPedido = dataPedido;
+		this.endereco = endereco;
+		this.estimativaTempo = estimativaTempo;
+		this.idCliente = idCliente;
+		this.idRestaurante = idRestaurante;
+		this.idEntregador = idEntregador;
+		this.idCarrinho = idCarrinho;
+	}
 
-    public Integer getId() {
+	public LocalDateTime getDataPedido() {
+		return dataPedido;
+	}
+
+	public void setDataPedido(LocalDateTime dataPedido) {
+		this.dataPedido = dataPedido;
+	}
+
+	public int getIdCarrinho() {
+		return idCarrinho;
+	}
+
+	public void setIdCarrinho(int idCarrinho) {
+		this.idCarrinho = idCarrinho;
+	}
+
+	public Integer getId() {
         return id;
     }
 
@@ -70,13 +95,6 @@ public class Pedido {
         this.estimativaTempo = estimativaTempo;
     }
 
-    public Cliente getCliente() {
-        return cliente;
-    }
-
-    public Restaurante getRestaurante() {
-        return restaurante;
-    }
 
     public void adicionarItemPedido(ItemCardapio item) {
         itens.add(item);
@@ -89,6 +107,14 @@ public class Pedido {
 
 	public void setStatus(Status novoStatus) {
 		this.status.editarStatus(novoStatus);
+	}
+
+    public int getIdEntregador() {
+		return idEntregador;
+	}
+
+	public void setIdEntregador(int idEntregador) {
+		this.idEntregador = idEntregador;
 	}
 
 	public String toString() {
@@ -106,11 +132,31 @@ public class Pedido {
         sb.append("\nStatus: ").append(status);
         sb.append("\nEndereco de Entrega: ").append(endereco);
         sb.append("\nEstimativaTempo: ").append(estimativaTempo);
-        sb.append("\nCliente: ").append(cliente.getNome());
-        sb.append("\nRestaurante: ").append(restaurante.getNome());
+        sb.append("\nCliente: ").append(idCliente);
+        sb.append("\nRestaurante: ").append(idRestaurante);
 
         return sb.toString();
     }
+
+	public int getIdCliente() {
+		return idCliente;
+	}
+
+	public void setIdCliente(int idCliente) {
+		this.idCliente = idCliente;
+	}
+
+	public int getIdRestaurante() {
+		return idRestaurante;
+	}
+
+	public void setIdRestaurante(int idRestaurante) {
+		this.idRestaurante = idRestaurante;
+	}
+
+	public void setStatus(StatusPedido status) {
+		this.status = status;
+	}
 
 //    private int verificarItem(ItemCardapio item) {
 //    	for (ItemCardapio it : itens) {

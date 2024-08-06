@@ -8,17 +8,27 @@ public class Entregador extends Usuario {
     private String nome;
     private Long cpf;
     private Long cnh;
+    private String endereco;
 
-    public Entregador(String email, String senha, LocalDate dataNascimento, Long telefone, String nome, Long cpf, Long cnh) {
+    public Entregador(String email, String senha, LocalDate dataNascimento, Long telefone, String nome, Long cpf, Long cnh, String endereco) {
         super(email, senha);
         this.dataNascimento = dataNascimento;
         this.telefone = telefone;
         this.nome = nome;
         this.cpf = cpf;
         this.cnh = cnh;
+        this.endereco = endereco;
     }
 
-    public Entregador() {
+    public String getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(String endereco) {
+		this.endereco = endereco;
+	}
+
+	public Entregador() {
     	
     }
 

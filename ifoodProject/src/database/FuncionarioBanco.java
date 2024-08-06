@@ -22,7 +22,7 @@ public class FuncionarioBanco {
         try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
             stmt.setString(1, funcionario.getNome());
             stmt.setLong(2, funcionario.getCpf());
-            stmt.setString(3, funcionario.getCodigoFuncional());
+            stmt.setString(3, funcionario.getCodFuncional());
             stmt.setString(4, funcionario.getEmail());
             stmt.setString(5, funcionario.getSenha());
             stmt.setInt(6, funcionario.getIdRestaurante());
@@ -47,7 +47,7 @@ public class FuncionarioBanco {
                 funcionario = new Funcionario();
                 funcionario.setNome(rs.getString("nome"));
                 funcionario.setCpf(rs.getLong("cpf"));
-                funcionario.setCodigoFuncional(rs.getString("codigo_funcional"));
+                funcionario.setCodFuncional(rs.getString("codigo_funcional"));;
                 funcionario.setEmail(rs.getString("email"));
                 funcionario.setSenha(rs.getString("senha"));
                 funcionario.setIdRestaurante(rs.getInt("id_restaurante"));
@@ -66,8 +66,8 @@ public class FuncionarioBanco {
         try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
             stmt.setInt(1, id);
             stmt.setString(2, funcionario.getNome());
-            stmt.setLong(3, funcionario.getCpf());
-            stmt.setString(4, funcionario.getCodigoFuncional());
+            stmt.setLong(3, funcionario.getcpf());
+            stmt.setString(4, funcionario.getCodFuncional());
             stmt.setString(5, funcionario.getEmail());
             stmt.setString(6, funcionario.getSenha());
             stmt.setInt(7, funcionario.getIdRestaurante());
@@ -103,8 +103,8 @@ public class FuncionarioBanco {
             while (rs.next()) {
                 Funcionario funcionario = new Funcionario();
                 funcionario.setNome(rs.getString("nome"));
-                funcionario.setCpf(rs.getLong("cpf"));
-                funcionario.setCodigoFuncional(rs.getString("codigo_funcional"));
+                funcionario.setcpf(rs.getLong("cpf"));
+                funcionario.setCodFuncional(rs.getString("codigo_funcional"));
                 funcionario.setEmail(rs.getString("email"));
                 funcionario.setSenha(rs.getString("senha"));
                 funcionario.setIdRestaurante(rs.getInt("id_restaurante"));

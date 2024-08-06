@@ -3,14 +3,15 @@ package model;
 import java.util.List;
 
 public class Restaurante extends Usuario {
-    private Long cnpj;
+    private String cnpj;
+    private int id;
     private String nome;
-    private String endereco;
-    private Long telefone;
+    private String telefone;
+    private Endereco endereco;
     private List<Cardapio> cardapios;
 
-    public Restaurante(String email, String senha, Long cnpj, String nome, 
-    		           String endereco, Long telefone, List<Cardapio> cardapios) {
+    public Restaurante(String email, String senha, String cnpj, String nome, 
+    		           Endereco endereco, String telefone, List<Cardapio> cardapios) {
         super(email, senha);
         this.cnpj = cnpj;
         this.nome = nome;
@@ -23,11 +24,11 @@ public class Restaurante extends Usuario {
     	
     }
 
-    public Long getCnpj() {
+    public String getCnpj() {
         return cnpj;
     }
 
-    public void setCnpj(Long cnpj) {
+    public void setCnpj(String cnpj) {
         this.cnpj = cnpj;
     }
 
@@ -35,23 +36,23 @@ public class Restaurante extends Usuario {
         return nome;
     }
 
-    public void setNome(String nome) {
+    public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public void setNome(String nome) {
         this.nome = nome;
     }
 
-    public String getEndereco() {
-        return endereco;
-    }
-
-    public void setEndereco(String endereco) {
-        this.endereco = endereco;
-    }
-
-    public Long getTelefone() {
+    public String getTelefone() {
         return telefone;
     }
 
-    public void setTelefone(Long telefone) {
+    public void setTelefone(String telefone) {
         this.telefone = telefone;
     }
 
@@ -63,7 +64,7 @@ public class Restaurante extends Usuario {
         this.cardapios = cardapios;
     }
 
-    public void editarRestaurante(Long cnpj, String nome, String endereco, Long telefone) {
+    public void editarRestaurante(String cnpj, String nome, Endereco endereco, String telefone) {
         setCnpj(cnpj);
         setNome(nome);
         setEndereco(endereco);
@@ -71,7 +72,62 @@ public class Restaurante extends Usuario {
         System.out.println("Restaurante editado: " + this.toString());
     }
 
-    @Override
+    public Endereco getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(Endereco endereco) {
+		this.endereco = endereco;
+	}
+	
+	public String getCep() {
+		return endereco.getCep();
+	}
+	
+	public String getRua() {
+		return endereco.getRua();
+	}
+
+	public String getCidade() {
+		return endereco.getCidade();
+	}
+	public String getEstado() {
+		return endereco.getEstado();
+	}
+
+	public String getNumeroResidencial() {
+		return endereco.getNumeroResidencial();
+	}
+
+	public String getSegmento() {
+		return endereco.getSegmento();
+	}
+	
+	public void setCep(String cep) {
+		endereco.setCep(cep);
+	}
+	
+	public void setRua(String rua) {
+		endereco.setRua(rua);
+	}
+	
+	public void setCidade(String cidade) {
+		endereco.setCidade(cidade);
+	}
+	
+	public void setEstado(String estado) {
+		endereco.setEstado(estado);
+	}
+
+	public void setNumeroResidencial(String numeroResidencial) {
+		endereco.setSegmento(numeroResidencial);
+	}
+
+	public void setSegmento(String segmento) {
+		endereco.setSegmento(segmento);
+	}
+	
+	@Override
     public String toString() {
         return "Restaurante" +
                "\nCNPJ: " + cnpj +
