@@ -40,7 +40,10 @@ public class FuncionarioCardapioInfo extends Composite {
 	private String nomeCardapio;
 	
 	/* Variável para colocar o nome e o preço dos itens do cardápio selecionado, para posteriormente
-	 * serem exibidos*/
+	 * serem exibidos
+	 * 
+	 * Não precisa fazer como eu fiz!
+	 * */
 	private List<String> nomeItensCardapio;
 	private List<Double> precoItensCardapio;
 
@@ -161,6 +164,11 @@ public class FuncionarioCardapioInfo extends Composite {
 		});
 		
 		
+		/* Colocar aqui a função que vai chamar a procedure para pegar todos os itens do cardápio
+		 * No loop abaixo serão mostrados todos os itens
+		 * 
+		 * 					numCardapio = é o número de itens ao todo
+		 *  */
 		for(int i = 0; i < numCardapio; i++) {
 			
 			int num = i;
@@ -189,7 +197,7 @@ public class FuncionarioCardapioInfo extends Composite {
 			compositeItem1.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseDown(MouseEvent e) {
-					mainPage.showFuncionarioItemCardapioInfo(1, 1, nomeItensCardapio.get(num), precoItensCardapio.get(num), nomeCardapio, nomeCardapio);
+//					mainPage.showFuncionarioItemCardapioInfo(1, 1, nomeItensCardapio.get(num), precoItensCardapio.get(num), nomeCardapio, nomeCardapio);
 				}
 			});
 			
@@ -202,11 +210,15 @@ public class FuncionarioCardapioInfo extends Composite {
 			lblItemTitulo.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
 			lblItemTitulo.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 12, SWT.BOLD)));
 			lblItemTitulo.setBounds(25, 23, 187, 28);
+			/* Abaixo, dentro da função setText(), colocar o nome do produto
+			 * 
+			 *	 								o get(i) é como se eu estivesse pegando pelo indice, assim como nomeArray[i]
+			 **/
 			lblItemTitulo.setText(nomeItensCardapio.get(i));
 			lblItemTitulo.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseDown(MouseEvent e) {
-					mainPage.showFuncionarioItemCardapioInfo(1, 1, nomeItensCardapio.get(num), precoItensCardapio.get(num), nomeCardapio, nomeCardapio);
+//					mainPage.showFuncionarioItemCardapioInfo(1, 1, nomeItensCardapio.get(num), precoItensCardapio.get(num), nomeCardapio, nomeCardapio);
 				}
 			});
 			new Label(compositeItem1, SWT.NONE);
@@ -216,6 +228,11 @@ public class FuncionarioCardapioInfo extends Composite {
 			lblPrecoItem1.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_DARK_RED));
 			lblPrecoItem1.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
 			lblPrecoItem1.setBounds(252, 26, 74, 28);
+			/* Abaixo, dentro da função setText(), colocar o preço do produto
+			 * 
+			 *	 								o get(i) é como se eu estivesse pegando pelo indice, assim como nomeArray[i]
+			 *									o toString() é pra transformar o preco em string, caso esteja como double/int/float
+			 **/
 			lblPrecoItem1.setText("R$" + precoItensCardapio.get(i).toString());
 			new Label(compositeItem1, SWT.NONE);
 			new Label(compositeItem1, SWT.NONE);
@@ -238,15 +255,13 @@ public class FuncionarioCardapioInfo extends Composite {
         Label lblTipo = new Label(dialog, SWT.CENTER);
         lblTipo.setText("Que tipo de item deseja adicionar?");
 
-        // Adiciona opções de rádio buttons
         Button optionPrato = new Button(dialog, SWT.RADIO);
         optionPrato.setText("Prato");
-        optionPrato.setSelection(true); // Seleciona a primeira opção por padrão
+        optionPrato.setSelection(true);
 
         Button optionProduto = new Button(dialog, SWT.RADIO);
         optionProduto.setText("Produto");
 
-        // Botão OK
         Button okButton = new Button(dialog, SWT.PUSH);
         okButton.setText("Prosseguir");
         GridData gridData = new GridData(SWT.CENTER, SWT.CENTER, true, false);

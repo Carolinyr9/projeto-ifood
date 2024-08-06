@@ -181,8 +181,17 @@ public class FuncionarioCadProdutoCardapio extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				if (selectedFile != null) {
-					System.out.println("Selected file: " + selectedFile);
-					saveFile(selectedFile, "./src/assets/images/"); // Salvar no diretório especificado
+					saveFile(selectedFile, "./src/assets/images/");
+					
+					/* Colocar aqui as funções para cadastrar um prato no cardápio
+					 * txtTitulo.getText(); - Para pegar o nome do produto que foi escrito pelo usuário
+					 * 
+					 * textPreco.getText(); - Para pegar o preço, escrito pelo usuário
+					 * 
+					 * txtDescricao.getText(); - Para pegar a descrição, escrita pelo usuário
+					 * 
+					 * selectedFile - variável que contem o nome da imagem do produto
+					 *  */
 				}
 			}
 		});
@@ -219,16 +228,13 @@ public class FuncionarioCadProdutoCardapio extends Composite {
         File sourceFile = new File(sourceFilePath);
         File targetDir = new File(targetDirectory);
         
-        // Verifica se o diretório de destino existe, se não, cria
         if (!targetDir.exists()) {
             targetDir.mkdirs();
         }
-
-        // Define o caminho do arquivo de destino
+        
         File targetFile = new File(targetDir, sourceFile.getName());
 
         try {
-            // Copia o arquivo selecionado para o diretório da aplicação
             Files.copy(sourceFile.toPath(), targetFile.toPath());
             System.out.println("File saved to: " + targetFile.getAbsolutePath());
         } catch (IOException e) {

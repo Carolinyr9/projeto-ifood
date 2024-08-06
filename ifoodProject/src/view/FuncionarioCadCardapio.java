@@ -97,6 +97,14 @@ public class FuncionarioCadCardapio extends Composite {
 		textTituloCardapio.setBounds(63, 88, 250, 36);
 		
 		Button btnConcluir = new Button(composite, SWT.NONE);
+		btnConcluir.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				/* Colocar aqui as funções para adicionar um cardápio
+				 * textTituloCardapio.getText(); - Para pegar o nome do cardápio que foi escrito pelo usuário
+				 *  */
+			}
+		});
 		btnConcluir.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
 		btnConcluir.setBounds(63, 279, 114, 36);
 		btnConcluir.setText("Concluir");

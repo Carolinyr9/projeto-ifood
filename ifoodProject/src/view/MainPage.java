@@ -16,6 +16,10 @@ public class MainPage {
 	protected Shell shell;
 	private LocalResourceManager localResourceManager;
 	
+	private void createResourceManager() {
+		localResourceManager = new LocalResourceManager(JFaceResources.getResources(),shell);
+	}
+	
 	public static void main(String[] args) {
 		try {
 			MainPage window = new MainPage();
@@ -153,9 +157,9 @@ public class MainPage {
 		shell.layout();
 	}
 	
-	public void showFuncionarioItemCardapioInfo(Integer idProduct, Integer idCardapio, String nomeProduto, Double preco, String ingredientes, String descricao) {
+	public void showFuncionarioProdutoInfo() {
 		clearShell();
-		FuncionarioItemCardapioInfo itemCardapioInfo = new FuncionarioItemCardapioInfo(shell, this, idProduct, idCardapio, nomeProduto, preco, ingredientes, descricao);
+		FuncionarioProdutoInfo itemCardapioInfo = new FuncionarioProdutoInfo(shell, this);
 		FormData fd_itemCardapioInfo = new FormData();
 		fd_itemCardapioInfo.left = new FormAttachment(0);
 		fd_itemCardapioInfo.right = new FormAttachment(100);
@@ -389,10 +393,6 @@ public class MainPage {
 				control.dispose();
 			}
 		}
-	}
-
-	private void createResourceManager() {
-		localResourceManager = new LocalResourceManager(JFaceResources.getResources(),shell);
 	}
 }
 
