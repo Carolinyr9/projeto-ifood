@@ -38,6 +38,7 @@ public class FuncionarioCadPratoCardapio extends Composite {
 	private Text textPreco;
 	private Text txtTitulo;
 	private Text txtDescricao;
+	private PratoBanco banco;
 
     private void createResourceManager() {
 		localResourceManager = new LocalResourceManager(JFaceResources.getResources(), this);
@@ -211,6 +212,13 @@ public class FuncionarioCadPratoCardapio extends Composite {
 				 * selectedFile - variável que contem o nome da imagem do produto
 				 *  */
 			}
+
+			// VARIAVEIS CRIADAS PARA MERO EXEMPLO, DEPOIS TIRAR E COLOCAR UM GET
+				int id = 1;
+				int idRestaurante = 1;
+				Prato prato = new Prato(Double.parseDouble(textPreco.getText()), txtTitulo.getText(), txtDescricao.getText(), 
+						id, idRestaurante, txtIngredientes.getText());
+				banco.criarPrato(prato);
 		});
 		btnConcluir.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
 		btnConcluir.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
