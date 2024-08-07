@@ -3,8 +3,11 @@ package model;
 import java.util.List;
 
 public class Cardapio {
-	private int id;
+    private int id;
     private List<ItemCardapio> itensCardapio;
+
+    public Cardapio() {
+    }
 
     public Cardapio(List<ItemCardapio> itensCardapio) {
         this.itensCardapio = itensCardapio;
@@ -18,23 +21,20 @@ public class Cardapio {
         this.itensCardapio = itensCardapio;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Override
     public String toString() {
         StringBuilder textoCardapio = new StringBuilder("\nCardápio:");
         for (ItemCardapio itemCardapio : itensCardapio) {
             textoCardapio.append("\n").append(itemCardapio.toString());
         }
         return textoCardapio.toString();
-    }
-    
-    public int getidPrato(int id) {
-    	return itensCardapio.get(id).getIdPrato();
-    }
-    
-    public int getidProduto(int id) {
-    	return itensCardapio.get(id).getIdProduto();
-    }
-    
-    public int getidRestaurante(int id) {
-    	return itensCardapio.get(id).getIdRestaurante();
     }
 }

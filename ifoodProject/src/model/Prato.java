@@ -1,7 +1,5 @@
 package model;
 
-import java.util.List;
-
 public class Prato extends ItemCardapio {
     private String nome;
     private String descricao;

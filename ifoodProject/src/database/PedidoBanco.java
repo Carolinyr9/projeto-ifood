@@ -3,6 +3,8 @@ package database;
 import java.sql.*;
 import java.time.LocalDateTime;
 import model.Pedido;
+import model.Status;
+import model.StatusPedido;
 
 public class PedidoBanco {
 
@@ -14,15 +16,15 @@ public class PedidoBanco {
     }
 
     // Método para criar um novo pedido
-    public void criarPedido(Pedido pedido) {
+    public void criarPedido(Pedido pedido, StatusPedido status) {
         String sql = "CALL Inserir_Pedido(?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
-            stmt.setString(1, pedido.getStatus());
+            stmt.setString(1, pedido.getStatus().toString());
             stmt.setInt(3, pedido.getIdCliente());
             stmt.setInt(4, pedido.getIdEntregador());
             stmt.setTimestamp(5, Timestamp.valueOf(pedido.getDataPedido()));
-            stmt.setTimestamp(6, Timestamp.valueOf(pedido.getDataAtualizacao()));
+            stmt.setTimestamp(6, Timestamp.valueOf(status.getHorarioStatus()));
 
             stmt.execute();
         } catch (SQLException e) {
@@ -35,6 +37,7 @@ public class PedidoBanco {
     public Pedido visualizarPedido(int id) {
         String sql = "CALL Selecionar_Pedido(?)";
         Pedido pedido = null;
+        StatusPedido status = null;
 
         try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
             stmt.setInt(1, id);
@@ -43,12 +46,12 @@ public class PedidoBanco {
             if (rs.next()) {
                 pedido = new Pedido();
                 pedido.setId(rs.getInt("id"));
-                pedido.setStatus(rs.getString("status"));
+                status.setStatus(Status.valueOf(rs.getString("status")));
                 pedido.setIdCarrinho(rs.getInt("id_carrinho"));
                 pedido.setIdCliente(rs.getInt("id_cliente"));
                 pedido.setIdEntregador(rs.getInt("id_entregador"));
                 pedido.setDataPedido(rs.getTimestamp("data_pedido").toLocalDateTime());
-                pedido.setDataAtualizacao(rs.getTimestamp("data_atualizacao").toLocalDateTime());
+                status.setHorarioStatus((rs.getTimestamp("data_atualizacao").toLocalDateTime()));;
             }
         } catch (SQLException e) {
             e.printStackTrace();

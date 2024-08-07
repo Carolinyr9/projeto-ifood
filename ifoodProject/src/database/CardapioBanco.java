@@ -3,8 +3,8 @@ package database;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import database.DBConnection;
 import model.Cardapio;
+import model.ItemCardapio;
 
 public class CardapioBanco {
 
@@ -19,55 +19,60 @@ public class CardapioBanco {
     public void criarCardapio(Cardapio cardapio) {
         String sql = "CALL Inserir_Cardapio(?, ?, ?)";
 
-        try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
-            stmt.setInt(1, cardapio.getIdRestaurante());
-            stmt.setInt(2, cardapio.getIdPrato());
-            stmt.setInt(3, cardapio.getIdProduto());
+        for (ItemCardapio item : cardapio.getItensCardapio()) {
+            try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
+                stmt.setInt(1, item.getIdRestaurante());
+                stmt.setInt(2, item.getIdPrato());
+                stmt.setInt(3, item.getIdProduto());
 
-            stmt.execute();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Erro ao criar cardápio", e);
+                stmt.execute();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                throw new RuntimeException("Erro ao criar cardápio", e);
+            }
         }
     }
 
     // Método para visualizar um cardápio pelo ID
     public Cardapio visualizarCardapio(int id) {
         String sql = "CALL Selecionar_Cardapio(?)";
-        Cardapio cardapio = null;
+        List<ItemCardapio> itensCardapio = new ArrayList<>();
 
         try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
 
-            if (rs.next()) {
-                cardapio = new Cardapio();
-                cardapio.setId(rs.getInt("id"));
-                cardapio.setIdRestaurante(rs.getInt("id_restaurante"));
-                cardapio.setIdPrato(rs.getInt("id_prato"));
-                cardapio.setIdProduto(rs.getInt("id_produto"));
+            while (rs.next()) {
+                ItemCardapio item = new ItemCardapio();
+                item.setIdRestaurante(rs.getInt("id_restaurante"));
+                item.setIdPrato(rs.getInt("id_prato"));
+                item.setIdProduto(rs.getInt("id_produto"));
+                item.setPreco(rs.getDouble("preco"));
+                itensCardapio.add(item);
             }
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("Erro ao visualizar cardápio", e);
         }
-        return cardapio;
+        return new Cardapio(itensCardapio);
     }
 
     // Método para atualizar um cardápio
     public void atualizarCardapio(Cardapio cardapio, int id) {
         String sql = "CALL Atualizar_Cardapio(?, ?, ?, ?)";
 
-        try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
-            stmt.setInt(1, id);
-            stmt.setInt(2, cardapio.getIdRestaurante());
-            stmt.setInt(3, cardapio.getidPrato(id));
-            stmt.setInt(4, cardapio.getIdProduto());
+        for (ItemCardapio item : cardapio.getItensCardapio()) {
+            try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
+                stmt.setInt(1, id);
+                stmt.setInt(2, item.getIdRestaurante());
+                stmt.setInt(3, item.getIdPrato());
+                stmt.setInt(4, item.getIdProduto());
 
-            stmt.execute();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Erro ao atualizar cardápio", e);
+                stmt.execute();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                throw new RuntimeException("Erro ao atualizar cardápio", e);
+            }
         }
     }
 
@@ -93,12 +98,19 @@ public class CardapioBanco {
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
-                Cardapio cardapio = new Cardapio();
-                cardapio.setId(rs.getInt("id"));
-                cardapio.setIdRestaurante(rs.getInt("id_restaurante"));
-                cardapio.setIdPrato(rs.getInt("id_prato"));
-                cardapio.setIdProduto(rs.getInt("id_produto"));
-                cardapios.add(cardapio);
+                List<ItemCardapio> itensCardapio = new ArrayList<>();
+                int idCardapio = rs.getInt("id");
+
+                do {
+                    ItemCardapio item = new ItemCardapio();
+                    item.setIdRestaurante(rs.getInt("id_restaurante"));
+                    item.setIdPrato(rs.getInt("id_prato"));
+                    item.setIdProduto(rs.getInt("id_produto"));
+                    item.setPreco(rs.getDouble("preco"));
+                    itensCardapio.add(item);
+                } while (rs.next() && rs.getInt("id") == idCardapio);
+
+                cardapios.add(new Cardapio(itensCardapio));
             }
         } catch (SQLException e) {
             e.printStackTrace();
