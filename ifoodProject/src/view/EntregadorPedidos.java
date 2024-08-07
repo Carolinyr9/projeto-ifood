@@ -29,17 +29,9 @@ import org.eclipse.swt.widgets.Label;
 public class EntregadorPedidos extends Composite {
 	
 private LocalResourceManager localResourceManager;
-
-/* Tinha utilizados essas variáveis para fazer testes, mas não precisa necessariamente usar todas elas
- * 
- * 				numPedidosRotaEntrega = é a quantidade de pedidos que estão em andamento 
- * 
- * 				pedidosRotaEntregaList = é uma lista onde tem todos os pedidos em andamento
- *  			pedidoRotaEntrega = essa variável não precisa ser usada
- * */
-private Integer numPedidosRotaEntrega;
-private ArrayList<List<String>> pedidosRotaEntregaList; 
-private List<String> pedidoRotaEntrega;
+private Integer numPedidosAndamento;
+private ArrayList<List<String>> pedidosEmAndamentoList; 
+private List<String> pedidoEmAndamento;
 
 private void createResourceManager() {
 	localResourceManager = new LocalResourceManager(JFaceResources.getResources(), this);
@@ -52,19 +44,22 @@ public EntregadorPedidos(Composite parent, MainPage mainPage) {
 	setSize(482, 774);
 	setLayout(new FormLayout());
 	
-	/*Grupo de teste, depois excluir*/
-	numPedidosRotaEntrega = 3;
-	pedidosRotaEntregaList = new ArrayList<>();
-    pedidoRotaEntrega = new ArrayList<>();
-    pedidoRotaEntrega.add("1234");
-    pedidoRotaEntrega.add("Em Andamento");
-    pedidoRotaEntrega.add("José de Fátima");
-    pedidoRotaEntrega.add("Rua Bom Te Ver, 23");
-    pedidoRotaEntrega.add("23,55");
-    pedidosRotaEntregaList.add(pedidoRotaEntrega);
-    pedidosRotaEntregaList.add(pedidoRotaEntrega);
-    System.out.println(pedidosRotaEntregaList);
-    numPedidosRotaEntrega = pedidosRotaEntregaList.size();
+	numPedidosAndamento = 3;
+	
+	pedidosEmAndamentoList = new ArrayList<>();
+    pedidoEmAndamento = new ArrayList<>();
+
+    pedidoEmAndamento.add("1234");
+    pedidoEmAndamento.add("Em Andamento");
+    pedidoEmAndamento.add("José de Fátima");
+    pedidoEmAndamento.add("Rua Bom Te Ver, 23");
+    pedidoEmAndamento.add("23,55");
+
+    pedidosEmAndamentoList.add(pedidoEmAndamento);
+    pedidosEmAndamentoList.add(pedidoEmAndamento);
+    System.out.println(pedidosEmAndamentoList);
+    
+    numPedidosAndamento = pedidosEmAndamentoList.size();
 	
 	Composite compositeHeader = new Composite(this, SWT.NONE);
 	compositeHeader.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 100, 145))));
@@ -109,27 +104,25 @@ public EntregadorPedidos(Composite parent, MainPage mainPage) {
 	gd_compositePedidosAndamento.widthHint = 410;
 	compositePedidosAndamento.setLayoutData(gd_compositePedidosAndamento);
 	
-	Label lblPedidosRotaEntrega = new Label(compositePedidosAndamento, SWT.NONE);
-	lblPedidosRotaEntrega.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 13, SWT.NORMAL)));
-	lblPedidosRotaEntrega.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(4, 42, 92))));
-	lblPedidosRotaEntrega.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-	lblPedidosRotaEntrega.setText("Pedidos em rota de entrega");
+	Label lblPedidosEmAndamento = new Label(compositePedidosAndamento, SWT.NONE);
+	lblPedidosEmAndamento.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 13, SWT.NORMAL)));
+	lblPedidosEmAndamento.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(4, 42, 92))));
+	lblPedidosEmAndamento.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
+	lblPedidosEmAndamento.setText("Pedidos em andamento");
 	
-	/* Colocar aqui a função que vai pegar os dados dos pedidos em rota de entrega
-	 * Abaixo tem um loop que vai motrar todos os pedidos em rota de entrega*/
-	for(int i = 0; i<numPedidosRotaEntrega; i++) {
-		Composite compositeCardPedidoRotaEntrega = new Composite(compositePedidosAndamento, SWT.NONE);
-		compositeCardPedidoRotaEntrega.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-		GridData gd_compositeCardPedidoRotaEntrega = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-		gd_compositeCardPedidoRotaEntrega.widthHint = 399;
-		gd_compositeCardPedidoRotaEntrega.heightHint = 230;
-		compositeCardPedidoRotaEntrega.setLayoutData(gd_compositeCardPedidoRotaEntrega);
-		compositeCardPedidoRotaEntrega.addPaintListener(new PaintListener() {
+	for(int i = 0; i<numPedidosAndamento; i++) {
+		Composite compositeCardPedidoAndamento = new Composite(compositePedidosAndamento, SWT.NONE);
+		compositeCardPedidoAndamento.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
+		GridData gd_compositeCardPedidoAndamento = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_compositeCardPedidoAndamento.widthHint = 399;
+		gd_compositeCardPedidoAndamento.heightHint = 230;
+		compositeCardPedidoAndamento.setLayoutData(gd_compositeCardPedidoAndamento);
+		compositeCardPedidoAndamento.addPaintListener(new PaintListener() {
 			@Override
 			public void paintControl(PaintEvent e) {
 				GC gc = e.gc;
 				gc.setAntialias(SWT.ON);
-				Rectangle bounds = compositeCardPedidoRotaEntrega.getClientArea();
+				Rectangle bounds = compositeCardPedidoAndamento.getClientArea();
 				int arcWidth = 20;
 				int arcHeight = 20;
 				gc.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
@@ -139,84 +132,64 @@ public EntregadorPedidos(Composite parent, MainPage mainPage) {
 			}
 		});
 		
-		Label lblNumPedidoRotaEntrega = new Label(compositeCardPedidoRotaEntrega, SWT.NONE);
-		lblNumPedidoRotaEntrega.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
-		lblNumPedidoRotaEntrega.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-		lblNumPedidoRotaEntrega.setBounds(39, 23, 256, 25);
-		/* Abaixo, dentro da função setText(), colocar o número do pedido
-		 * 
-		 *	 								o get(i) é como se eu estivesse pegando pelo indice, assim como nomeArray[i]
-		 **/
-		lblNumPedidoRotaEntrega.setText("Pedido #"+pedidosRotaEntregaList.get(i).get(0));
+		Label lblNumPedidoAndamento = new Label(compositeCardPedidoAndamento, SWT.NONE);
+		lblNumPedidoAndamento.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
+		lblNumPedidoAndamento.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
+		lblNumPedidoAndamento.setBounds(39, 23, 256, 25);
+		lblNumPedidoAndamento.setText("Pedido #"+pedidosEmAndamentoList.get(i).get(0));
 		
-		Label lblPedidoStatusRotaEntrega = new Label(compositeCardPedidoRotaEntrega, SWT.NONE);
-		lblPedidoStatusRotaEntrega.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 10, SWT.NORMAL)));
-		lblPedidoStatusRotaEntrega.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-		lblPedidoStatusRotaEntrega.setBounds(39, 53, 256, 20);
-		/* Abaixo, dentro da função setText(), colocar o status do pedido
-		 * 
-		 *	 								o get(i) é como se eu estivesse pegando pelo indice, assim como nomeArray[i]
-		 **/
-		lblPedidoStatusRotaEntrega.setText(pedidosRotaEntregaList.get(i).get(1));
+		Label lblPedidoStatusAndamento = new Label(compositeCardPedidoAndamento, SWT.NONE);
+		lblPedidoStatusAndamento.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 10, SWT.NORMAL)));
+		lblPedidoStatusAndamento.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
+		lblPedidoStatusAndamento.setBounds(39, 53, 256, 20);
+		lblPedidoStatusAndamento.setText(pedidosEmAndamentoList.get(i).get(1));
 		
-		Label lblNomeCliente = new Label(compositeCardPedidoRotaEntrega, SWT.NONE);
-		lblNomeCliente.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
-		lblNomeCliente.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-		lblNomeCliente.setBounds(39, 82, 256, 25);
-		/* Abaixo, dentro da função setText(), colocar o nome do cliente do pedido
-		 * 
-		 *	 								o get(i) é como se eu estivesse pegando pelo indice, assim como nomeArray[i]
-		 **/
-		lblNomeCliente.setText(pedidosRotaEntregaList.get(i).get(2));
+		Label lblNomeClientePedidoAndamento = new Label(compositeCardPedidoAndamento, SWT.NONE);
+		lblNomeClientePedidoAndamento.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
+		lblNomeClientePedidoAndamento.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
+		lblNomeClientePedidoAndamento.setBounds(39, 82, 256, 25);
+		lblNomeClientePedidoAndamento.setText(pedidosEmAndamentoList.get(i).get(2));
 		
-		Label labelHorizontalAndamento = new Label(compositeCardPedidoRotaEntrega, SWT.SEPARATOR | SWT.HORIZONTAL);
+		Label labelHorizontalAndamento = new Label(compositeCardPedidoAndamento, SWT.SEPARATOR | SWT.HORIZONTAL);
 		labelHorizontalAndamento.setBounds(39, 119, 337, 2);
 		
-		Label lblTotalPedido = new Label(compositeCardPedidoRotaEntrega, SWT.NONE);
-		lblTotalPedido.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
-		lblTotalPedido.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-		lblTotalPedido.setBounds(39, 158, 90, 25);
-		lblTotalPedido.setText("Total");
+		Label lblTotalPedidoAndamento = new Label(compositeCardPedidoAndamento, SWT.NONE);
+		lblTotalPedidoAndamento.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
+		lblTotalPedidoAndamento.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
+		lblTotalPedidoAndamento.setBounds(39, 158, 90, 25);
+		lblTotalPedidoAndamento.setText("Total");
 		
-		Label lblPrecototalPedido = new Label(compositeCardPedidoRotaEntrega, SWT.NONE);
-		lblPrecototalPedido.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
-		lblPrecototalPedido.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-		lblPrecototalPedido.setBounds(288, 158, 90, 25);
-		/* Abaixo, dentro da função setText(), colocar o total do pedido
-		 * 
-		 *	 								o get(i) é como se eu estivesse pegando pelo indice, assim como nomeArray[i]
-		 **/
-		lblPrecototalPedido.setText("R$"+pedidosRotaEntregaList.get(i).get(4));
+		Label lblPrecototalPedidoAndamento = new Label(compositeCardPedidoAndamento, SWT.NONE);
+		lblPrecototalPedidoAndamento.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
+		lblPrecototalPedidoAndamento.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
+		lblPrecototalPedidoAndamento.setBounds(288, 158, 90, 25);
+		lblPrecototalPedidoAndamento.setText("R$"+pedidosEmAndamentoList.get(i).get(4));
 		
-		Label lblEnderecoPedido = new Label(compositeCardPedidoRotaEntrega, SWT.WRAP);
+		Label lblEnderecoPedido = new Label(compositeCardPedidoAndamento, SWT.WRAP);
 		lblEnderecoPedido.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
 		lblEnderecoPedido.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
 		lblEnderecoPedido.setBounds(39, 127, 200, 25);
-		/* Abaixo, dentro da função setText(), colocar o endereço do cliente
-		 * 
-		 *	 								o get(i) é como se eu estivesse pegando pelo indice, assim como nomeArray[i]
-		 **/
-		lblEnderecoPedido.setText(pedidosRotaEntregaList.get(i).get(3));
+		lblEnderecoPedido.setText(pedidosEmAndamentoList.get(i).get(3));
 		
-		Button btnDetalhesPedido = new Button(compositeCardPedidoRotaEntrega, SWT.NONE);
-		btnDetalhesPedido.setBounds(153, 190, 90, 30);
-		btnDetalhesPedido.setText("Detalhes");
-		btnDetalhesPedido.addSelectionListener(new SelectionAdapter() {
+		Button btnDetalhesPedidoAndamento = new Button(compositeCardPedidoAndamento, SWT.NONE);
+		btnDetalhesPedidoAndamento.setBounds(153, 190, 90, 30);
+		btnDetalhesPedidoAndamento.setText("Detalhes");
+		btnDetalhesPedidoAndamento.addSelectionListener(new SelectionAdapter() {
 			Integer iNum = 0;
 			
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				mainPage.navigateToScreenEntregador(3);
-				System.out.println(pedidosRotaEntregaList.get(iNum).get(0));
+				System.out.println(pedidosEmAndamentoList.get(iNum).get(0));
 				iNum = iNum + 1;
 			}
 			
 		});
-		btnDetalhesPedido.addPaintListener(new PaintListener() {
+		btnDetalhesPedidoAndamento.addPaintListener(new PaintListener() {
 			@Override
 			public void paintControl(PaintEvent e) {
 				GC gc = e.gc;
-				Rectangle rect = btnDetalhesPedido.getBounds();
+				Rectangle rect = btnDetalhesPedidoAndamento.getBounds();
 				Color blue = new Color(getDisplay(), new RGB(19, 41, 61));
 				Color white = new Color(getDisplay(), new RGB(255, 255, 255));
 				

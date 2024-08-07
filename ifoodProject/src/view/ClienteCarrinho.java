@@ -15,8 +15,6 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -103,7 +101,6 @@ public class ClienteCarrinho extends Composite {
         compositeItens.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
         compositeItens.setLayout(new GridLayout(1, false));
 
-        /* Nesse loop é mostrado os itens que foram adicionados ao carrinho*/
         for (int i = 0; i < numItens; i++) {
             Composite compositeCardItem = new Composite(compositeItens, SWT.NONE);
             compositeCardItem.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
@@ -117,14 +114,12 @@ public class ClienteCarrinho extends Composite {
             lblNomeItem.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
             lblNomeItem.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
             lblNomeItem.setBounds(10, 10, 252, 51);
-            /* Colocar aqui o nome do produto, dentro de setText()*/
             lblNomeItem.setText("Pizza Napolitana");
 
             Label lblPrecoItem = new Label(compositeCardItem, SWT.NONE);
             lblPrecoItem.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.BOLD)));
             lblPrecoItem.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
             lblPrecoItem.setBounds(279, 10, 76, 30);
-            /* Colocar aqui o preço do produto, dentro de setText()*/
             lblPrecoItem.setText("R$");
 
             Label lblRemoverItem = new Label(compositeCardItem, SWT.NONE);
@@ -132,12 +127,6 @@ public class ClienteCarrinho extends Composite {
             lblRemoverItem.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 100, 141))));
             lblRemoverItem.setBounds(10, 67, 70, 20);
             lblRemoverItem.setText("Remover");
-            lblRemoverItem.addMouseListener(new MouseAdapter() {
-	            @Override
-	            public void mouseDown(MouseEvent e) {
-	            	/*Colocar aqui a função que deleta o item do carrinho */
-	            }
-	        });
 
             Label label_1 = new Label(compositeCardItem, SWT.SEPARATOR | SWT.HORIZONTAL);
             label_1.setBounds(10, 95, 345, 2);
@@ -174,21 +163,18 @@ public class ClienteCarrinho extends Composite {
         lblPrecoSubtotal.setBounds(274, 29, 70, 20);
         lblPrecoSubtotal.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 10, SWT.NORMAL)));
         lblPrecoSubtotal.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-        /* Colocar aqui o valor da soma de todos os itens, dentro de setText()*/
         lblPrecoSubtotal.setText("R$");
 
         Label lblPrecoTaxaEntrega = new Label(compositePrecoTotal, SWT.NONE);
         lblPrecoTaxaEntrega.setBounds(274, 66, 70, 20);
         lblPrecoTaxaEntrega.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 10, SWT.NORMAL)));
         lblPrecoTaxaEntrega.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-        /* Colocar aqui o valor da taxa de entrega, dentro de setText()*/
         lblPrecoTaxaEntrega.setText("R$23,77");
 
         Label lblPrecoTotal = new Label(compositePrecoTotal, SWT.NONE);
         lblPrecoTotal.setBounds(274, 106, 70, 20);
         lblPrecoTotal.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 10, SWT.NORMAL)));
         lblPrecoTotal.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-        /* Colocar aqui o valor da soma da taxa + o total dos itens, dentro de setText()*/
         lblPrecoTotal.setText("R$23,77");
 
         Button btnFinalizarPedido = new Button(compositePrecoTotal, SWT.NONE);
@@ -196,7 +182,7 @@ public class ClienteCarrinho extends Composite {
         btnFinalizarPedido.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-            	/* Colocar aqui a lógica para fazer o pedido*/
+                // Lógica para finalizar o pedido
             }
         });
         btnFinalizarPedido.setText("Finalizar pedido");

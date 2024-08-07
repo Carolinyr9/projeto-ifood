@@ -25,11 +25,9 @@ import org.eclipse.jface.resource.FontDescriptor;
 
 public class ClienteInfoProduct extends Composite {
 
+	private Image productBannerImage;
 	private Image backArrowImage;
 	private Image addProductBagImage;
-	private Image productBannerImage;
-	
-	/*Variáveis de teste,*/
 	private String nomeProduto;
 	private Integer idRestaurante;
 	private Double preco;
@@ -37,9 +35,6 @@ public class ClienteInfoProduct extends Composite {
 	private Integer idProduto;
 	private String nomeRestaurante;
 	private String enderecoRestaurante;
-	
-	/*Variável que vai ser usada em uma estrutura condicional para ser mostrado o campo de ingredientes*/
-	private String tipoItem;
 	
 	public String getNomeProduto() {
 		return nomeProduto;
@@ -111,14 +106,12 @@ public class ClienteInfoProduct extends Composite {
 		setLayout(new FormLayout());
 		setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));		
 
-		/*Grupo de teste, excluir depois*/
 		setNomeProduto("Pizza Meia Margherita Meio Frango");
 		setPreco(65.66);
 		setDescricao("A \"Pizza Meia Margherita Meio Frango com Azeitonas Pretas e Tomate\" da Boa Pizza combina o clássico sabor da Margherita com a ousadia do frango.");
 		setIdProduto(1);
 		setNomeRestaurante("Pizzaria Manoel");
 		setEnderecoRestaurante("Rua das flores, 79");
-		tipoItem = "prato";
 		
 		productBannerImage = new Image(display, "./src/assets/images/productBanner.png");
 		backArrowImage = new Image(display, "./src/assets/images/backArrow.png");
@@ -156,7 +149,6 @@ public class ClienteInfoProduct extends Composite {
         GridData gd_lblItemTitulo = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
         gd_lblItemTitulo.widthHint = 459;
         lblItemTitulo.setLayoutData(gd_lblItemTitulo);
-        /*Colocar aqui o nome do item, dentro de setText()*/
         lblItemTitulo.setText(getNomeProduto());
 
         Label lblItemPreco = new Label(compositeItemInfo, SWT.NONE);
@@ -168,7 +160,6 @@ public class ClienteInfoProduct extends Composite {
         gd_lblItemPreco.heightHint = 42;
         gd_lblItemPreco.widthHint = 455;
         lblItemPreco.setLayoutData(gd_lblItemPreco);
-        /*Colocar aqui o preço do item, dentro de setText()*/
         lblItemPreco.setText("R$" + getPreco().toString());
 
         Label lblItemDescricao = new Label(compositeItemInfo, SWT.WRAP | SWT.CENTER);
@@ -179,22 +170,7 @@ public class ClienteInfoProduct extends Composite {
         gd_lblItemDescricao.widthHint = 355;
         lblItemDescricao.setLayoutData(gd_lblItemDescricao);
         lblItemDescricao.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-        /*Colocar aqui a descrição do item, dentro de setText()*/
         lblItemDescricao.setText(getDescricao());
-        
-        /* Aqui a variável tipoItem vai decidir se o campo abaixo (onde são mostrados os ingredientes) será mostrado ou não, a partir do que tipo é o item*/
-        if(tipoItem == "prato") {
-        	Label lblIngredientes = new Label(compositeItemInfo, SWT.WRAP | SWT.CENTER);
-            lblIngredientes.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
-            lblIngredientes.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-            lblIngredientes.setAlignment(SWT.CENTER);
-            GridData gd_lblIngredientes = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-            gd_lblIngredientes.heightHint = 122;
-            gd_lblIngredientes.widthHint = 404;
-            lblIngredientes.setLayoutData(gd_lblIngredientes);
-            /*Colocar aqui os ingredientes do item, dentro de setText()*/
-            lblIngredientes.setText("Ingredientes: ");
-        }
 
         Composite compositeBtnAddCarinho = new Composite(compositeItemInfo, SWT.NONE);
         compositeBtnAddCarinho.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
@@ -206,7 +182,6 @@ public class ClienteInfoProduct extends Composite {
         compositeBtnAddCarinho.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseDown(MouseEvent e) {
-            	/*Colocar aqui a função que irá add o item ao carrinho*/
                 mainPage.showClienteCarrinho();
             }
         });
@@ -224,7 +199,7 @@ public class ClienteInfoProduct extends Composite {
                 gc.drawRoundRectangle(0, 0, bounds.width - 1, bounds.height - 1, arcWidth, arcHeight);
             }
         });
-                
+
         Label lblAddProductBag = new Label(compositeBtnAddCarinho, SWT.NONE);
         lblAddProductBag.setAlignment(SWT.CENTER);
         lblAddProductBag.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 100, 148))));
@@ -236,26 +211,24 @@ public class ClienteInfoProduct extends Composite {
         lblAddProductBag.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseDown(MouseEvent e) {
-            	/*Colocar aqui a função que irá add o item ao carrinho*/
             	mainPage.showClienteCarrinho();
             }
         });
-                        
-	    Label lblAdicionarAoCarrinho = new Label(compositeBtnAddCarinho, SWT.NONE);
-	    lblAdicionarAoCarrinho.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-	    lblAdicionarAoCarrinho.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.BOLD)));
-	    lblAdicionarAoCarrinho.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 100, 148))));
-	    GridData gd_lblAdicionarAoCarrinho = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-	    gd_lblAdicionarAoCarrinho.widthHint = 189;
-	    lblAdicionarAoCarrinho.setLayoutData(gd_lblAdicionarAoCarrinho);
-	    lblAdicionarAoCarrinho.setText("Adicionar ao carrinho");
-	    lblAdicionarAoCarrinho.addMouseListener(new MouseAdapter() {
-	        @Override
-	        public void mouseDown(MouseEvent e) {
-            	/*Colocar aqui a função que irá add o item ao carrinho*/
-	        	mainPage.showClienteCarrinho();
-	        }
-	    });
+
+        Label lblAdicionarAoCarrinho = new Label(compositeBtnAddCarinho, SWT.NONE);
+        lblAdicionarAoCarrinho.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
+        lblAdicionarAoCarrinho.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.BOLD)));
+        lblAdicionarAoCarrinho.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 100, 148))));
+        GridData gd_lblAdicionarAoCarrinho = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+        gd_lblAdicionarAoCarrinho.widthHint = 189;
+        lblAdicionarAoCarrinho.setLayoutData(gd_lblAdicionarAoCarrinho);
+        lblAdicionarAoCarrinho.setText("Adicionar ao carrinho");
+        lblAdicionarAoCarrinho.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseDown(MouseEvent e) {
+            	mainPage.showClienteCarrinho();
+            }
+        });
 
         btnBack.addPaintListener(new PaintListener() {
             @Override

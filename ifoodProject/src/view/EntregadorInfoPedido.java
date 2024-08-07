@@ -107,21 +107,18 @@ public class EntregadorInfoPedido extends Composite {
 		lblNomeRestaurante.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
 		lblNomeRestaurante.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
 		lblNomeRestaurante.setBounds(34, 44, 340, 28);
-		/* Abaixo, dentro da função setText(), colocar o nome do restaurante*/
 		lblNomeRestaurante.setText("New Label");
 		
 		Label lblEnderecorestaurante = new Label(compositeRestauranteInfo, SWT.NONE);
 		lblEnderecorestaurante.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
 		lblEnderecorestaurante.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
 		lblEnderecorestaurante.setBounds(34, 78, 340, 28);
-		/* Abaixo, dentro da função setText(), colocar o endereço do restaurante*/
 		lblEnderecorestaurante.setText("EnderecoRestaurante");
 		
 		Label lblNumpedido = new Label(compositeRestauranteInfo, SWT.NONE);
 		lblNumpedido.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 12, SWT.NORMAL)));
 		lblNumpedido.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
 		lblNumpedido.setBounds(34, 10, 239, 28);
-		/* Abaixo, dentro da função setText(), colocar o número do pedido*/
 		lblNumpedido.setText("NumPedido");
 		
 		Label labelHorizontalRestauranteInfo = new Label(compositeRestauranteInfo, SWT.SEPARATOR | SWT.HORIZONTAL);
@@ -137,7 +134,6 @@ public class EntregadorInfoPedido extends Composite {
 		lblNomecliente.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
 		lblNomecliente.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
 		lblNomecliente.setBounds(28, 10, 339, 25);
-		/* Abaixo, dentro da função setText(), colocar o nome do cliente*/
 		lblNomecliente.setText("NomeCliente");
 		
 		Label lblPrevisoDeEntrega = new Label(compositeClienteInfo, SWT.NONE);
@@ -154,7 +150,6 @@ public class EntregadorInfoPedido extends Composite {
 		labelHoraEntrega.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.BOLD)));
 		labelHoraEntrega.setAlignment(SWT.CENTER);
 		labelHoraEntrega.setBounds(127, 96, 117, 25);
-		/* Abaixo, dentro da função setText(), colocar a previsão de entrega do pedido*/
 		labelHoraEntrega.setText("22:21 - 22:31");
 		
 		Label lblHorizontalclienteinfo = new Label(compositeClienteInfo, SWT.SEPARATOR | SWT.HORIZONTAL);
@@ -165,7 +160,6 @@ public class EntregadorInfoPedido extends Composite {
 		lblEndereco.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 10, SWT.NORMAL)));
 		lblEndereco.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
 		lblEndereco.setBounds(27, 41, 360, 25);
-		/* Abaixo, dentro da função setText(), colocar o endereço do cliente*/
 		lblEndereco.setText("Endereco");
 		
 		Composite compositeStatus = new Composite(compositePedido, SWT.NONE);
@@ -180,7 +174,6 @@ public class EntregadorInfoPedido extends Composite {
 		lblStatusEmRota.setAlignment(SWT.CENTER);
 		lblStatusEmRota.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
 		lblStatusEmRota.setBounds(0, 10, 384, 25);
-		/* Abaixo, dentro da função setText(), colocar o status do pedido*/
 		lblStatusEmRota.setText("Status: Em rota de entrega");
 		
 		Label label = new Label(compositeStatus, SWT.SEPARATOR | SWT.HORIZONTAL);
@@ -193,18 +186,17 @@ public class EntregadorInfoPedido extends Composite {
 		lblMudarStatusPara.setBounds(27, 49, 240, 20);
 		lblMudarStatusPara.setText("Mudar status para:");
 		
-		Button btnMudaStatus = new Button(compositeStatus, SWT.NONE);
-		btnMudaStatus.addSelectionListener(new SelectionAdapter() {
+		Button btnPedidoEntregue = new Button(compositeStatus, SWT.NONE);
+		btnPedidoEntregue.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				/* Criar a função que muda o status do pedido*/
 			}
 		});
-		btnMudaStatus.addPaintListener(new PaintListener() {
+		btnPedidoEntregue.addPaintListener(new PaintListener() {
 			@Override
 			public void paintControl(PaintEvent e) {
 				GC gc = e.gc;
-				Rectangle rect = btnMudaStatus.getBounds();
+				Rectangle rect = btnPedidoEntregue.getBounds();
 				Color white = new Color(getDisplay(), new RGB(255, 255, 255));
 				
 				gc.setAntialias(SWT.ON);
@@ -220,9 +212,9 @@ public class EntregadorInfoPedido extends Composite {
 				white.dispose();
 			}
 		});
-		btnMudaStatus.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
-		btnMudaStatus.setBounds(109, 75, 161, 30);
-		btnMudaStatus.setText("Pedido entregue");
+		btnPedidoEntregue.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
+		btnPedidoEntregue.setBounds(109, 75, 161, 30);
+		btnPedidoEntregue.setText("Pedido entregue");
 		
 		Composite compositeItensPedido = new Composite(compositePedido, SWT.NONE);
 		GridLayout gl_compositeItensPedido = new GridLayout(2, false);
@@ -249,7 +241,6 @@ public class EntregadorInfoPedido extends Composite {
 		gl_compositeItens.horizontalSpacing = 10;
 		compositeItens.setLayout(gl_compositeItens);
 		
-		/* Nesse for é mostrado os pedidos existentes*/
 		for(int i = 0; i < numItens; i++) {
 			Label lblItem = new Label(compositeItens, SWT.WRAP);
 			lblItem.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 100, 141))));

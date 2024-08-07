@@ -6,15 +6,22 @@ public class Prato extends ItemCardapio {
     private String nome;
     private String descricao;
     private int id;
-    private int idRestaurante;
     private String ingredientes;
+    
 
-    public Prato(Double preco, String nome, String descricao, int id, int idRestaurante, String ingredientes) {
-		super(preco);
+	public Prato(int idRestaurante, Double preco, String nome, String descricao, String ingredientes) {
+		super(idRestaurante, preco);
 		this.nome = nome;
 		this.descricao = descricao;
 		this.id = id;
-		this.idRestaurante = idRestaurante;
+		this.ingredientes = ingredientes;
+	}
+
+	public Prato(int idRestaurante, Double preco, String nome, String descricao, int id, String ingredientes) {
+		super(idRestaurante, preco);
+		this.nome = nome;
+		this.descricao = descricao;
+		this.id = id;
 		this.ingredientes = ingredientes;
 	}
 
@@ -28,14 +35,6 @@ public class Prato extends ItemCardapio {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public int getIdRestaurante() {
-		return idRestaurante;
-	}
-
-	public void setIdRestaurante(int idRestaurante) {
-		this.idRestaurante = idRestaurante;
 	}
 
 	public String getNome() {

@@ -15,16 +15,19 @@ public class ProdutoBanco {
     }
 
     // Método para criar um novo produto
-    public void criarProduto(Produto produto) {
-        String sql = "CALL Inserir_Produto(?, ?, ?, ?)";
+    public boolean criarProduto(Produto produto) {
+        String sql = "CALL Inserir_Produto(?, ?, ?, ?, ?)";
 
         try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
-            stmt.setString(1, produto.getNome());
-            stmt.setString(2, produto.getDescricao());
-            stmt.setDouble(3, produto.getPreco());
-            stmt.setInt(4, produto.getIdRestaurante());
+        	stmt.setInt(1, produto.getId());
+            stmt.setString(2, produto.getNome());
+            stmt.setString(3, produto.getDescricao());
+            stmt.setDouble(4, produto.getPreco());
+            stmt.setInt(5, produto.getIdRestaurante());
 
             stmt.execute();
+            
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("Erro ao criar produto", e);

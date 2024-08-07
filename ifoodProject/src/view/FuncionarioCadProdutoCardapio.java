@@ -19,6 +19,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+
+import database.ProdutoBanco;
+import database.DBConnection;
+import database.PratoBanco;
+import model.Produto;
+
 import org.eclipse.swt.custom.ScrolledComposite;
 
 import org.eclipse.swt.widgets.FileDialog;
@@ -37,7 +43,7 @@ public class FuncionarioCadProdutoCardapio extends Composite {
 	private Text textPreco;
 	private Text txtTitulo;
 	private Text txtDescricao;
-        private ProdutoBanco banco;
+	private ProdutoBanco banco;
 
     private void createResourceManager() {
 		localResourceManager = new LocalResourceManager(JFaceResources.getResources(), this);
@@ -182,25 +188,28 @@ public class FuncionarioCadProdutoCardapio extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				if (selectedFile != null) {
-					saveFile(selectedFile, "./src/assets/images/");
-					
-					/* Colocar aqui as funções para cadastrar um prato no cardápio
-					 * txtTitulo.getText(); - Para pegar o nome do produto que foi escrito pelo usuário
-					 * 
-					 * textPreco.getText(); - Para pegar o preço, escrito pelo usuário
-					 * 
-					 * txtDescricao.getText(); - Para pegar a descrição, escrita pelo usuário
-					 * 
-					 * selectedFile - variável que contem o nome da imagem do produto
-					 *  */
+					System.out.println("Selected file: " + selectedFile);
+					saveFile(selectedFile, "./src/assets/images/"); // Salvar no diretório especificado
 				}
 				
-				// CRIADOS APENAS PARA EXEMPLO, DEPOIS ARRUMAR
-				int id = 1;
-				int idRestaurante = 1;
-				Produto produto = new Produto(Double.parseDouble(textPreco.getText()), txtTitulo.getText(), txtDescricao.getText(),
-						id, idRestaurante);
-				banco.criarProduto(produto);
+				String titulo = txtTitulo.getText();
+				double preco = Double.parseDouble(textPreco.getText());
+				String descricao = txtDescricao.getText();
+				
+				int idRestaurante = 1, id = 1;
+				
+				Produto produto = new Produto(idRestaurante, Double.parseDouble(textPreco.getText()), 
+						txtTitulo.getText(), txtDescricao.getText(), id);
+				DBConnection dbConnection = new DBConnection();
+				banco = new ProdutoBanco(dbConnection);
+				boolean isInserted = banco.criarProduto(produto);
+				
+				if (isInserted) {
+					System.out.println("Prato inserido com sucesso!");
+				} else {
+					System.out.println("Erro ao inserir o prato!");
+				}
+				
 			}
 		});
 		btnConcluir.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
@@ -236,13 +245,16 @@ public class FuncionarioCadProdutoCardapio extends Composite {
         File sourceFile = new File(sourceFilePath);
         File targetDir = new File(targetDirectory);
         
+        // Verifica se o diretório de destino existe, se não, cria
         if (!targetDir.exists()) {
             targetDir.mkdirs();
         }
-        
+
+        // Define o caminho do arquivo de destino
         File targetFile = new File(targetDir, sourceFile.getName());
 
         try {
+            // Copia o arquivo selecionado para o diretório da aplicação
             Files.copy(sourceFile.toPath(), targetFile.toPath());
             System.out.println("File saved to: " + targetFile.getAbsolutePath());
         } catch (IOException e) {

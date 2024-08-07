@@ -16,10 +16,6 @@ public class MainPage {
 	protected Shell shell;
 	private LocalResourceManager localResourceManager;
 	
-	private void createResourceManager() {
-		localResourceManager = new LocalResourceManager(JFaceResources.getResources(),shell);
-	}
-	
 	public static void main(String[] args) {
 		try {
 			MainPage window = new MainPage();
@@ -33,8 +29,8 @@ public class MainPage {
 		Display display = Display.getDefault();
 		createContents();
 		
-		showHomeCliente();
-//		showHomeFuncionario();
+//		showHomeCliente();
+		showHomeFuncionario();
 //		showHomeEntregador();
 		shell.open();
 		shell.layout();
@@ -142,6 +138,7 @@ public class MainPage {
 		homeFuncionario.setLayoutData(fd_homeFuncionario);
 		showMenuBarFuncionario();
 		shell.layout();
+		
 	}
 	
 	private void showFuncionarioCardapioInfo() {
@@ -157,9 +154,9 @@ public class MainPage {
 		shell.layout();
 	}
 	
-	public void showFuncionarioProdutoInfo() {
+	public void showFuncionarioItemCardapioInfo(Integer idProduct, Integer idCardapio, String nomeProduto, Double preco, String ingredientes, String descricao) {
 		clearShell();
-		FuncionarioProdutoInfo itemCardapioInfo = new FuncionarioProdutoInfo(shell, this);
+		FuncionarioItemCardapioInfo itemCardapioInfo = new FuncionarioItemCardapioInfo(shell, this, idProduct, idCardapio, nomeProduto, preco, ingredientes, descricao);
 		FormData fd_itemCardapioInfo = new FormData();
 		fd_itemCardapioInfo.left = new FormAttachment(0);
 		fd_itemCardapioInfo.right = new FormAttachment(100);
@@ -393,6 +390,10 @@ public class MainPage {
 				control.dispose();
 			}
 		}
+	}
+
+	private void createResourceManager() {
+		localResourceManager = new LocalResourceManager(JFaceResources.getResources(),shell);
 	}
 }
 

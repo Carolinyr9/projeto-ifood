@@ -19,12 +19,19 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+
+import database.PratoBanco;
+import database.DBConnection;
+import model.Prato;
+
 import org.eclipse.swt.custom.ScrolledComposite;
 
 import org.eclipse.swt.widgets.FileDialog;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.sql.Connection;
+
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.GridData;
 
@@ -34,17 +41,17 @@ public class FuncionarioCadPratoCardapio extends Composite {
 	private Display display = getDisplay();
 	private FileDialog fileImage = new FileDialog(getShell(), SWT.OPEN);
 	private String selectedFile;
-	private Text txtIngredientes;
 	private Text textPreco;
 	private Text txtTitulo;
 	private Text txtDescricao;
+	private Text txtIngredientes; 
 	private PratoBanco banco;
 
-    private void createResourceManager() {
+	private void createResourceManager() {
 		localResourceManager = new LocalResourceManager(JFaceResources.getResources(), this);
 	}
 
-    public FuncionarioCadPratoCardapio(Composite parent, MainPage mainPage) {
+	public FuncionarioCadPratoCardapio(Composite parent, MainPage mainPage) {
 		super(parent, SWT.NONE);
 		createResourceManager();		
 		setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
@@ -62,8 +69,8 @@ public class FuncionarioCadPratoCardapio extends Composite {
 		lblTelaTitulo.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(232, 241, 242))));
 		lblTelaTitulo.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 100, 145))));
 		lblTelaTitulo.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 16, SWT.NORMAL)));
-		lblTelaTitulo.setBounds(86, 12, 224, 51);
-		lblTelaTitulo.setText("Cadastrar Prato");
+		lblTelaTitulo.setBounds(86, 12, 259, 51);
+		lblTelaTitulo.setText("Cadastrar Produto");
 		
 		Button btnBack = new Button(compositeHeader, SWT.NONE);
 		btnBack.addSelectionListener(new SelectionAdapter() {
@@ -83,7 +90,7 @@ public class FuncionarioCadPratoCardapio extends Composite {
 		btnBack.setBounds(20, 10, 60, 53);
 		
 		ScrolledComposite scrolledComposite = new ScrolledComposite(this, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
-		scrolledComposite.setBounds(0, 79, 468, 635);
+		scrolledComposite.setBounds(0, 79, 468, 706);
 		scrolledComposite.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
 		scrolledComposite.setExpandHorizontal(true);
 		scrolledComposite.setExpandVertical(true);
@@ -124,6 +131,19 @@ public class FuncionarioCadPratoCardapio extends Composite {
 		textPreco.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 10, SWT.NORMAL)));
 		textPreco.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
 		
+		Label lblIngredientes = new Label(compositeForm, SWT.NONE);
+		lblIngredientes.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 100, 142))));
+		lblIngredientes.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 12, SWT.BOLD)));
+		lblIngredientes.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
+		lblIngredientes.setText("Ingredientes");
+		
+		txtIngredientes = new Text(compositeForm, SWT.BORDER);
+		GridData gd_txtIngredientes = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_txtIngredientes.heightHint = 33;
+		gd_txtIngredientes.widthHint = 330;
+		txtIngredientes.setLayoutData(gd_txtIngredientes);
+		txtIngredientes.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 10, SWT.NORMAL)));
+		txtIngredientes.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
 		
 		Button btnAdicionarImagem = new Button(compositeForm, SWT.NONE);
 		GridData gd_btnAdicionarImagem = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
@@ -149,80 +169,57 @@ public class FuncionarioCadPratoCardapio extends Composite {
 				gc.fillRoundRectangle(0, 0, rect.width, rect.height, 20, 20);
 				gc.setForeground(white);
 				gc.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
-				String text = "Adicionar Imagem";
-				int textWidth = gc.textExtent(text).x;
-				int textHeight = gc.textExtent(text).y;
-				gc.drawText(text, (rect.width - textWidth) / 2, (rect.height - textHeight) / 2, true);
-
+				gc.drawText("Adicionar Imagem", rect.width / 4, rect.height / 4, true);
 				blue.dispose();
 				white.dispose();
 			}
 		});
 		btnAdicionarImagem.setText("Adicionar Imagem");
 		
-		Label lblIngredientes = new Label(compositeForm, SWT.NONE);
-		lblIngredientes.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 12, SWT.BOLD)));
-		lblIngredientes.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 100, 142))));
-		lblIngredientes.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-		lblIngredientes.setText("Ingredientes");
-		
-		txtIngredientes = new Text(compositeForm, SWT.BORDER);
-		GridData gd_txtIngredientes = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-		gd_txtIngredientes.heightHint = 136;
-		gd_txtIngredientes.widthHint = 330;
-		txtIngredientes.setLayoutData(gd_txtIngredientes);
-		txtIngredientes.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 10, SWT.NORMAL)));
-		txtIngredientes.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-		
 		Label lblDescricao = new Label(compositeForm, SWT.NONE);
-		lblDescricao.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 12, SWT.BOLD)));
 		lblDescricao.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 100, 142))));
+		lblDescricao.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 12, SWT.BOLD)));
 		lblDescricao.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
 		lblDescricao.setText("Descrição");
 		
-		txtDescricao = new Text(compositeForm, SWT.BORDER);
+		txtDescricao = new Text(compositeForm, SWT.BORDER | SWT.WRAP | SWT.V_SCROLL);
 		GridData gd_txtDescricao = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-		gd_txtDescricao.heightHint = 123;
+		gd_txtDescricao.heightHint = 93;
 		gd_txtDescricao.widthHint = 330;
 		txtDescricao.setLayoutData(gd_txtDescricao);
 		txtDescricao.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 10, SWT.NORMAL)));
 		txtDescricao.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
 		
-		
 		Button btnConcluir = new Button(compositeForm, SWT.NONE);
 		GridData gd_btnConcluir = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-		gd_btnConcluir.widthHint = 99;
+		gd_btnConcluir.widthHint = 330;
+		gd_btnConcluir.heightHint = 33;
 		btnConcluir.setLayoutData(gd_btnConcluir);
+		btnConcluir.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 12, SWT.NORMAL)));
 		btnConcluir.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				if (selectedFile != null) {
-					saveFile(selectedFile, "./src/assets/images/");
-				}
+				// Colocar função p salvar imagem
+				String titulo = txtTitulo.getText();
+				double preco = Double.parseDouble(textPreco.getText());
+				String descricao = txtDescricao.getText();
+				String ingredientes = txtIngredientes.getText();
 				
-				/* Colocar aqui as funções para cadastrar um prato no cardápio
-				 * txtTitulo.getText(); - Para pegar o nome do prato que foi escrito pelo usuário
-				 * 
-				 * textPreco.getText(); - Para pegar o preço, escrito pelo usuário
-				 * 
-				 * txtIngredientes.getText(); - Para pegar os ingredientes, escrito pelo usuário
-				 * 
-				 * txtDescricao.getText(); - Para pegar a descrição, escrita pelo usuário
-				 * 
-				 * selectedFile - variável que contem o nome da imagem do produto
-				 *  */
+				int idRestaurante = 1, id = 1;
+				Prato prato = new Prato(idRestaurante, preco, titulo, descricao, id, ingredientes);
+				
+				// Crie uma instância de DBConnection
+				DBConnection dbConnection = new DBConnection();
+				banco = new PratoBanco(dbConnection);
+				boolean isInserted = banco.criarPrato(prato);
+				
+				if (isInserted) {
+					System.out.println("Prato inserido com sucesso!");
+				} else {
+					System.out.println("Erro ao inserir o prato!");
+				}
 			}
-
-			// VARIAVEIS CRIADAS PARA MERO EXEMPLO, DEPOIS TIRAR E COLOCAR UM GET
-				int id = 1;
-				int idRestaurante = 1;
-				Prato prato = new Prato(Double.parseDouble(textPreco.getText()), txtTitulo.getText(), txtDescricao.getText(), 
-						id, idRestaurante, txtIngredientes.getText());
-				banco.criarPrato(prato);
 		});
-		btnConcluir.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
-		btnConcluir.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-		btnConcluir.setText("Concluir");
 		btnConcluir.addPaintListener(new PaintListener() {
 			@Override
 			public void paintControl(PaintEvent e) {
@@ -235,35 +232,14 @@ public class FuncionarioCadPratoCardapio extends Composite {
 				gc.fillRoundRectangle(0, 0, rect.width, rect.height, 20, 20);
 				gc.setForeground(white);
 				gc.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
-				String text = "Concluir";
-				int textWidth = gc.textExtent(text).x;
-				int textHeight = gc.textExtent(text).y;
-				gc.drawText(text, (rect.width - textWidth) / 2, (rect.height - textHeight) / 2, true);
-
+				gc.drawText("Concluir", rect.width / 3, rect.height / 4, true);
 				blue.dispose();
 				white.dispose();
 			}
 		});
+		btnConcluir.setText("Concluir");
 		
 		scrolledComposite.setContent(compositeForm);
 		scrolledComposite.setMinSize(compositeForm.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 	}
-    
-    private static void saveFile(String sourceFilePath, String targetDirectory) {
-        File sourceFile = new File(sourceFilePath);
-        File targetDir = new File(targetDirectory);
-        
-        if (!targetDir.exists()) {
-            targetDir.mkdirs();
-        }
-
-        File targetFile = new File(targetDir, sourceFile.getName());
-
-        try {
-            Files.copy(sourceFile.toPath(), targetFile.toPath());
-            System.out.println("File saved to: " + targetFile.getAbsolutePath());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }
