@@ -33,8 +33,8 @@ public class MainPage {
 		Display display = Display.getDefault();
 		createContents();
 		
-//		showHomeCliente();
-		showHomeFuncionario();
+		showHomeCliente();
+//		showHomeFuncionario();
 //		showHomeEntregador();
 		shell.open();
 		shell.layout();
