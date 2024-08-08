@@ -19,7 +19,7 @@ public class ProdutoBanco {
         String sql = "CALL Inserir_Produto(?, ?, ?, ?, ?)";
 
         try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
-        	stmt.setInt(1, produto.getId());
+        	stmt.setInt(1, produto.getIdProduto());
             stmt.setString(2, produto.getNome());
             stmt.setString(3, produto.getDescricao());
             stmt.setDouble(4, produto.getPreco());
@@ -45,7 +45,7 @@ public class ProdutoBanco {
 
             if (rs.next()) {
                 produto = new Produto();
-                produto.setId(rs.getInt("id"));
+                produto.setIdProduto(rs.getInt("id"));
                 produto.setNome(rs.getString("nome"));
                 produto.setDescricao(rs.getString("descricao"));
                 produto.setPreco(rs.getDouble("preco"));
@@ -100,7 +100,7 @@ public class ProdutoBanco {
 
             while (rs.next()) {
                 Produto produto = new Produto();
-                produto.setId(rs.getInt("id"));
+                produto.setIdProduto(rs.getInt("id"));
                 produto.setNome(rs.getString("nome"));
                 produto.setDescricao(rs.getString("descricao"));
                 produto.setPreco(rs.getDouble("preco"));

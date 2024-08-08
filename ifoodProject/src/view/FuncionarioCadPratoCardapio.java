@@ -21,16 +21,14 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import database.PratoBanco;
+import database.CardapioBanco;
 import database.DBConnection;
+import model.Cardapio;
 import model.Prato;
 
 import org.eclipse.swt.custom.ScrolledComposite;
 
 import org.eclipse.swt.widgets.FileDialog;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.sql.Connection;
 
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.GridData;
@@ -45,7 +43,8 @@ public class FuncionarioCadPratoCardapio extends Composite {
 	private Text txtTitulo;
 	private Text txtDescricao;
 	private Text txtIngredientes; 
-	private PratoBanco banco;
+	private PratoBanco pratoBanco;
+	private CardapioBanco cardapioBanco;
 
 	private void createResourceManager() {
 		localResourceManager = new LocalResourceManager(JFaceResources.getResources(), this);
@@ -205,19 +204,25 @@ public class FuncionarioCadPratoCardapio extends Composite {
 				String descricao = txtDescricao.getText();
 				String ingredientes = txtIngredientes.getText();
 				
-				int idRestaurante = 1, id = 1;
-				Prato prato = new Prato(idRestaurante, preco, titulo, descricao, id, ingredientes);
+				int idRestaurante = 1;
+				Prato prato = new Prato(idRestaurante, preco, titulo, descricao, ingredientes);
+				
+				Cardapio cardapio = new Cardapio();
+				cardapio.adicionarItem(prato);
 				
 				// Crie uma instância de DBConnection
 				DBConnection dbConnection = new DBConnection();
-				banco = new PratoBanco(dbConnection);
-				boolean isInserted = banco.criarPrato(prato);
+				pratoBanco = new PratoBanco(dbConnection);
+				boolean isInserted = pratoBanco.criarPrato(prato);
 				
 				if (isInserted) {
 					System.out.println("Prato inserido com sucesso!");
 				} else {
 					System.out.println("Erro ao inserir o prato!");
 				}
+				
+				cardapioBanco = new CardapioBanco(dbConnection);
+				cardapioBanco.criarCardapio(cardapio);
 			}
 		});
 		btnConcluir.addPaintListener(new PaintListener() {

@@ -21,9 +21,10 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import database.ProdutoBanco;
+import database.CardapioBanco;
 import database.DBConnection;
-import database.PratoBanco;
 import model.Produto;
+import model.Cardapio;
 
 import org.eclipse.swt.custom.ScrolledComposite;
 
@@ -43,7 +44,8 @@ public class FuncionarioCadProdutoCardapio extends Composite {
 	private Text textPreco;
 	private Text txtTitulo;
 	private Text txtDescricao;
-	private ProdutoBanco banco;
+	private ProdutoBanco produtoBanco;
+	private CardapioBanco cardapioBanco;
 
     private void createResourceManager() {
 		localResourceManager = new LocalResourceManager(JFaceResources.getResources(), this);
@@ -196,19 +198,25 @@ public class FuncionarioCadProdutoCardapio extends Composite {
 				double preco = Double.parseDouble(textPreco.getText());
 				String descricao = txtDescricao.getText();
 				
-				int idRestaurante = 1, id = 1;
+				int idRestaurante = 1;
 				
-				Produto produto = new Produto(idRestaurante, Double.parseDouble(textPreco.getText()), 
-						txtTitulo.getText(), txtDescricao.getText(), id);
+				Produto produto = new Produto(idRestaurante, preco, titulo, descricao);
+				
+				Cardapio cardapio = new Cardapio();
+				cardapio.adicionarItem(produto);
+				
 				DBConnection dbConnection = new DBConnection();
-				banco = new ProdutoBanco(dbConnection);
-				boolean isInserted = banco.criarProduto(produto);
+				produtoBanco = new ProdutoBanco(dbConnection);
+				boolean isInserted = produtoBanco.criarProduto(produto);
 				
 				if (isInserted) {
 					System.out.println("Prato inserido com sucesso!");
 				} else {
 					System.out.println("Erro ao inserir o prato!");
 				}
+				
+				cardapioBanco = new CardapioBanco(dbConnection);
+				cardapioBanco.criarCardapio(cardapio);
 				
 			}
 		});

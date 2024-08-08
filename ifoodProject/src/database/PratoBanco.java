@@ -19,7 +19,7 @@ public class PratoBanco {
         String sql = "CALL Inserir_Prato(?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
-        	stmt.setInt(1, prato.getId());
+        	stmt.setInt(1, prato.getIdPrato());
             stmt.setString(2, prato.getNome());
             stmt.setString(3, prato.getDescricao());
             stmt.setString(4, prato.getIngredientes());
@@ -45,7 +45,7 @@ public class PratoBanco {
 
             if (rs.next()) {
                 prato = new Prato();
-                prato.setId(rs.getInt("id"));
+                prato.setIdPrato(rs.getInt("id"));
                 prato.setNome(rs.getString("nome"));
                 prato.setDescricao(rs.getString("descricao"));
                 prato.setIngredientes(rs.getString("ingredientes"));
@@ -101,7 +101,7 @@ public class PratoBanco {
 
             while (rs.next()) {
                 Prato prato = new Prato();
-                prato.setId(rs.getInt("id"));
+                prato.setIdPrato(rs.getInt("id"));
                 prato.setNome(rs.getString("nome"));
                 prato.setDescricao(rs.getString("descricao"));
                 prato.setIngredientes(rs.getString("ingredientes"));

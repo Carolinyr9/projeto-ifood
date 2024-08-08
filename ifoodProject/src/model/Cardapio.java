@@ -1,16 +1,26 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Cardapio {
     private int id;
     private List<ItemCardapio> itensCardapio;
 
     public Cardapio() {
+        this.id = generateRandomId();
+        itensCardapio = new ArrayList<ItemCardapio>();
     }
 
     public Cardapio(List<ItemCardapio> itensCardapio) {
+        this.id = generateRandomId();
         this.itensCardapio = itensCardapio;
+    }
+
+    private int generateRandomId() {
+        Random random = new Random();
+        return random.nextInt(10000) + 1;
     }
 
     public List<ItemCardapio> getItensCardapio() {
@@ -37,4 +47,13 @@ public class Cardapio {
         }
         return textoCardapio.toString();
     }
+    
+    public void adicionarItem(ItemCardapio item) {
+        itensCardapio.add(item);
+    }
+    
+    public void removerItem(int id) {
+        itensCardapio.remove(id);
+    }
 }
+

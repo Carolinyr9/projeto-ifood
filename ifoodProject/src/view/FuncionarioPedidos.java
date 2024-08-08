@@ -38,7 +38,6 @@ public class FuncionarioPedidos extends Composite {
 		localResourceManager = new LocalResourceManager(JFaceResources.getResources(), this);
 	}
 
-
     public FuncionarioPedidos(Composite parent, MainPage mainPage) {
 		super(parent, SWT.NONE);
 		createResourceManager();

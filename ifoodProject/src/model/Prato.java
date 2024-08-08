@@ -1,47 +1,35 @@
 package model;
 
+import java.util.Random;
+
 public class Prato extends ItemCardapio {
-    private String nome;
     private String descricao;
     private int id;
     private String ingredientes;
-    
 
 	public Prato(int idRestaurante, Double preco, String nome, String descricao, String ingredientes) {
-		super(idRestaurante, preco);
-		this.nome = nome;
+		super(idRestaurante, preco, nome);
 		this.descricao = descricao;
-		this.id = id;
-		this.ingredientes = ingredientes;
-	}
-
-	public Prato(int idRestaurante, Double preco, String nome, String descricao, int id, String ingredientes) {
-		super(idRestaurante, preco);
-		this.nome = nome;
-		this.descricao = descricao;
-		this.id = id;
+		this.id = generateRandomId();
 		this.ingredientes = ingredientes;
 	}
 
 	public Prato() {
     	
     }
+	
+	private int generateRandomId() {
+        Random random = new Random();
+        return random.nextInt(10000) + 1;
+    }
 
-    public int getId() {
+    public int getIdPrato() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setIdPrato(int id) {
 		this.id = id;
 	}
-
-	public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
 
     public String getDescricao() {
         return descricao;
@@ -59,16 +47,9 @@ public class Prato extends ItemCardapio {
         this.ingredientes = ingredientes;
     }
 
-    public void editarItem(Double preco, String nome, String descricao, String ingredientes) {
-        setPreco(preco);
-        setNome(nome);
-        setDescricao(descricao);
-        setIngredientes(ingredientes);
-    }
-
     public String toString() {
         return "Prato" +
-                "\nNome: " + nome +
+                "\nNome: " + getNome() +
                 "\nDescrição: " + descricao +
                 "\nIngredientes: " + ingredientes +
                 "\nPreço: " + getPreco();

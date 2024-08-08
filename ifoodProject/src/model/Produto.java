@@ -1,19 +1,24 @@
 package model;
 
+import java.util.Random;
+
 public class Produto extends ItemCardapio {
-    private String nome;
     private String descricao;
     private int id;
- 
-	public Produto(int idRestaurante, Double preco, String nome, String descricao, int id) {
-		super(idRestaurante, preco);
-		this.nome = nome;
+
+	public Produto(int idRestaurante, Double preco, String nome, String descricao) {
+		super(idRestaurante, preco, nome);
 		this.descricao = descricao;
-		this.id = id;
+		this.id = generateRandomId();
 	}
 
 	public Produto() {
     	
+    }
+	
+	private int generateRandomId() {
+        Random random = new Random();
+        return random.nextInt(10000) + 1;
     }
 
 	public String getDescricao() {
@@ -24,21 +29,13 @@ public class Produto extends ItemCardapio {
 		this.descricao = descricao;
 	}
 
-	public int getId() {
+	public int getIdProduto() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setIdProduto(int id) {
 		this.id = id;
 	}
-
-	public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
 
     public void editarItem(String nome) {
         setNome(nome);
@@ -48,7 +45,7 @@ public class Produto extends ItemCardapio {
     @Override
     public String toString() {
         return "Produto" +
-               "\nNome: " + nome +
+               "\nNome: " + getNome() +
                "\nPreço: " + getPreco();
     }
 }

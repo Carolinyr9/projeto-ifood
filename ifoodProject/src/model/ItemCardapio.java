@@ -1,6 +1,7 @@
 package model;
 
 public class ItemCardapio {
+	private String nome;
 	private int idRestaurante;
 	private int idPrato;
 	private int idProduto;
@@ -15,10 +16,11 @@ public class ItemCardapio {
 		this.preco = preco;
 	}
 	
-	public ItemCardapio(int idRestaurante, Double preco) {
+	public ItemCardapio(int idRestaurante, Double preco, String nome) {
 		super();
 		this.idRestaurante = idRestaurante;
 		this.preco = preco;
+		this.nome = nome;
 	}
 
 	public Double getPreco() {
@@ -31,6 +33,14 @@ public class ItemCardapio {
 
 	public ItemCardapio() {
 		
+	}
+	
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
 	public int getIdRestaurante() {

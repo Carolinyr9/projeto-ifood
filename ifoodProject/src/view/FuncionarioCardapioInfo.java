@@ -10,7 +10,9 @@ import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
+import database.CardapioBanco;
 import model.Cardapio;
+import model.ItemCardapio;
 import model.Prato;
 
 import org.eclipse.swt.graphics.RGB;
@@ -42,6 +44,7 @@ public class FuncionarioCardapioInfo extends Composite {
 	private Image arrowIcon;
 	private Display display = getDisplay();
 	private String nomeCardapio;
+	private CardapioBanco cardapioBanco;
 	
 	/* Variável para colocar o nome e o preço dos itens do cardápio selecionado, para posteriormente
 	 * serem exibidos*/
@@ -61,13 +64,24 @@ public class FuncionarioCardapioInfo extends Composite {
 		setLayout(new FormLayout());
 		
 		/*Grupo de teste - Depois apagar */
-		nomeItensCardapio = new ArrayList<String>();
-		nomeItensCardapio.add(0, "Pizza Portuguesa");
-		nomeItensCardapio.add(1, "Pizza Frango com Catupiri");
-		int numCardapio = nomeItensCardapio.size();
-		precoItensCardapio = new ArrayList<Double>();
-		precoItensCardapio.add(0, 19.99);
-		precoItensCardapio.add(1, 23.77);
+		int id = 1;
+		List<ItemCardapio> itens = cardapioBanco.listarCardapioPorRestaurante(id);
+		List<String> nomeItensCardapio = new ArrayList<String>();
+		List<Double> precoItensCardapio = new ArrayList<Double>();
+		
+		for (ItemCardapio item: itens) {
+			nomeItensCardapio.add(item.getNome());
+			precoItensCardapio.add(item.getPreco());
+			
+		}
+		
+//		nomeItensCardapio = new ArrayList<String>();
+//		nomeItensCardapio.add(0, "Pizza Portuguesa");
+//		nomeItensCardapio.add(1, "Pizza Frango com Catupiri");
+//		int numCardapio = nomeItensCardapio.size();
+//		precoItensCardapio = new ArrayList<Double>();
+//		precoItensCardapio.add(0, 19.99);
+//		precoItensCardapio.add(1, 23.77);
 		
 		arrowIcon = new Image(display, "./src/assets/images/backArrow.png");
 		nomeCardapio = "Pizzas";
@@ -166,7 +180,7 @@ public class FuncionarioCardapioInfo extends Composite {
 		});
 		
 		
-		for(int i = 0; i < numCardapio; i++) {
+		for(int i = 0; i < itens.size(); i++) {
 			
 			int num = i;
 			Composite compositeItem1 = new Composite(compositeItensCardapio, SWT.NONE);
