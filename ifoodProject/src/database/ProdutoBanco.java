@@ -59,7 +59,7 @@ public class ProdutoBanco {
     }
 
     // Método para atualizar um produto
-    public void atualizarProduto(Produto produto, int id) {
+    public boolean atualizarProduto(Produto produto, int id) {
         String sql = "CALL Atualizar_Produto(?, ?, ?, ?, ?)";
 
         try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
@@ -70,6 +70,7 @@ public class ProdutoBanco {
             stmt.setInt(5, produto.getIdRestaurante());
 
             stmt.execute();
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("Erro ao atualizar produto", e);

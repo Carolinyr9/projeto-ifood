@@ -60,7 +60,7 @@ public class PratoBanco {
     }
 
     // Método para atualizar um prato
-    public void atualizarPrato(Prato prato, int id) {
+    public boolean atualizarPrato(Prato prato, int id) {
         String sql = "CALL Atualizar_Prato(?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
@@ -72,6 +72,7 @@ public class PratoBanco {
             stmt.setInt(6, prato.getIdRestaurante());
 
             stmt.execute();
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("Erro ao atualizar prato", e);

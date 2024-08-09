@@ -44,6 +44,11 @@ public class Usuario {
         // Implementar lógica para desativar o usuário
         System.out.println("Usuário desativado: " + this.toString());
     }
+    
+    public void logarUsuário(String email,String senha) {
+        setEmail(email);
+        setSenha(senha);
+    }
 
     @Override
     public String toString() {

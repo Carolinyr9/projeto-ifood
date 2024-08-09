@@ -143,15 +143,15 @@ public class CardapioBanco {
             boolean isResultSet = stmt.execute();
             while (isResultSet) {
                 try (ResultSet rs = stmt.getResultSet()) {
-                    // Processa o ResultSet para Pratos
+                    // Processa o ResultSet para Pratos ou Produtos
                     while (rs.next()) {
                         int id = rs.getInt("id");
                         String nome = rs.getString("nome");
                         Double preco = rs.getDouble("preco");
                         String descricao = rs.getString("descricao");
 
-                        if (rs.findColumn("ngredientes") > 0) {
-                            String ingredientes = rs.getString("ngredientes");
+                        try {
+                            String ingredientes = rs.getString("ingredientes");
                             Prato prato = new Prato();
                             prato.setIdPrato(id);
                             prato.setNome(nome);
@@ -159,7 +159,8 @@ public class CardapioBanco {
                             prato.setDescricao(descricao);
                             prato.setIngredientes(ingredientes);
                             itensCardapio.add(prato);
-                        } else {
+                        } catch (SQLException e) {
+                            // Caso a coluna "ingredientes" não exista, trata-se de um Produto
                             Produto produto = new Produto();
                             produto.setIdProduto(id);
                             produto.setNome(nome);
@@ -169,7 +170,7 @@ public class CardapioBanco {
                         }
                     }
                 }
-                // Verifica se há mais resultados (produtos) e processa
+                // Verifica se há mais resultados (outro ResultSet) e processa
                 isResultSet = stmt.getMoreResults();
             }
         } catch (SQLException e) {

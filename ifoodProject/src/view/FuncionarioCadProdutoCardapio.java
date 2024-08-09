@@ -18,6 +18,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Text;
 
 import database.ProdutoBanco;
@@ -187,38 +188,41 @@ public class FuncionarioCadProdutoCardapio extends Composite {
 		gd_btnConcluir.widthHint = 99;
 		btnConcluir.setLayoutData(gd_btnConcluir);
 		btnConcluir.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				if (selectedFile != null) {
-					System.out.println("Selected file: " + selectedFile);
-					saveFile(selectedFile, "./src/assets/images/"); // Salvar no diretório especificado
-				}
-				
-				String titulo = txtTitulo.getText();
-				double preco = Double.parseDouble(textPreco.getText());
-				String descricao = txtDescricao.getText();
-				
-				int idRestaurante = 1;
-				
-				Produto produto = new Produto(idRestaurante, preco, titulo, descricao);
-				
-				Cardapio cardapio = new Cardapio();
-				cardapio.adicionarItem(produto);
-				
-				DBConnection dbConnection = new DBConnection();
-				produtoBanco = new ProdutoBanco(dbConnection);
-				boolean isInserted = produtoBanco.criarProduto(produto);
-				
-				if (isInserted) {
-					System.out.println("Prato inserido com sucesso!");
-				} else {
-					System.out.println("Erro ao inserir o prato!");
-				}
-				
-				cardapioBanco = new CardapioBanco(dbConnection);
-				cardapioBanco.criarCardapio(cardapio);
-				
-			}
+		    @Override
+		    public void widgetSelected(SelectionEvent e) {
+		        if (selectedFile != null) {
+		            System.out.println("Selected file: " + selectedFile);
+		            saveFile(selectedFile, "./src/assets/images/"); // Salvar no diretório especificado
+		        }
+
+		        String titulo = txtTitulo.getText();
+		        double preco = Double.parseDouble(textPreco.getText());
+		        String descricao = txtDescricao.getText();
+		        
+		        int idRestaurante = 1;
+		        
+		        Produto produto = new Produto(idRestaurante, preco, titulo, descricao);
+		        
+		        Cardapio cardapio = new Cardapio();
+		        cardapio.adicionarItem(produto);
+		        
+		        DBConnection dbConnection = new DBConnection();
+		        produtoBanco = new ProdutoBanco(dbConnection);
+		        boolean isInserted = produtoBanco.criarProduto(produto);
+		        
+		        MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
+		        if (isInserted) {
+		            System.out.println("Prato inserido com sucesso!");
+		            messageBox.setMessage("Produto criado com sucesso!");
+		        } else {
+		            System.out.println("Erro ao inserir o prato!");
+		            messageBox.setMessage("Erro ao criar o produto!");
+		        }
+		        messageBox.open();
+		        
+		        cardapioBanco = new CardapioBanco(dbConnection);
+		        cardapioBanco.criarCardapio(cardapio);
+		    }
 		});
 		btnConcluir.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
 		btnConcluir.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));

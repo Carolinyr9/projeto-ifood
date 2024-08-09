@@ -36,7 +36,7 @@ CREATE TABLE `cardapio` (
 
 LOCK TABLES `cardapio` WRITE;
 /*!40000 ALTER TABLE `cardapio` DISABLE KEYS */;
-INSERT INTO `cardapio` VALUES (3703,1,0,0),(7498,1,0,0),(885,1,0,0),(7912,1,0,NULL),(2979,1,1946,NULL),(5134,1,3857,NULL),(8061,1,NULL,9081);
+INSERT INTO `cardapio` VALUES (3703,1,0,0),(7498,1,0,0),(885,1,0,0),(7912,1,0,NULL),(2979,1,1946,NULL),(5134,1,3857,NULL),(8061,1,NULL,9081),(5128,1,4035,NULL),(8272,1,5393,NULL),(3061,1,6019,NULL),(7234,1,NULL,6972),(4091,1,NULL,2735);
 /*!40000 ALTER TABLE `cardapio` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -117,7 +117,7 @@ CREATE TABLE `prato` (
 
 LOCK TABLES `prato` WRITE;
 /*!40000 ALTER TABLE `prato` DISABLE KEYS */;
-INSERT INTO `prato` VALUES (1,'aaaaaaaa','aaaaaaaaaaa','aaaaaaaa',3.00,1),(1,'aaaaaaaa','aaaaaaaaaaa','aaaaaaaa',3.00,1),(9223,'teste','ffffffffffff','aaaaaaaaaa',5.00,1),(5014,'aaaaaaaaa','fffff','fffff',5.00,1),(1059,'yyyyyyyy','gggggg','ttttttt',5.00,1),(1946,'aaabcs','fffffffff','fffffffff',5.00,1),(3857,'aaabcs','fffffffff','fffffffff',5.00,1);
+INSERT INTO `prato` VALUES (6019,'Pizza Quatro Queijos','Nossa pizza é deliciosaa','Queijo provolone, mussarela, parmesão e gorgonzola, além do creme de leite ou requeijão e manteiga',54.55,1);
 /*!40000 ALTER TABLE `prato` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -143,7 +143,7 @@ CREATE TABLE `produto` (
 
 LOCK TABLES `produto` WRITE;
 /*!40000 ALTER TABLE `produto` DISABLE KEYS */;
-INSERT INTO `produto` VALUES (1,'aaaaaa','ffffffff',2.00,1),(1,'aaaaaaa','fffffffff',5.00,1),(1,'aaaaa','aaaaaaaa',6.00,1),(9081,'ggggggg','ffffffff',67.00,1);
+INSERT INTO `produto` VALUES (6972,'Refrigerante Coca-cola - 350ml','Lata de coca delícia!',9.50,1),(2735,'Refrigerante Fanta Uva - 350ml','Refrigerante Fanta Uva em lata',7.50,1);
 /*!40000 ALTER TABLE `produto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -222,4 +222,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-08-08 18:50:44
+-- Dump completed on 2024-08-09 19:21:16

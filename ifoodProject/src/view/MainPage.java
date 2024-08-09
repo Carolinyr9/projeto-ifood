@@ -154,9 +154,9 @@ public class MainPage {
 		shell.layout();
 	}
 	
-	public void showFuncionarioItemCardapioInfo(Integer idProduct, Integer idCardapio, String nomeProduto, Double preco, String ingredientes, String descricao) {
+	public void showFuncionarioItemCardapioInfo(Integer idProduct, String tipo) {
 		clearShell();
-		FuncionarioItemCardapioInfo itemCardapioInfo = new FuncionarioItemCardapioInfo(shell, this, idProduct, idCardapio, nomeProduto, preco, ingredientes, descricao);
+		FuncionarioItemCardapioInfo itemCardapioInfo = new FuncionarioItemCardapioInfo(shell, this, idProduct, tipo);
 		FormData fd_itemCardapioInfo = new FormData();
 		fd_itemCardapioInfo.left = new FormAttachment(0);
 		fd_itemCardapioInfo.right = new FormAttachment(100);
@@ -396,4 +396,3 @@ public class MainPage {
 		localResourceManager = new LocalResourceManager(JFaceResources.getResources(),shell);
 	}
 }
-

@@ -9,12 +9,12 @@ public class Cardapio {
     private List<ItemCardapio> itensCardapio;
 
     public Cardapio() {
-        this.id = generateRandomId();
+        this.id = 1;
         itensCardapio = new ArrayList<ItemCardapio>();
     }
 
     public Cardapio(List<ItemCardapio> itensCardapio) {
-        this.id = generateRandomId();
+        this.id = 1;
         this.itensCardapio = itensCardapio;
     }
 

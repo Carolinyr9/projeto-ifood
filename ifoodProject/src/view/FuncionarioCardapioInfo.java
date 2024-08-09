@@ -11,9 +11,11 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
 import database.CardapioBanco;
+import database.DBConnection;
 import model.Cardapio;
 import model.ItemCardapio;
 import model.Prato;
+import model.Produto;
 
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Color;
@@ -45,11 +47,6 @@ public class FuncionarioCardapioInfo extends Composite {
 	private Display display = getDisplay();
 	private String nomeCardapio;
 	private CardapioBanco cardapioBanco;
-	
-	/* Variável para colocar o nome e o preço dos itens do cardápio selecionado, para posteriormente
-	 * serem exibidos*/
-	private List<String> nomeItensCardapio;
-	private List<Double> precoItensCardapio;
 
 	private void createResourceManager() {
 		localResourceManager = new LocalResourceManager(JFaceResources.getResources(), this);
@@ -64,15 +61,28 @@ public class FuncionarioCardapioInfo extends Composite {
 		setLayout(new FormLayout());
 		
 		/*Grupo de teste - Depois apagar */
+		DBConnection dbConnection = new DBConnection();
+		Cardapio cardapio = new Cardapio();
+		cardapioBanco = new CardapioBanco(dbConnection);
+		cardapioBanco.criarCardapio(cardapio);
 		int id = 1;
 		List<ItemCardapio> itens = cardapioBanco.listarCardapioPorRestaurante(id);
 		List<String> nomeItensCardapio = new ArrayList<String>();
 		List<Double> precoItensCardapio = new ArrayList<Double>();
-		
+		List<Integer> idItensCardapio = new ArrayList<Integer>();
+		List<String> tipoItensCardapio = new ArrayList<String>();
+	
 		for (ItemCardapio item: itens) {
+			if (item instanceof Prato) {
+				idItensCardapio.add(item.getIdPrato());
+				tipoItensCardapio.add("Prato");
+			} else 
+				if(item instanceof Produto) {
+					idItensCardapio.add(item.getIdProduto());
+					tipoItensCardapio.add("Produto");
+				}
 			nomeItensCardapio.add(item.getNome());
 			precoItensCardapio.add(item.getPreco());
-			
 		}
 		
 //		nomeItensCardapio = new ArrayList<String>();
@@ -181,7 +191,6 @@ public class FuncionarioCardapioInfo extends Composite {
 		
 		
 		for(int i = 0; i < itens.size(); i++) {
-			
 			int num = i;
 			Composite compositeItem1 = new Composite(compositeItensCardapio, SWT.NONE);
 			GridLayout gl_compositeItem1 = new GridLayout(7, false);
@@ -208,7 +217,7 @@ public class FuncionarioCardapioInfo extends Composite {
 			compositeItem1.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseDown(MouseEvent e) {
-					mainPage.showFuncionarioItemCardapioInfo(1, 1, nomeItensCardapio.get(num), precoItensCardapio.get(num), nomeCardapio, nomeCardapio);
+					mainPage.showFuncionarioItemCardapioInfo(idItensCardapio.get(num), tipoItensCardapio.get(num));
 				}
 			});
 			
@@ -225,7 +234,7 @@ public class FuncionarioCardapioInfo extends Composite {
 			lblItemTitulo.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseDown(MouseEvent e) {
-					mainPage.showFuncionarioItemCardapioInfo(1, 1, nomeItensCardapio.get(num), precoItensCardapio.get(num), nomeCardapio, nomeCardapio);
+					mainPage.showFuncionarioItemCardapioInfo(idItensCardapio.get(num), tipoItensCardapio.get(num));
 				}
 			});
 			new Label(compositeItem1, SWT.NONE);
@@ -242,8 +251,9 @@ public class FuncionarioCardapioInfo extends Composite {
 			new Label(compositeItem1, SWT.NONE);
 			new Label(compositeItensCardapio, SWT.NONE);
 		}
-		
 	}
+		
+	
 	
 	private static void openRadioDialog(Shell parent,MainPage mainPage) {
         Shell dialog = new Shell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
