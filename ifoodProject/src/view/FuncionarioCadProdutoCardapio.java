@@ -18,7 +18,15 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Text;
+
+import database.ProdutoBanco;
+import database.CardapioBanco;
+import database.DBConnection;
+import model.Produto;
+import model.Cardapio;
+
 import org.eclipse.swt.custom.ScrolledComposite;
 
 import org.eclipse.swt.widgets.FileDialog;
@@ -37,7 +45,8 @@ public class FuncionarioCadProdutoCardapio extends Composite {
 	private Text textPreco;
 	private Text txtTitulo;
 	private Text txtDescricao;
-        private ProdutoBanco banco;
+	private ProdutoBanco produtoBanco;
+	private CardapioBanco cardapioBanco;
 
     private void createResourceManager() {
 		localResourceManager = new LocalResourceManager(JFaceResources.getResources(), this);
@@ -179,29 +188,41 @@ public class FuncionarioCadProdutoCardapio extends Composite {
 		gd_btnConcluir.widthHint = 99;
 		btnConcluir.setLayoutData(gd_btnConcluir);
 		btnConcluir.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				if (selectedFile != null) {
-					saveFile(selectedFile, "./src/assets/images/");
-					
-					/* Colocar aqui as funções para cadastrar um prato no cardápio
-					 * txtTitulo.getText(); - Para pegar o nome do produto que foi escrito pelo usuário
-					 * 
-					 * textPreco.getText(); - Para pegar o preço, escrito pelo usuário
-					 * 
-					 * txtDescricao.getText(); - Para pegar a descrição, escrita pelo usuário
-					 * 
-					 * selectedFile - variável que contem o nome da imagem do produto
-					 *  */
-				}
-				
-				// CRIADOS APENAS PARA EXEMPLO, DEPOIS ARRUMAR
-				int id = 1;
-				int idRestaurante = 1;
-				Produto produto = new Produto(Double.parseDouble(textPreco.getText()), txtTitulo.getText(), txtDescricao.getText(),
-						id, idRestaurante);
-				banco.criarProduto(produto);
-			}
+		    @Override
+		    public void widgetSelected(SelectionEvent e) {
+		        if (selectedFile != null) {
+		            System.out.println("Selected file: " + selectedFile);
+		            saveFile(selectedFile, "./src/assets/images/"); // Salvar no diretório especificado
+		        }
+
+		        String titulo = txtTitulo.getText();
+		        double preco = Double.parseDouble(textPreco.getText());
+		        String descricao = txtDescricao.getText();
+		        
+		        int idRestaurante = 1;
+		        
+		        Produto produto = new Produto(idRestaurante, preco, titulo, descricao);
+		        
+		        Cardapio cardapio = new Cardapio();
+		        cardapio.adicionarItem(produto);
+		        
+		        DBConnection dbConnection = new DBConnection();
+		        produtoBanco = new ProdutoBanco(dbConnection);
+		        boolean isInserted = produtoBanco.criarProduto(produto);
+		        
+		        MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
+		        if (isInserted) {
+		            System.out.println("Prato inserido com sucesso!");
+		            messageBox.setMessage("Produto criado com sucesso!");
+		        } else {
+		            System.out.println("Erro ao inserir o prato!");
+		            messageBox.setMessage("Erro ao criar o produto!");
+		        }
+		        messageBox.open();
+		        
+		        cardapioBanco = new CardapioBanco(dbConnection);
+		        cardapioBanco.criarCardapio(cardapio);
+		    }
 		});
 		btnConcluir.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
 		btnConcluir.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
@@ -236,13 +257,16 @@ public class FuncionarioCadProdutoCardapio extends Composite {
         File sourceFile = new File(sourceFilePath);
         File targetDir = new File(targetDirectory);
         
+        // Verifica se o diretório de destino existe, se não, cria
         if (!targetDir.exists()) {
             targetDir.mkdirs();
         }
-        
+
+        // Define o caminho do arquivo de destino
         File targetFile = new File(targetDir, sourceFile.getName());
 
         try {
+            // Copia o arquivo selecionado para o diretório da aplicação
             Files.copy(sourceFile.toPath(), targetFile.toPath());
             System.out.println("File saved to: " + targetFile.getAbsolutePath());
         } catch (IOException e) {
