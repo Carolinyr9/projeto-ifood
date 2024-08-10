@@ -5,4 +5,5 @@ public enum Status {
 	EM_PREPARO,
 	A_CAMINHO,
 	ENTREGUE,
+	CANCELADO,
 }

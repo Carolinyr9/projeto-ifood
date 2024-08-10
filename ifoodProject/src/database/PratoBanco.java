@@ -34,15 +34,15 @@ public class PratoBanco {
         }
     }
 
-    // Método para visualizar um prato pelo ID
+ // Método para visualizar um prato pelo ID
     public Prato visualizarPrato(int id) {
         String sql = "CALL Selecionar_Prato(?)";
         Prato prato = null;
-
+        
         try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
-
+            
             if (rs.next()) {
                 prato = new Prato();
                 prato.setIdPrato(rs.getInt("id"));
@@ -51,11 +51,14 @@ public class PratoBanco {
                 prato.setIngredientes(rs.getString("ingredientes"));
                 prato.setPreco(rs.getDouble("preco"));
                 prato.setIdRestaurante(rs.getInt("id_restaurante"));
+            } else {
+                System.out.println("Nenhum prato encontrado com o ID: " + id);
             }
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("Erro ao visualizar prato", e);
         }
+        
         return prato;
     }
 

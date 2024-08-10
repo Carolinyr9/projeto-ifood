@@ -115,4 +115,33 @@ public class UsuarioBanco {
 
         return entregador; 
     }
+    
+    // Método para obter um cliente pelo ID
+    public Cliente obterClientePorId(int idCliente) {
+        Cliente cliente = null;
+        String sql = "CALL Obter_Cliente_Por_ID(?)";
+
+        try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
+            stmt.setInt(1, idCliente);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                cliente = new Cliente(
+                    rs.getInt("id"),
+                    rs.getString("nome"),
+                    rs.getDate("data_nascimento").toLocalDate(),
+                    rs.getLong("telefone"),
+                    rs.getString("rua") + ", " + rs.getString("cidade") + ", " + rs.getString("estado") + ", " + rs.getString("cep"),
+                    rs.getLong("cpf"),
+                    rs.getString("email"),
+                    rs.getString("senha")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao obter cliente por ID", e);
+        }
+
+        return cliente;
+    }
 }

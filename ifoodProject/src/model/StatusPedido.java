@@ -6,7 +6,20 @@ public class StatusPedido {
     private Status status;
     private LocalDateTime horarioStatus;
 
-    public Status getStatus() {
+    public StatusPedido(Status status) {
+		super();
+		this.status = status;
+		this.horarioStatus = LocalDateTime.now();
+	}
+    
+
+	public StatusPedido(Status status, LocalDateTime horarioStatus) {
+		super();
+		this.status = status;
+		this.horarioStatus = horarioStatus;
+	}
+
+	public Status getStatus() {
         return status;
     }
 
