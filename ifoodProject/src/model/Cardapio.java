@@ -1,13 +1,26 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Cardapio {
-	private int id;
+    private int id;
     private List<ItemCardapio> itensCardapio;
 
+    public Cardapio() {
+        this.id = 1;
+        itensCardapio = new ArrayList<ItemCardapio>();
+    }
+
     public Cardapio(List<ItemCardapio> itensCardapio) {
+        this.id = 1;
         this.itensCardapio = itensCardapio;
+    }
+
+    private int generateRandomId() {
+        Random random = new Random();
+        return random.nextInt(10000) + 1;
     }
 
     public List<ItemCardapio> getItensCardapio() {
@@ -18,6 +31,15 @@ public class Cardapio {
         this.itensCardapio = itensCardapio;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Override
     public String toString() {
         StringBuilder textoCardapio = new StringBuilder("\nCardápio:");
         for (ItemCardapio itemCardapio : itensCardapio) {
@@ -26,15 +48,12 @@ public class Cardapio {
         return textoCardapio.toString();
     }
     
-    public int getidPrato(int id) {
-    	return itensCardapio.get(id).getIdPrato();
+    public void adicionarItem(ItemCardapio item) {
+        itensCardapio.add(item);
     }
     
-    public int getidProduto(int id) {
-    	return itensCardapio.get(id).getIdProduto();
-    }
-    
-    public int getidRestaurante(int id) {
-    	return itensCardapio.get(id).getIdRestaurante();
+    public void removerItem(int id) {
+        itensCardapio.remove(id);
     }
 }
+

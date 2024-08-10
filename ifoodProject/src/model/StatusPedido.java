@@ -26,6 +26,7 @@ public class StatusPedido {
         setStatus(novoStatus);
         setHorarioStatus(LocalDateTime.now());
     }
+    
 
     @Override
     public String toString() {

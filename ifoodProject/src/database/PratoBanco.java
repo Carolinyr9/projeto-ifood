@@ -9,23 +9,25 @@ public class PratoBanco {
 
     protected DBConnection connection;
 
-    public PratoBanco(DBConnection connection) {
+    public PratoBanco(DBConnection dbconnection) {
         super();
-        this.connection = connection;
+        this.connection = dbconnection;
     }
 
     // Método para criar um novo prato
-    public void criarPrato(Prato prato) {
-        String sql = "CALL Inserir_Prato(?, ?, ?, ?, ?)";
+    public boolean criarPrato(Prato prato) {
+        String sql = "CALL Inserir_Prato(?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
-            stmt.setString(1, prato.getNome());
-            stmt.setString(2, prato.getDescricao());
-            stmt.setString(3, prato.getIngredientes());
-            stmt.setDouble(4, prato.getPreco());
-            stmt.setInt(5, prato.getIdRestaurante());
+        	stmt.setInt(1, prato.getIdPrato());
+            stmt.setString(2, prato.getNome());
+            stmt.setString(3, prato.getDescricao());
+            stmt.setString(4, prato.getIngredientes());
+            stmt.setDouble(5, prato.getPreco());
+            stmt.setInt(6, prato.getIdRestaurante());
 
             stmt.execute();
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("Erro ao criar prato", e);
@@ -43,7 +45,7 @@ public class PratoBanco {
 
             if (rs.next()) {
                 prato = new Prato();
-                prato.setId(rs.getInt("id"));
+                prato.setIdPrato(rs.getInt("id"));
                 prato.setNome(rs.getString("nome"));
                 prato.setDescricao(rs.getString("descricao"));
                 prato.setIngredientes(rs.getString("ingredientes"));
@@ -58,7 +60,7 @@ public class PratoBanco {
     }
 
     // Método para atualizar um prato
-    public void atualizarPrato(Prato prato, int id) {
+    public boolean atualizarPrato(Prato prato, int id) {
         String sql = "CALL Atualizar_Prato(?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
@@ -70,6 +72,7 @@ public class PratoBanco {
             stmt.setInt(6, prato.getIdRestaurante());
 
             stmt.execute();
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("Erro ao atualizar prato", e);
@@ -99,7 +102,7 @@ public class PratoBanco {
 
             while (rs.next()) {
                 Prato prato = new Prato();
-                prato.setId(rs.getInt("id"));
+                prato.setIdPrato(rs.getInt("id"));
                 prato.setNome(rs.getString("nome"));
                 prato.setDescricao(rs.getString("descricao"));
                 prato.setIngredientes(rs.getString("ingredientes"));

@@ -15,16 +15,19 @@ public class ProdutoBanco {
     }
 
     // Método para criar um novo produto
-    public void criarProduto(Produto produto) {
-        String sql = "CALL Inserir_Produto(?, ?, ?, ?)";
+    public boolean criarProduto(Produto produto) {
+        String sql = "CALL Inserir_Produto(?, ?, ?, ?, ?)";
 
         try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
-            stmt.setString(1, produto.getNome());
-            stmt.setString(2, produto.getDescricao());
-            stmt.setDouble(3, produto.getPreco());
-            stmt.setInt(4, produto.getIdRestaurante());
+        	stmt.setInt(1, produto.getIdProduto());
+            stmt.setString(2, produto.getNome());
+            stmt.setString(3, produto.getDescricao());
+            stmt.setDouble(4, produto.getPreco());
+            stmt.setInt(5, produto.getIdRestaurante());
 
             stmt.execute();
+            
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("Erro ao criar produto", e);
@@ -42,7 +45,7 @@ public class ProdutoBanco {
 
             if (rs.next()) {
                 produto = new Produto();
-                produto.setId(rs.getInt("id"));
+                produto.setIdProduto(rs.getInt("id"));
                 produto.setNome(rs.getString("nome"));
                 produto.setDescricao(rs.getString("descricao"));
                 produto.setPreco(rs.getDouble("preco"));
@@ -56,7 +59,7 @@ public class ProdutoBanco {
     }
 
     // Método para atualizar um produto
-    public void atualizarProduto(Produto produto, int id) {
+    public boolean atualizarProduto(Produto produto, int id) {
         String sql = "CALL Atualizar_Produto(?, ?, ?, ?, ?)";
 
         try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
@@ -67,6 +70,7 @@ public class ProdutoBanco {
             stmt.setInt(5, produto.getIdRestaurante());
 
             stmt.execute();
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("Erro ao atualizar produto", e);
@@ -97,7 +101,7 @@ public class ProdutoBanco {
 
             while (rs.next()) {
                 Produto produto = new Produto();
-                produto.setId(rs.getInt("id"));
+                produto.setIdProduto(rs.getInt("id"));
                 produto.setNome(rs.getString("nome"));
                 produto.setDescricao(rs.getString("descricao"));
                 produto.setPreco(rs.getDouble("preco"));
