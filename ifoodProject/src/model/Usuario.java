@@ -28,6 +28,11 @@ public class Usuario {
     public void setSenha(String senha) {
         this.senha = senha;
     }
+    
+    public void logarUsuário(String email,String senha) {
+    	setEmail(email);
+    	setSenha(senha);
+    }
 
     public void cadastrarUsuario() {
         // Implementar lógica para cadastrar o usuário
