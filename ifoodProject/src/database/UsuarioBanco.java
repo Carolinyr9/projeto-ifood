@@ -24,10 +24,8 @@ public class UsuarioBanco {
             stmt.setString(2, usuario.getSenha());
 
             ResultSet rs = stmt.executeQuery();
-            System.out.println("Logado");
             
             if (rs.next()) {
-                System.out.println("Logado");
                 cliente = new Cliente();
                 cliente.setNome(rs.getString("nome"));
                 cliente.setEmail(rs.getString("email"));
@@ -36,6 +34,7 @@ public class UsuarioBanco {
                 cliente.setTelefone(Long.parseLong(rs.getString("telefone")));
                 cliente.setCpf(Long.parseLong(rs.getString("cpf")));
                 cliente.setEndereco(rs.getString("rua") + " " + rs.getString("numero_residencial"));
+                cliente.setId(rs.getInt("id"));
                 
             } else {
                 System.out.println("Usuário não encontrado");
@@ -58,10 +57,8 @@ public class UsuarioBanco {
             stmt.setString(2, usuario.getSenha());
 
             ResultSet rs = stmt.executeQuery();
-            System.out.println("Logado");
             
             if (rs.next()) {
-                System.out.println("Logado");
                 funcionario = new Funcionario();
                 funcionario.setNome(rs.getString("nome"));
                 funcionario.setEmail(rs.getString("email"));
@@ -69,7 +66,6 @@ public class UsuarioBanco {
                 funcionario.setCpf(Long.parseLong(rs.getString("cpf")));
                 funcionario.setCodFuncional(rs.getString("codigo_funcional"));
                 funcionario.setIdRestaurante(rs.getInt("id_restaurante"));
-                System.out.println("Logado2");
                 
             } else {
                 System.out.println("Usuário não encontrado");
@@ -91,10 +87,8 @@ public class UsuarioBanco {
             stmt.setString(2, usuario.getSenha());
 
             ResultSet rs = stmt.executeQuery();
-            System.out.println("Logado");
             
             if (rs.next()) {
-                System.out.println("Logado");
                 entregador = new Entregador();
                 entregador.setNome(rs.getString("nome"));
                 entregador.setEmail(rs.getString("email"));

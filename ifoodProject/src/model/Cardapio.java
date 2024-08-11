@@ -6,7 +6,10 @@ import java.util.Random;
 
 public class Cardapio {
     private int id;
+    private int id_restaurante;
     private List<ItemCardapio> itensCardapio;
+    private List<ItemCardapio> produtosCardapios;
+    private List<ItemCardapio> pratosCardapios;
 
     public Cardapio() {
         this.id = 1;

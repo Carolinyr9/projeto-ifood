@@ -15,7 +15,6 @@ public class Prato extends ItemCardapio {
 	}
 
 	public Prato() {
-    	
     }
 	
 	private int generateRandomId() {

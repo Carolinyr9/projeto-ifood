@@ -6,6 +6,11 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+
+import database.DBConnection;
+import database.RestauranteBanco;
+import model.Restaurante;
+
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.GridData;
@@ -15,6 +20,11 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.jface.resource.LocalResourceManager;
 import org.eclipse.jface.resource.JFaceResources;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.eclipse.jface.resource.ColorDescriptor;
 import org.eclipse.jface.resource.FontDescriptor;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -23,11 +33,14 @@ import org.eclipse.swt.layout.RowData;
 
 public class HomeCliente extends Composite {
 
+	private DBConnection connection = new DBConnection("localhost", "3307", "bddelivery", "root", "2024Root.");
     private Image bannerImage;
     private Image pizza1;
     private Image restauranteLogoImage;
     private LocalResourceManager localResourceManager;
     private Display display = getDisplay();
+    private Restaurante restaurante;
+    private RestauranteBanco banco;
 
     private void createResourceManager() {
         localResourceManager = new LocalResourceManager(JFaceResources.getResources(), this);
@@ -39,6 +52,10 @@ public class HomeCliente extends Composite {
         setSize(482, 836);
         setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
         setLayout(null);
+        
+        banco = new RestauranteBanco(connection);
+        restaurante = banco.visualizarRestaurante(1);
+        String enderecoRestaurante = restaurante.getRua() + ", " + restaurante.getNumeroResidencial() + " - " + restaurante.getCidade() + ", " + restaurante.getEstado();
 
         ScrolledComposite scrolledComposite = new ScrolledComposite(this, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
         scrolledComposite.setBounds(0, 0, 482, 836);
@@ -80,15 +97,14 @@ public class HomeCliente extends Composite {
         lblRestauranteNome.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
         lblRestauranteNome.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(4, 42, 94))));
         lblRestauranteNome.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 17, SWT.BOLD)));
-    	/*Colocar aqui o nome do restaurante, dentro de setText()*/
-        lblRestauranteNome.setText("Boa Pizza - Delivery");
+        lblRestauranteNome.setText(restaurante.getNome());
 
         Label lblRestauranteDescricao = new Label(compositeRestauranteInfo, SWT.WRAP);
         lblRestauranteDescricao.setBounds(163, 157, 293, 62);
         lblRestauranteDescricao.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 9, SWT.BOLD)));
         lblRestauranteDescricao.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
         lblRestauranteDescricao.setAlignment(SWT.CENTER);
-        lblRestauranteDescricao.setText("Bem-vindo à \"Boa Pizza\", onde cada mordida é uma viagem ao coração da Itália!");
+        lblRestauranteDescricao.setText("Bem-vindo à " + restaurante.getNome());
 
         Label lblRestauranteEndereco = new Label(compositeRestauranteInfo, SWT.WRAP);
         lblRestauranteEndereco.setBounds(86, 235, 318, 38);
@@ -96,8 +112,7 @@ public class HomeCliente extends Composite {
         lblRestauranteEndereco.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(19, 41, 61))));
         lblRestauranteEndereco.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
         lblRestauranteEndereco.setAlignment(SWT.CENTER);
-    	/*Colocar aqui o endereço do restaurante, dentro de setText()*/
-        lblRestauranteEndereco.setText("R. da Consolação, 3527 - Cerqueira César, SP    1.5km de você");
+        lblRestauranteEndereco.setText(enderecoRestaurante);
 
         Composite compositeRestauranteCardapio = new Composite(compositeHomeCliente, SWT.NONE);
         compositeRestauranteCardapio.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
@@ -106,18 +121,24 @@ public class HomeCliente extends Composite {
         gd_compositeRestauranteCardapio.widthHint = 470;
         compositeRestauranteCardapio.setLayoutData(gd_compositeRestauranteCardapio);
 
+        List<String> tituloSessao = new ArrayList<String>();
+       
+        tituloSessao.add("Pratos");
+        tituloSessao.add("Produtos");
+        
+        int i = 0;
         /*Nesse loop é colocado as sessões do cardápio do restaurante
          * Add a função que irá pegar os dados*/
-        for(int i = 0; i < 2; i++) {
-        	Label lblPratos = new Label(compositeRestauranteCardapio, SWT.NONE);
-        	lblPratos.setAlignment(SWT.CENTER);
-        	GridData gd_lblPratos = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-        	gd_lblPratos.widthHint = 128;
-        	lblPratos.setLayoutData(gd_lblPratos);
-        	lblPratos.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.BOLD)));
-        	lblPratos.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
+        for(i = 0; i < 2; i++) {
+        	Label lblTituloSessaoCardapio = new Label(compositeRestauranteCardapio, SWT.NONE);
+        	lblTituloSessaoCardapio.setAlignment(SWT.CENTER);
+        	GridData gd_lblTituloSessaoCardapio = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+        	gd_lblTituloSessaoCardapio.widthHint = 128;
+        	lblTituloSessaoCardapio.setLayoutData(gd_lblTituloSessaoCardapio);
+        	lblTituloSessaoCardapio.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.BOLD)));
+        	lblTituloSessaoCardapio.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
         	/*Colocar aqui o titulo da sessão do cardápio, dentro de setText()*/
-        	lblPratos.setText("Pratos");
+        	lblTituloSessaoCardapio.setText(tituloSessao.get(i));
         	
         	ScrolledComposite scrolledComposite_1 = new ScrolledComposite(compositeRestauranteCardapio, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
         	GridData gd_scrolledComposite_1 = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
@@ -135,6 +156,9 @@ public class HomeCliente extends Composite {
         	rl_compositePratos.spacing = 15;
         	compositePratos.setLayout(rl_compositePratos);
         	
+        	Integer idpratoInteger = 0;
+        	Integer idprodutoInteger = 1;
+        	
         	/*Aqui é feito um loop para exibir os itens da sessão do cardápio
         	 * Add a função que irá pegar os dados*/
         	for(int j = 0; j < 10; j++) {
@@ -150,7 +174,7 @@ public class HomeCliente extends Composite {
         			@Override
         			public void widgetSelected(SelectionEvent e) {
         				/*Aqui é chamada a função para ir para a tela ClienteInfoProduct*/
-        				mainPage.navigateToScreenCliente(2);
+        				mainPage.showClienteInfoProduct(idprodutoInteger, idpratoInteger);
         			}
         		});
         		buttonImagePizza1.addPaintListener( new PaintListener() {

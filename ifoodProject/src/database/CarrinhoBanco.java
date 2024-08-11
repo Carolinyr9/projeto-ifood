@@ -1,6 +1,9 @@
 package database;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
 import database.DBConnection;
 import model.Carrinho;
 
@@ -33,29 +36,32 @@ public class CarrinhoBanco {
     }
 
     // Método para visualizar um item do carrinho pelo ID
-    public Carrinho visualizarCarrinho(int id) {
+    public List<Carrinho> visualizarCarrinho(int id) {
         String sql = "CALL Selecionar_Carrinho(?)";
-        Carrinho carrinho = null;
+        List<Carrinho> listaCarrinhos = null;
+        //Carrinho carrinho = null;
 
         try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
 
-            if (rs.next()) {
-                carrinho = new Carrinho();
-                carrinho.setId(rs.getInt("id"));
-                carrinho.setIdPrato(rs.getInt("id_prato"));
-                carrinho.setIdProduto(rs.getInt("id_produto"));
-                carrinho.setIdRestaurante(rs.getInt("id_restaurante"));
-                carrinho.setPreco(rs.getDouble("preco"));
-                carrinho.setEnderecoEntrega(rs.getString("endereco_entrega"));
-                carrinho.setQuantidade(rs.getInt("quantidade"));
+            listaCarrinhos = new ArrayList<Carrinho>();
+            int i = 0;
+            while(rs.next()) {
+            	listaCarrinhos.get(i).setId(rs.getInt("id"));
+            	listaCarrinhos.get(i).setIdPrato(rs.getInt("id_prato"));
+            	listaCarrinhos.get(i).setIdProduto(rs.getInt("id_produto"));
+            	listaCarrinhos.get(i).setIdRestaurante(rs.getInt("id_restaurante"));
+            	listaCarrinhos.get(i).setPreco(rs.getDouble("preco"));
+            	listaCarrinhos.get(i).setEnderecoEntrega(rs.getString("endereco_entrega"));
+            	listaCarrinhos.get(i).setQuantidade(rs.getInt("quantidade"));
+            	i++;
             }
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("Erro ao visualizar item do carrinho", e);
         }
-        return carrinho;
+        return listaCarrinhos;
     }
 
     // Método para excluir um item do carrinho

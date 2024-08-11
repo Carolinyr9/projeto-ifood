@@ -171,11 +171,14 @@ public class ClientePedidos extends Composite {
 			Button btnDetalhesPedidoAndamento = new Button(compositeCardPedidoAndamento, SWT.NONE);
 			btnDetalhesPedidoAndamento.setBounds(153, 164, 90, 30);
 			btnDetalhesPedidoAndamento.setText("Detalhes");
+			
+			//Variável de teste, depois mudar
+			Integer id_pedidoInteger = 1;
 			btnDetalhesPedidoAndamento.addSelectionListener(new SelectionAdapter() {
 				
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					mainPage.navigateToScreenCliente(6);
+					mainPage.showClienteInfoPedido(id_pedidoInteger);
 				}
 				
 			});

@@ -120,9 +120,9 @@ public class MainPage {
 		shell.layout();
 	}
 
-	private void showClienteInfoProduct() {
+	public void showClienteInfoProduct(Integer idProduto, Integer idPrato) {
 		clearShell();
-		ClienteInfoProduct infoProduct = new ClienteInfoProduct(shell, this);
+		ClienteInfoProduct infoProduct = new ClienteInfoProduct(shell, this, idProduto, idPrato, cliente);
 		FormData fd_infoProduct = new FormData();
 		fd_infoProduct.left = new FormAttachment(0);
 		fd_infoProduct.right = new FormAttachment(100);
@@ -159,9 +159,9 @@ public class MainPage {
 		shell.layout();
 	}
 	
-	public void showClienteInfoPedido() {
+	public void showClienteInfoPedido(Integer id_pedido) {
 		clearShell();
-		ClienteInfoPedido clienteInfoPedido = new ClienteInfoPedido(shell, this);
+		ClienteInfoPedido clienteInfoPedido = new ClienteInfoPedido(shell, this, id_pedido);
 		FormData fd_clienteInfoPedido = new FormData();
 		fd_clienteInfoPedido.left = new FormAttachment(0);
 		fd_clienteInfoPedido.right = new FormAttachment(100);
@@ -360,7 +360,7 @@ public class MainPage {
 			showHomeCliente();
 			break;
 		case 2:
-			showClienteInfoProduct();
+//			showClienteInfoProduct();
 			break;
 		case 3:
 			showClienteCarrinho();
@@ -372,7 +372,7 @@ public class MainPage {
 			showClientePedidos();
 			break;
 		case 6:
-			showClienteInfoPedido();
+//			showClienteInfoPedido();
 			break;
 		default:
 			showHomeCliente();
