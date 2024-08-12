@@ -83,8 +83,8 @@ public class PedidoBanco {
         }
     }
 
- // Método para listar pratos e produtos por restaurante
-    public List<Pedido> listarPratosProdutosPorRestaurante(int idRestaurante) {
+//    Método para listar pratos e produtos por restaurante
+    public List<Pedido> listarPedidosPorRestaurante(int idRestaurante) {
         String sql = "CALL listar_pratos_produtos_por_restaurante(?)";
         List<Pedido> pedidos = new ArrayList<>();
 
@@ -138,7 +138,7 @@ public class PedidoBanco {
     }
 
 
-    // Método para listar todos os pedidos
+ // Método para listar todos os pedidos
     public List<Pedido> listarTodosPedidos() {
         String sql = "CALL listar_todos_pedidos()";
         List<Pedido> pedidos = new ArrayList<>();
@@ -151,9 +151,12 @@ public class PedidoBanco {
                 pedido.setId(rs.getInt("id"));
                 pedido.setIdsProdutos(convertJsonToList(rs.getString("ids_produtos")));
                 pedido.setIdsPratos(convertJsonToList(rs.getString("ids_pratos")));
-                Status status = Status.valueOf(rs.getString("status"));
-                LocalDateTime horarioStatus = rs.getTimestamp("data_atualizacao").toLocalDateTime();
-                pedido.setStatus(new StatusPedido(status, horarioStatus));
+                String statusStr = rs.getString("status");
+                if (statusStr != null) {
+                    Status status = Status.valueOf(statusStr.toUpperCase());
+                    LocalDateTime horarioStatus = rs.getTimestamp("data_atualizacao").toLocalDateTime();
+                    pedido.setStatus(new StatusPedido(status, horarioStatus));
+                }
                 pedido.setIdCarrinho(rs.getInt("id_carrinho"));
                 pedido.setIdCliente(rs.getInt("id_cliente"));
                 pedido.setIdEntregador(rs.getInt("id_entregador"));
@@ -170,41 +173,56 @@ public class PedidoBanco {
         return pedidos;
     }
 
-    // Método para listar pedidos por cliente
+ // Método para listar pedidos por cliente
     public List<Pedido> listarPedidosPorCliente(int idCliente) {
         String sql = "CALL listar_pedidos_por_cliente(?)";
         List<Pedido> pedidos = new ArrayList<>();
 
         try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
-            stmt.setInt(1, idCliente);
+            stmt.setInt(1, idCliente);  
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
                 Pedido pedido = new Pedido();
+                
+                // Extrair e definir o ID do pedido
                 pedido.setId(rs.getInt("id"));
-                if(!rs.getString("ids_produtos").equals("[null])")) {
-                	pedido.setIdsProdutos(convertJsonToList(rs.getString("ids_produtos")));
+
+                // Extrair e definir o status do pedido
+                String statusStr = rs.getString("status");
+                if (statusStr != null) {
+                    Status status = Status.valueOf(statusStr.toUpperCase());
+                    LocalDateTime horarioStatus = rs.getTimestamp("data_atualizacao").toLocalDateTime();
+                    pedido.setStatus(new StatusPedido(status, horarioStatus));
                 }
-                
-                if(!rs.getString("ids_pratos").equals("[null])")){
-                	pedido.setIdsPratos(convertJsonToList(rs.getString("ids_pratos")));
-                }
-                
-                Status status = Status.valueOf(rs.getString("status"));
-                LocalDateTime horarioStatus = rs.getTimestamp("data_atualizacao").toLocalDateTime();
-                pedido.setStatus(new StatusPedido(status, horarioStatus));
+
+                // Configurar outros campos do pedido
                 pedido.setIdCarrinho(rs.getInt("id_carrinho"));
                 pedido.setIdCliente(rs.getInt("id_cliente"));
                 pedido.setIdEntregador(rs.getInt("id_entregador"));
                 pedido.setIdRestaurante(rs.getInt("id_restaurante"));
                 pedido.setDataPedido(rs.getTimestamp("data_pedido").toLocalDateTime());
                 pedido.setEstimativaTempo(rs.getTimestamp("data_pedido").toLocalDateTime().plusMinutes(30));
+
+                // Extrair e definir o campo precoTotal
                 pedido.setPrecoTotal(rs.getDouble("precoTotal"));
+
+                // Converter JSON para lista de IDs
+                String idsProdutosJson = rs.getString("ids_produtos");
+                if (idsProdutosJson != null) {
+                    pedido.setIdsProdutos(convertJsonToList(idsProdutosJson));
+                }
+
+                String idsPratosJson = rs.getString("ids_pratos");
+                if (idsPratosJson != null) {
+                    pedido.setIdsPratos(convertJsonToList(idsPratosJson));
+                }
+
                 pedidos.add(pedido);
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao listar pedidos por cliente", e);
+            throw new RuntimeException("Erro ao listar pratos e produtos por restaurante", e);
         }
         return pedidos;
     }

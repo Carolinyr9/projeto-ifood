@@ -211,6 +211,19 @@ public class MainPage {
 		shell.layout();
 	}
 	
+	public void showFuncionarioItemCardapioInfo(Integer idProduct, String tipo) {
+		clearShell();
+		FuncionarioItemCardapioInfo itemCardapioInfo = new FuncionarioItemCardapioInfo(shell, this, idProduct, tipo);
+		FormData fd_itemCardapioInfo = new FormData();
+		fd_itemCardapioInfo.left = new FormAttachment(0);
+		fd_itemCardapioInfo.right = new FormAttachment(100);
+		fd_itemCardapioInfo.top = new FormAttachment(0);
+		fd_itemCardapioInfo.bottom = new FormAttachment(90, -5); 
+		itemCardapioInfo.setLayoutData(fd_itemCardapioInfo);
+		showMenuBarFuncionario();
+		shell.layout();
+	}
+	
 	public void showFuncionarioProdutoInfo() {
 		clearShell();
 		FuncionarioProdutoInfo itemCardapioInfo = new FuncionarioProdutoInfo(shell, this);

@@ -9,6 +9,14 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+
+import database.CardapioBanco;
+import database.DBConnection;
+import model.Cardapio;
+import model.ItemCardapio;
+import model.Prato;
+import model.Produto;
+
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Rectangle;
@@ -38,14 +46,7 @@ public class FuncionarioCardapioInfo extends Composite {
 	private Image arrowIcon;
 	private Display display = getDisplay();
 	private String nomeCardapio;
-	
-	/* Variável para colocar o nome e o preço dos itens do cardápio selecionado, para posteriormente
-	 * serem exibidos
-	 * 
-	 * Não precisa fazer como eu fiz!
-	 * */
-	private List<String> nomeItensCardapio;
-	private List<Double> precoItensCardapio;
+	private CardapioBanco cardapioBanco;
 
 	private void createResourceManager() {
 		localResourceManager = new LocalResourceManager(JFaceResources.getResources(), this);
@@ -60,13 +61,29 @@ public class FuncionarioCardapioInfo extends Composite {
 		setLayout(new FormLayout());
 		
 		/*Grupo de teste - Depois apagar */
-		nomeItensCardapio = new ArrayList<String>();
-		nomeItensCardapio.add(0, "Pizza Portuguesa");
-		nomeItensCardapio.add(1, "Pizza Frango com Catupiri");
-		int numCardapio = nomeItensCardapio.size();
-		precoItensCardapio = new ArrayList<Double>();
-		precoItensCardapio.add(0, 19.99);
-		precoItensCardapio.add(1, 23.77);
+		DBConnection dbConnection = new DBConnection();
+		Cardapio cardapio = new Cardapio();
+		cardapioBanco = new CardapioBanco(dbConnection);
+		cardapioBanco.criarCardapio(cardapio);
+		int id = 1;
+		List<ItemCardapio> itens = cardapioBanco.listarCardapioPorRestaurante(id);
+		List<String> nomeItensCardapio = new ArrayList<String>();
+		List<Double> precoItensCardapio = new ArrayList<Double>();
+		List<Integer> idItensCardapio = new ArrayList<Integer>();
+		List<String> tipoItensCardapio = new ArrayList<String>();
+	
+		for (ItemCardapio item: itens) {
+			if (item instanceof Prato) {
+				idItensCardapio.add(item.getIdPrato());
+				tipoItensCardapio.add("Prato");
+			} else 
+				if(item instanceof Produto) {
+					idItensCardapio.add(item.getIdProduto());
+					tipoItensCardapio.add("Produto");
+				}
+			nomeItensCardapio.add(item.getNome());
+			precoItensCardapio.add(item.getPreco());
+		}
 		
 		arrowIcon = new Image(display, "./src/assets/images/backArrow.png");
 		nomeCardapio = "Pizzas";
@@ -94,6 +111,7 @@ public class FuncionarioCardapioInfo extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				openRadioDialog(shell,mainPage);
+				
 			}
 		});
 		btnAdicionarItem.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
@@ -164,13 +182,7 @@ public class FuncionarioCardapioInfo extends Composite {
 		});
 		
 		
-		/* Colocar aqui a função que vai chamar a procedure para pegar todos os itens do cardápio
-		 * No loop abaixo serão mostrados todos os itens
-		 * 
-		 * 					numCardapio = é o número de itens ao todo
-		 *  */
-		for(int i = 0; i < numCardapio; i++) {
-			
+		for(int i = 0; i < itens.size(); i++) {
 			int num = i;
 			Composite compositeItem1 = new Composite(compositeItensCardapio, SWT.NONE);
 			GridLayout gl_compositeItem1 = new GridLayout(7, false);
@@ -197,7 +209,7 @@ public class FuncionarioCardapioInfo extends Composite {
 			compositeItem1.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseDown(MouseEvent e) {
-//					mainPage.showFuncionarioItemCardapioInfo(1, 1, nomeItensCardapio.get(num), precoItensCardapio.get(num), nomeCardapio, nomeCardapio);
+					mainPage.showFuncionarioItemCardapioInfo(idItensCardapio.get(num), tipoItensCardapio.get(num));
 				}
 			});
 			
@@ -210,15 +222,11 @@ public class FuncionarioCardapioInfo extends Composite {
 			lblItemTitulo.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
 			lblItemTitulo.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 12, SWT.BOLD)));
 			lblItemTitulo.setBounds(25, 23, 187, 28);
-			/* Abaixo, dentro da função setText(), colocar o nome do produto
-			 * 
-			 *	 								o get(i) é como se eu estivesse pegando pelo indice, assim como nomeArray[i]
-			 **/
 			lblItemTitulo.setText(nomeItensCardapio.get(i));
 			lblItemTitulo.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseDown(MouseEvent e) {
-//					mainPage.showFuncionarioItemCardapioInfo(1, 1, nomeItensCardapio.get(num), precoItensCardapio.get(num), nomeCardapio, nomeCardapio);
+					mainPage.showFuncionarioItemCardapioInfo(idItensCardapio.get(num), tipoItensCardapio.get(num));
 				}
 			});
 			new Label(compositeItem1, SWT.NONE);
@@ -228,11 +236,6 @@ public class FuncionarioCardapioInfo extends Composite {
 			lblPrecoItem1.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_DARK_RED));
 			lblPrecoItem1.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
 			lblPrecoItem1.setBounds(252, 26, 74, 28);
-			/* Abaixo, dentro da função setText(), colocar o preço do produto
-			 * 
-			 *	 								o get(i) é como se eu estivesse pegando pelo indice, assim como nomeArray[i]
-			 *									o toString() é pra transformar o preco em string, caso esteja como double/int/float
-			 **/
 			lblPrecoItem1.setText("R$" + precoItensCardapio.get(i).toString());
 			new Label(compositeItem1, SWT.NONE);
 			new Label(compositeItem1, SWT.NONE);
@@ -240,8 +243,9 @@ public class FuncionarioCardapioInfo extends Composite {
 			new Label(compositeItem1, SWT.NONE);
 			new Label(compositeItensCardapio, SWT.NONE);
 		}
-		
 	}
+		
+	
 	
 	private static void openRadioDialog(Shell parent,MainPage mainPage) {
         Shell dialog = new Shell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
@@ -255,13 +259,15 @@ public class FuncionarioCardapioInfo extends Composite {
         Label lblTipo = new Label(dialog, SWT.CENTER);
         lblTipo.setText("Que tipo de item deseja adicionar?");
 
+        // Adiciona opções de rádio buttons
         Button optionPrato = new Button(dialog, SWT.RADIO);
         optionPrato.setText("Prato");
-        optionPrato.setSelection(true);
+        optionPrato.setSelection(true); // Seleciona a primeira opção por padrão
 
         Button optionProduto = new Button(dialog, SWT.RADIO);
         optionProduto.setText("Produto");
 
+        // Botão OK
         Button okButton = new Button(dialog, SWT.PUSH);
         okButton.setText("Prosseguir");
         GridData gridData = new GridData(SWT.CENTER, SWT.CENTER, true, false);
@@ -281,10 +287,12 @@ public class FuncionarioCardapioInfo extends Composite {
     }
 
     private static void pratoSelecionado(MainPage mainPage) {
+    	//Prato prato = new Prato();
     	mainPage.navigateToScreenFuncionario(4);
     }
 
     private static void produtoSelecionado(MainPage mainPage) {
+    	//Produto produto = new Produto();
     	mainPage.navigateToScreenFuncionario(8);
     }
 }
