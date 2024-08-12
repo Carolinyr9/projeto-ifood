@@ -109,7 +109,7 @@ public class MainPage {
 
 	public void showHomeCliente() {
 		clearShell();
-		HomeCliente home = new HomeCliente(shell, this);
+		HomeCliente home = new HomeCliente(shell, this, cliente);
 		FormData fd_homeFuncionario = new FormData();
 		fd_homeFuncionario.top = new FormAttachment(0);
 		fd_homeFuncionario.left = new FormAttachment(0);
@@ -120,7 +120,7 @@ public class MainPage {
 		shell.layout();
 	}
 
-	public void showClienteInfoProduct(Integer idProduto, Integer idPrato) {
+	public void showClienteInfoProduct(Integer idProduto, Integer idPrato, Cliente cliente) {
 		clearShell();
 		ClienteInfoProduct infoProduct = new ClienteInfoProduct(shell, this, idProduto, idPrato, cliente);
 		FormData fd_infoProduct = new FormData();
@@ -133,9 +133,9 @@ public class MainPage {
 		shell.layout();
 	}
 	
-	public void showClienteCarrinho() {
+	public void showClienteCarrinho(Cliente cliente) {
 		clearShell();
-		ClienteCarrinho carrinho = new ClienteCarrinho(shell, this);
+		ClienteCarrinho carrinho = new ClienteCarrinho(shell, this, cliente);
 		FormData fd_carrinho = new FormData();
 		fd_carrinho.left = new FormAttachment(0);
 		fd_carrinho.right = new FormAttachment(100);
@@ -363,7 +363,7 @@ public class MainPage {
 //			showClienteInfoProduct();
 			break;
 		case 3:
-			showClienteCarrinho();
+			showClienteCarrinho(this.cliente);
 			break;
 		case 4:
 			showUsuarioPerfil();
