@@ -17,7 +17,6 @@ import model.Carrinho;
 import model.Cliente;
 import model.Prato;
 import model.Produto;
-import model.Usuario;
 
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.layout.FormLayout;
@@ -31,9 +30,6 @@ import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.jface.resource.LocalResourceManager;
 import org.eclipse.jface.resource.JFaceResources;
-
-import javax.management.loading.PrivateClassLoader;
-
 import org.eclipse.jface.resource.ColorDescriptor;
 import org.eclipse.jface.resource.FontDescriptor;
 
@@ -49,7 +45,7 @@ public class ClienteInfoProduct extends Composite {
 	private Image backArrowImage;
 	private Image addProductBagImage;
 	private Image productBannerImage;
-	private Cliente cliente;
+	private Cliente cliente = null;
 	private Produto produto = null;
 	private Prato prato = null;
 	private PratoBanco bancoPrato;
@@ -77,34 +73,64 @@ public class ClienteInfoProduct extends Composite {
 		}
     }
     
-    private void setLabels(Prato prato, Produto produto, MainPage mainPage) {
+    private void setLabels(Prato prato, Produto produto, MainPage mainPage,Cliente cliente) {
     	if(prato != null) {
     		lblItemTitulo.setText(prato.getNome());
     		lblItemDescricao.setText(prato.getDescricao());
     		lblItemPreco.setText("R$" + prato.getPreco());
     		lblIngredientes.setText(prato.getIngredientes());
+    		carrinho = new Carrinho(cliente.getId(),prato.getIdRestaurante(), prato.getIdPrato(),0,prato.getPreco(),cliente.getEndereco(),1);
     		compositeBtnAddCarinho.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseDown(MouseEvent e) {
-                	carrinho = new Carrinho(cliente.getId(),prato.getIdRestaurante(), prato.getIdPrato(),0,prato.getPreco(),cliente.getEndereco(),1);
-                    mainPage.showClienteCarrinho();
+                    bancoCarrinho.criarCarrinho(carrinho);
+                	mainPage.showClienteCarrinho(cliente);
                 }
             });
+    		lblAddProductBag.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseDown(MouseEvent e) {
+                	bancoCarrinho.criarCarrinho(carrinho);
+                	mainPage.showClienteCarrinho(cliente);
+                }
+            });
+    		lblAdicionarAoCarrinho.addMouseListener(new MouseAdapter() {
+    	        @Override
+    	        public void mouseDown(MouseEvent e) {
+    	        	bancoCarrinho.criarCarrinho(carrinho);
+    	        	mainPage.showClienteCarrinho(cliente);
+    	        }
+    	    });
     	}else if(produto != null) {
     		lblItemTitulo.setText(produto.getNome());
     		lblItemDescricao.setText(produto.getDescricao());
     		lblItemPreco.setText("R$" + produto.getPreco());
+    		carrinho = new Carrinho(cliente.getId(),produto.getIdRestaurante(), 0,produto.getIdProduto(),produto.getPreco(),cliente.getEndereco(),1);
     		compositeBtnAddCarinho.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseDown(MouseEvent e) {
-                	carrinho = new Carrinho(cliente.getId(),produto.getIdRestaurante(), 0,produto.getIdProduto(),produto.getPreco(),cliente.getEndereco(),1);
-                    mainPage.showClienteCarrinho();
+                    bancoCarrinho.criarCarrinho(carrinho);
+                	mainPage.showClienteCarrinho(cliente);
                 }
             });
+    		compositeBtnAddCarinho.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseDown(MouseEvent e) {
+                	bancoCarrinho.criarCarrinho(carrinho);
+                    mainPage.showClienteCarrinho(cliente);
+                }
+            });
+    		lblAdicionarAoCarrinho.addMouseListener(new MouseAdapter() {
+    	        @Override
+    	        public void mouseDown(MouseEvent e) {
+    	        	bancoCarrinho.criarCarrinho(carrinho);
+    	        	mainPage.showClienteCarrinho(cliente);
+    	        }
+    	    });
     	}
     }
 
-	public ClienteInfoProduct(Composite parent, MainPage mainPage, Integer idProduto, Integer idPrato, Cliente cliente) {
+	public ClienteInfoProduct(Composite parent, MainPage mainPage, Integer idProduto, Integer idPrato, Cliente clienteLogado) {
 		super(parent, SWT.NONE);
 		createResourceManager();
 		setLayout(new FormLayout());
@@ -112,7 +138,8 @@ public class ClienteInfoProduct extends Composite {
 		
 		getProdutoPrato(idProduto, idPrato);
 		bancoCarrinho = new CarrinhoBanco(connection);
-		this.cliente = cliente;
+		cliente = clienteLogado;
+		System.out.println(cliente.getNome());
 		
 		productBannerImage = new Image(display, "./src/assets/images/productBanner.png");
 		backArrowImage = new Image(display, "./src/assets/images/backArrow.png");
@@ -211,13 +238,7 @@ public class ClienteInfoProduct extends Composite {
         gd_lblAddProductBag.heightHint = 49;
         lblAddProductBag.setLayoutData(gd_lblAddProductBag);
         lblAddProductBag.setImage(addProductBagImage);
-        lblAddProductBag.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseDown(MouseEvent e) {
-            	
-            	mainPage.showClienteCarrinho();
-            }
-        });
+        
                         
 	    lblAdicionarAoCarrinho = new Label(compositeBtnAddCarinho, SWT.NONE);
 	    lblAdicionarAoCarrinho.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
@@ -227,13 +248,7 @@ public class ClienteInfoProduct extends Composite {
 	    gd_lblAdicionarAoCarrinho.widthHint = 189;
 	    lblAdicionarAoCarrinho.setLayoutData(gd_lblAdicionarAoCarrinho);
 	    lblAdicionarAoCarrinho.setText("Adicionar ao carrinho");
-	    lblAdicionarAoCarrinho.addMouseListener(new MouseAdapter() {
-	        @Override
-	        public void mouseDown(MouseEvent e) {
-            	/*Colocar aqui a função que irá add o item ao carrinho*/
-	        	mainPage.showClienteCarrinho();
-	        }
-	    });
+	    
 
         btnBack.addPaintListener(new PaintListener() {
             @Override
@@ -248,6 +263,6 @@ public class ClienteInfoProduct extends Composite {
             }
         });
         
-        setLabels(prato, produto, mainPage);
+        setLabels(prato, produto, mainPage, cliente);
 	}
 }
