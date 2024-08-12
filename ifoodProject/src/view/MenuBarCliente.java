@@ -7,14 +7,15 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+
+import model.Cliente;
+
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.PaintEvent;
-
-import java.nio.file.Path;
 
 import org.eclipse.jface.resource.ColorDescriptor;
 import org.eclipse.jface.resource.LocalResourceManager;
@@ -27,16 +28,19 @@ public class MenuBarCliente extends Composite {
     private Image houseIcon;
     private Image perfilIcon;
     private Image bagIcon;
+    private Cliente cliente;
     private Display display = getDisplay();
     
-
     private void createResourceManager() {
     	localResourceManager = new LocalResourceManager(JFaceResources.getResources(), this);
     }
-    public MenuBarCliente(Composite parent, MainPage mainPage) {
+    
+    public MenuBarCliente(Composite parent, MainPage mainPage, Cliente clienteLogado) {
 		super(parent, SWT.NONE);
         createResourceManager();
         addTopBorderPaintListener();
+        
+        this.cliente = clienteLogado;
         
         houseIcon = new Image(display, "./src/assets/images/houseIcon.png");
         pedidosIcon = new Image(display, "./src/assets/images/taskIcon.png");
@@ -117,7 +121,7 @@ public class MenuBarCliente extends Composite {
 		btnImageBag.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				mainPage.navigateToScreenCliente(3);
+				mainPage.showClienteCarrinho(cliente);
 			}
 		});
 		/* Função para adicionar imagem e tirar bordas */

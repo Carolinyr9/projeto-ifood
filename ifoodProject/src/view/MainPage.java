@@ -97,7 +97,7 @@ public class MainPage {
 	}
 
 	private void showMenuBarClient() {
-		MenuBarCliente menuBarClient = new MenuBarCliente(shell, this);
+		MenuBarCliente menuBarClient = new MenuBarCliente(shell, this, this.cliente);
 		FormData fd_menuBarClient = new FormData();
 		fd_menuBarClient.bottom = new FormAttachment(100);
 		fd_menuBarClient.left = new FormAttachment(0);
@@ -107,7 +107,10 @@ public class MainPage {
 	}
 	
 
-	public void showHomeCliente() {
+	public void showHomeCliente(Cliente cliente) {
+		System.out.println(cliente.getNome());
+		System.out.println(cliente.getId());
+		System.out.println(cliente.getNome());
 		clearShell();
 		HomeCliente home = new HomeCliente(shell, this, cliente);
 		FormData fd_homeFuncionario = new FormData();
@@ -357,10 +360,10 @@ public class MainPage {
 	protected void navigateToScreenCliente(int screenNumber) {
 		switch (screenNumber) {
 		case 1:
-			showHomeCliente();
+			showHomeCliente(cliente);
 			break;
 		case 2:
-//			showClienteInfoProduct();
+
 			break;
 		case 3:
 			showClienteCarrinho(this.cliente);
@@ -375,7 +378,7 @@ public class MainPage {
 //			showClienteInfoPedido();
 			break;
 		default:
-			showHomeCliente();
+			showHomeCliente(cliente);
 			break;
 		}
 	}

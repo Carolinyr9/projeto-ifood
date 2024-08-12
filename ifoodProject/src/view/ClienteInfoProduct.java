@@ -79,6 +79,7 @@ public class ClienteInfoProduct extends Composite {
     		lblItemDescricao.setText(prato.getDescricao());
     		lblItemPreco.setText("R$" + prato.getPreco());
     		lblIngredientes.setText(prato.getIngredientes());
+    		
     		carrinho = new Carrinho(cliente.getId(),prato.getIdRestaurante(), prato.getIdPrato(),0,prato.getPreco(),cliente.getEndereco(),1);
     		compositeBtnAddCarinho.addMouseListener(new MouseAdapter() {
                 @Override
@@ -139,7 +140,6 @@ public class ClienteInfoProduct extends Composite {
 		getProdutoPrato(idProduto, idPrato);
 		bancoCarrinho = new CarrinhoBanco(connection);
 		cliente = clienteLogado;
-		System.out.println(cliente.getNome());
 		
 		productBannerImage = new Image(display, "./src/assets/images/productBanner.png");
 		backArrowImage = new Image(display, "./src/assets/images/backArrow.png");

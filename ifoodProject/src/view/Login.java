@@ -35,7 +35,7 @@ public class Login extends Composite {
     private Cliente clienteLogado = null;
     private Entregador entregadorLogado = null;
     private String tipoUsuario;
-    private DBConnection connection = new DBConnection("localhost", "3307", "bddelivery", "root", "2024Root.");
+    private DBConnection connection = new DBConnection();
 
     public Funcionario getFuncionarioLogado() {
 		return funcionarioLogado;
@@ -191,7 +191,7 @@ public class Login extends Composite {
                     	tipoUsuario = "cliente";
                     	mainpage.setTipoUsuario(tipoUsuario);
                     	mainpage.setCliente(clienteLogado);
-                    	mainpage.showHomeCliente();
+                    	mainpage.showHomeCliente(clienteLogado);
                     }
                 
                 } else if (btnSouFuncionario.getSelection()) {
