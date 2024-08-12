@@ -10,17 +10,21 @@ import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.widgets.Label;
 import database.CarrinhoBanco;
 import database.DBConnection;
+import database.PedidoBanco;
 import database.PratoBanco;
 import database.ProdutoBanco;
 import database.RestauranteBanco;
 import model.Carrinho;
 import model.Cliente;
+import model.Pedido;
 import model.Prato;
 import model.Produto;
 import model.Restaurante;
+import model.Status;
+import model.StatusPedido;
 
 import org.eclipse.jface.resource.FontDescriptor;
-
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,25 +55,30 @@ public class ClienteCarrinho extends Composite {
 	private ProdutoBanco bancoProduto;
 	private List<Prato> prato;
 	private PratoBanco bancoPrato;
+	private Pedido pedido;
+	private PedidoBanco bancoPedido;
+	private List<Integer> idPratos = new ArrayList<Integer>();
+	private List<Integer> idProdutos = new ArrayList<Integer>();
+	private Double total = 0.0;
+	private Cliente cliente;
 	private DBConnection connection = new DBConnection();
 
 	private void createResourceManager() {
 		localResourceManager = new LocalResourceManager(JFaceResources.getResources(), this);
 	}
 
-    public ClienteCarrinho(Composite parent, MainPage mainPage, Cliente cliente) {
+    public ClienteCarrinho(Composite parent, MainPage mainPage, Cliente clienteLogado) {
 		super(parent, SWT.NONE);
 		createResourceManager();
 		setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
 		setSize(482, 836);
 		setLayout(new FormLayout());
 		
+		cliente = clienteLogado;
 		bancoCarrinho = new CarrinhoBanco(connection);
 		carrinhoLista = bancoCarrinho.visualizarCarrinho(cliente.getId());
-		
 		bancoRestaurante = new RestauranteBanco(connection);
-		restaurante = bancoRestaurante.visualizarRestaurante(carrinhoLista.get(0).getIdRestaurante());
-		String enderecoRestaurante = restaurante.getRua() + ", " + restaurante.getNumeroResidencial() + " - " + restaurante.getCidade() + ", " + restaurante.getEstado();
+		String enderecoRestaurante = "";
 		
 		bancoPrato = new PratoBanco(connection);
 		prato = new ArrayList<Prato>();
@@ -77,26 +86,33 @@ public class ClienteCarrinho extends Composite {
 		bancoProduto = new ProdutoBanco(connection); 
 		produto = new ArrayList<Produto>(); 
 		
+		bancoPedido = new PedidoBanco(connection);
+		
 		List<Integer> idCarrinhoTipoPrato = new ArrayList<>();
 		List<Integer> idCarrinhoTipoProduto = new ArrayList<>();
-		int subTotal = 0;
-		int taxaEntrega = 12;
-		int total = 0;
+		Double subTotal = 0.0;
+		Double taxaEntrega = 12.0;
 
-		for (int j = 0; j < carrinhoLista.size(); j++) {
-		    int idPrato = carrinhoLista.get(j).getIdPrato();
-		    int idProduto = carrinhoLista.get(j).getIdProduto();
-		    subTotal += carrinhoLista.get(j).getPreco();
-		    
-		    if (idPrato != 0) {
-		        prato.add(bancoPrato.visualizarPrato(idPrato));
-		        idCarrinhoTipoPrato.add(carrinhoLista.get(j).getId());
-		    } else if (idProduto != 0) {
-		        produto.add(bancoProduto.visualizarProduto(idProduto));
-		        idCarrinhoTipoProduto.add(carrinhoLista.get(j).getId());
-		    }
+		if(carrinhoLista.size() != 0) {
+			restaurante = bancoRestaurante.visualizarRestaurante(carrinhoLista.get(0).getIdRestaurante());
+			enderecoRestaurante = restaurante.getRua() + ", " + restaurante.getNumeroResidencial() + " - " + restaurante.getCidade() + ", " + restaurante.getEstado();
+			
+			
+			for (int j = 0; j < carrinhoLista.size(); j++) {
+				int idPrato = carrinhoLista.get(j).getIdPrato();
+				int idProduto = carrinhoLista.get(j).getIdProduto();
+				subTotal += carrinhoLista.get(j).getPreco();
+				
+				if (idPrato != 0) {
+					prato.add(bancoPrato.visualizarPrato(idPrato));
+					idCarrinhoTipoPrato.add(carrinhoLista.get(j).getId());
+				} else if (idProduto != 0) {
+					produto.add(bancoProduto.visualizarProduto(idProduto));
+					idCarrinhoTipoProduto.add(carrinhoLista.get(j).getId());
+				}
+			}
+			total = subTotal + taxaEntrega;
 		}
-		total = subTotal + taxaEntrega;
 		
         ScrolledComposite scrolledComposite = new ScrolledComposite(this, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
         FormData fd_scrolledComposite = new FormData();
@@ -116,7 +132,6 @@ public class ClienteCarrinho extends Composite {
         gl_compositeCarrinho.marginTop = 20;
         gl_compositeCarrinho.marginLeft = 40;
         compositeCarrinho.setLayout(gl_compositeCarrinho);
-
         new Label(compositeCarrinho, SWT.NONE);
 
         Composite compositeRestauranteInfo = new Composite(compositeCarrinho, SWT.NONE);
@@ -133,24 +148,21 @@ public class ClienteCarrinho extends Composite {
         lblRestauranteNome.setLayoutData(gd_lblRestauranteNome);
         lblRestauranteNome.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 13, SWT.BOLD)));
         lblRestauranteNome.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-        lblRestauranteNome.setText(restaurante.getNome());
-
+        
         Label lblRestauranteEndereco = new Label(compositeRestauranteInfo, SWT.WRAP);
         GridData gd_lblRestauranteEndereco = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
         gd_lblRestauranteEndereco.widthHint = 357;
         gd_lblRestauranteEndereco.heightHint = 41;
         lblRestauranteEndereco.setLayoutData(gd_lblRestauranteEndereco);
-        lblRestauranteEndereco.setText(enderecoRestaurante);
         lblRestauranteEndereco.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
 
         Label lblItens = new Label(compositeCarrinho, SWT.NONE);
         GridData gd_lblItens = new GridData(SWT.LEFT, SWT.BOTTOM, false, false, 1, 1);
         gd_lblItens.heightHint = 27;
-        gd_lblItens.widthHint = 64;
+        gd_lblItens.widthHint = 300;
         lblItens.setLayoutData(gd_lblItens);
         lblItens.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 10, SWT.NORMAL)));
         lblItens.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-        lblItens.setText("Itens");
 
         Composite compositeItens = new Composite(compositeCarrinho, SWT.NONE);
         GridData gd_compositeItens = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
@@ -199,7 +211,7 @@ public class ClienteCarrinho extends Composite {
     			
     		}
     	}
-    	
+
     	if(produto.size() > 0) {
     		for (int i = 0; i < produto.size(); i++) {
     			int idCarrinho = idCarrinhoTipoProduto.get(i);
@@ -248,76 +260,114 @@ public class ClienteCarrinho extends Composite {
         compositePrecoTotal.setLayoutData(gd_compositePrecoTotal);
         compositePrecoTotal.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
 
-        Label lblSubtotal = new Label(compositePrecoTotal, SWT.NONE);
-        lblSubtotal.setBounds(10, 29, 70, 20);
-        lblSubtotal.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 10, SWT.BOLD)));
-        lblSubtotal.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-        lblSubtotal.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(128, 128, 128))));
-        lblSubtotal.setText("Subtotal");
+        if(carrinhoLista.size() > 0) {
+        	lblItens.setText("Itens");
+        	lblRestauranteNome.setText(restaurante.getNome());
+			lblRestauranteEndereco.setText(enderecoRestaurante);
+			
+        	Label lblSubtotal = new Label(compositePrecoTotal, SWT.NONE);
+        	lblSubtotal.setBounds(10, 29, 70, 20);
+        	lblSubtotal.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 10, SWT.BOLD)));
+        	lblSubtotal.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
+        	lblSubtotal.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(128, 128, 128))));
+        	lblSubtotal.setText("Subtotal");
+        	
+        	Label lblTaxaDeEntrega = new Label(compositePrecoTotal, SWT.NONE);
+        	lblTaxaDeEntrega.setBounds(10, 66, 135, 20);
+        	lblTaxaDeEntrega.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 10, SWT.BOLD)));
+        	lblTaxaDeEntrega.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
+        	lblTaxaDeEntrega.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(128, 128, 128))));
+        	lblTaxaDeEntrega.setText("Taxa de entrega");
+        	
+        	Label lblTotal = new Label(compositePrecoTotal, SWT.NONE);
+        	lblTotal.setBounds(10, 104, 70, 30);
+        	lblTotal.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
+        	lblTotal.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.BOLD)));
+        	lblTotal.setText("Total");
+        	
+        	Label lblPrecoSubtotal = new Label(compositePrecoTotal, SWT.NONE);
+        	lblPrecoSubtotal.setBounds(274, 29, 70, 20);
+        	lblPrecoSubtotal.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 10, SWT.NORMAL)));
+        	lblPrecoSubtotal.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
+        	lblPrecoSubtotal.setText("R$" + subTotal);
+        	
+        	Label lblPrecoTaxaEntrega = new Label(compositePrecoTotal, SWT.NONE);
+        	lblPrecoTaxaEntrega.setBounds(274, 66, 70, 20);
+        	lblPrecoTaxaEntrega.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 10, SWT.NORMAL)));
+        	lblPrecoTaxaEntrega.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
+        	lblPrecoTaxaEntrega.setText("R$" + taxaEntrega);
+        	
+        	Label lblPrecoTotal = new Label(compositePrecoTotal, SWT.NONE);
+        	lblPrecoTotal.setBounds(274, 106, 70, 20);
+        	lblPrecoTotal.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 10, SWT.NORMAL)));
+        	lblPrecoTotal.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
+        	lblPrecoTotal.setText("R$" + total);
 
-        Label lblTaxaDeEntrega = new Label(compositePrecoTotal, SWT.NONE);
-        lblTaxaDeEntrega.setBounds(10, 66, 135, 20);
-        lblTaxaDeEntrega.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 10, SWT.BOLD)));
-        lblTaxaDeEntrega.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-        lblTaxaDeEntrega.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(128, 128, 128))));
-        lblTaxaDeEntrega.setText("Taxa de entrega");
+        	Button btnFinalizarPedido = new Button(compositePrecoTotal, SWT.NONE);
+        	btnFinalizarPedido.setBounds(10, 150, 144, 30);
+        	btnFinalizarPedido.addSelectionListener(new SelectionAdapter() {
+        		@Override
+        		public void widgetSelected(SelectionEvent e) {
+        			StatusPedido statusPedido = new StatusPedido(Status.ABERTO);
+        			
+        			for(int i = 0; i < carrinhoLista.size(); i++) {
+        				
+        				if(prato.size() > 0) {
+        					idPratos.add(prato.get(i).getIdPrato());
+        				}
+        				if(produto.size() > 0) {
+        					idProdutos.add(produto.get(i).getIdProduto());
+        				}
+        			}
+        			LocalDateTime dataAgora = LocalDateTime.now();
+        			pedido = new Pedido();
+        			pedido.setIdsPratos(idPratos);
+        			pedido.setIdsProdutos(idProdutos);
+        			pedido.setStatus(statusPedido);
+        			pedido.setEndereco(cliente.getEndereco());
+        			pedido.setIdCliente(cliente.getId());
+        			pedido.setIdRestaurante(restaurante.getId());
+        			pedido.setIdEntregador(1);
+        			pedido.setPrecoTotal(total);
+        			pedido.setIdCarrinho(carrinhoLista.get(0).getId());
+        			pedido.setDataPedido(dataAgora);
+        			pedido.setEstimativaTempo(dataAgora.plusMinutes(30));
+        			
+        			bancoPedido.criarPedido(pedido);
+        			for(int i = 0; i < carrinhoLista.size(); i++) {
+        				bancoCarrinho.excluirCarrinho(carrinhoLista.get(i).getId());
+        			}
+        			
+        		}
+        	});
 
-        Label lblTotal = new Label(compositePrecoTotal, SWT.NONE);
-        lblTotal.setBounds(10, 104, 70, 30);
-        lblTotal.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-        lblTotal.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.BOLD)));
-        lblTotal.setText("Total");
-
-        Label lblPrecoSubtotal = new Label(compositePrecoTotal, SWT.NONE);
-        lblPrecoSubtotal.setBounds(274, 29, 70, 20);
-        lblPrecoSubtotal.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 10, SWT.NORMAL)));
-        lblPrecoSubtotal.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-        lblPrecoSubtotal.setText("R$" + subTotal);
-
-        Label lblPrecoTaxaEntrega = new Label(compositePrecoTotal, SWT.NONE);
-        lblPrecoTaxaEntrega.setBounds(274, 66, 70, 20);
-        lblPrecoTaxaEntrega.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 10, SWT.NORMAL)));
-        lblPrecoTaxaEntrega.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-        lblPrecoTaxaEntrega.setText("R$" + taxaEntrega);
-
-        Label lblPrecoTotal = new Label(compositePrecoTotal, SWT.NONE);
-        lblPrecoTotal.setBounds(274, 106, 70, 20);
-        lblPrecoTotal.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 10, SWT.NORMAL)));
-        lblPrecoTotal.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-        lblPrecoTotal.setText("R$" + total);
-
-        Button btnFinalizarPedido = new Button(compositePrecoTotal, SWT.NONE);
-        btnFinalizarPedido.setBounds(10, 150, 144, 30);
-        btnFinalizarPedido.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-            	/* Colocar aqui a lógica para fazer o pedido*/
-            }
-        });
-        btnFinalizarPedido.setText("Finalizar pedido");
-        btnFinalizarPedido.addPaintListener(new PaintListener() {
-			@Override
-			public void paintControl(PaintEvent e) {
-				GC gc = e.gc;
-				Rectangle rect = btnFinalizarPedido.getBounds();
-				Color blue = new Color(getDisplay(), new RGB(19, 41, 61));
-				Color white = new Color(getDisplay(), new RGB(255, 255, 255));
-
-				gc.setAntialias(SWT.ON);
-				gc.setBackground(blue);
-				gc.fillRoundRectangle(0, 0, rect.width, rect.height, 20, 20);
-
-				gc.setForeground(white);
-				gc.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
-				String text = "Finalizar pedido";
-				int textWidth = gc.textExtent(text).x;
-				int textHeight = gc.textExtent(text).y;
-				gc.drawText(text, (rect.width - textWidth) / 2, (rect.height - textHeight) / 2, true);
-
-				blue.dispose();
-				white.dispose();
-			}
-		});		
+        	btnFinalizarPedido.setText("Finalizar pedido");
+        	btnFinalizarPedido.addPaintListener(new PaintListener() {
+        		@Override
+        		public void paintControl(PaintEvent e) {
+        			GC gc = e.gc;
+        			Rectangle rect = btnFinalizarPedido.getBounds();
+        			Color blue = new Color(getDisplay(), new RGB(19, 41, 61));
+        			Color white = new Color(getDisplay(), new RGB(255, 255, 255));
+        			
+        			gc.setAntialias(SWT.ON);
+        			gc.setBackground(blue);
+        			gc.fillRoundRectangle(0, 0, rect.width, rect.height, 20, 20);
+        			
+        			gc.setForeground(white);
+        			gc.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
+        			String text = "Finalizar pedido";
+        			int textWidth = gc.textExtent(text).x;
+        			int textHeight = gc.textExtent(text).y;
+        			gc.drawText(text, (rect.width - textWidth) / 2, (rect.height - textHeight) / 2, true);
+        			
+        			blue.dispose();
+        			white.dispose();
+        		}
+        	});		
+        }else {
+        	lblItens.setText("O carrinho está vazio, adicione itens!");
+        }
 
         compositeCarrinho.layout();
         scrolledComposite.setMinSize(compositeCarrinho.computeSize(SWT.DEFAULT, SWT.DEFAULT));
