@@ -3,9 +3,8 @@ package database;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import database.DBConnection;
 import model.Carrinho;
+import model.Cliente;
 
 public class CarrinhoBanco {
 
@@ -72,6 +71,18 @@ public class CarrinhoBanco {
 
         try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
             stmt.setInt(1, id);
+            stmt.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao excluir item do carrinho", e);
+        }
+    }
+    
+    public void excluirCarrinhoCliente(Cliente cliente) {
+        String sql = "CALL Excluir_Carrinho_Cliente(?)";
+
+        try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
+            stmt.setInt(1, cliente.getId());
             stmt.execute();
         } catch (SQLException e) {
             e.printStackTrace();
