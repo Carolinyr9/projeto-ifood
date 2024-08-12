@@ -85,14 +85,6 @@ public class FuncionarioCardapioInfo extends Composite {
 			precoItensCardapio.add(item.getPreco());
 		}
 		
-//		nomeItensCardapio = new ArrayList<String>();
-//		nomeItensCardapio.add(0, "Pizza Portuguesa");
-//		nomeItensCardapio.add(1, "Pizza Frango com Catupiri");
-//		int numCardapio = nomeItensCardapio.size();
-//		precoItensCardapio = new ArrayList<Double>();
-//		precoItensCardapio.add(0, 19.99);
-//		precoItensCardapio.add(1, 23.77);
-		
 		arrowIcon = new Image(display, "./src/assets/images/backArrow.png");
 		nomeCardapio = "Pizzas";
 		

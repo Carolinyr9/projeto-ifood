@@ -2,6 +2,7 @@ package model;
 
 public class Carrinho {
 	private int id;
+	private int idCliente;
 	private int idRestaurante;
 	private int idPrato;
 	private int idProduto;
@@ -13,10 +14,10 @@ public class Carrinho {
 		
 	}
 
-	public Carrinho(int id, int idRestaurante, int idPrato, int idProduto, double preco, String enderecoEntrega,
+	public Carrinho(int idCliente, int idRestaurante, int idPrato, int idProduto, double preco, String enderecoEntrega,
 			int quantidade) {
 		super();
-		this.id = id;
+		this.idCliente = idCliente;
 		this.idRestaurante = idRestaurante;
 		this.idPrato = idPrato;
 		this.idProduto = idProduto;
@@ -79,5 +80,13 @@ public class Carrinho {
 	
 	public int getId() {
 		return id;
+	}
+
+	public int getIdCliente() {
+		return idCliente;
+	}
+
+	public void setIdCliente(int idCliente) {
+		this.idCliente = idCliente;
 	}
 }

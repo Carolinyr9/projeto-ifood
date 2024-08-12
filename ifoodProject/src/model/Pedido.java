@@ -98,6 +98,10 @@ public class Pedido {
     public StatusPedido getStatus() {
 		return status;
 	}
+    
+    public String getStatusString() {
+    	return status.getStatus().toString();
+    }
 
 	public void setStatus(Status novoStatus) {
 		this.status.editarStatus(novoStatus);

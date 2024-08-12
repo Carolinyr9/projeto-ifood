@@ -4,6 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.Endereco;
 import model.Restaurante;
 
 public class RestauranteBanco {
@@ -50,13 +51,8 @@ public class RestauranteBanco {
                 restaurante.setId(rs.getInt("id"));
                 restaurante.setNome(rs.getString("nome"));
                 restaurante.setCnpj(rs.getString("cnpj"));
-                restaurante.setCep(rs.getString("cep"));
-                restaurante.setRua(rs.getString("rua"));
-                restaurante.setCidade(rs.getString("cidade"));
-                restaurante.setEstado(rs.getString("estado"));
-                restaurante.setNumeroResidencial(rs.getString("numero_residencial"));
+                restaurante.setEndereco(new Endereco(rs.getString("cep"), rs.getString("rua"), rs.getString("cidade"), rs.getString("estado"), rs.getString("numero_residencial"), rs.getString("segmento")));
                 restaurante.setTelefone(rs.getString("telefone"));
-                restaurante.setSegmento(rs.getString("segmento"));
             }
         } catch (SQLException e) {
             e.printStackTrace();

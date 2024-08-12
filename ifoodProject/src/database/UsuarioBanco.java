@@ -126,17 +126,19 @@ public class UsuarioBanco {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                cliente = new Cliente(
-                    rs.getInt("id"),
-                    rs.getString("nome"),
-                    rs.getDate("data_nascimento").toLocalDate(),
-                    rs.getLong("telefone"),
-                    rs.getString("rua") + ", " + rs.getString("cidade") + ", " + rs.getString("estado") + ", " + rs.getString("cep"),
-                    rs.getLong("cpf"),
-                    rs.getString("email"),
-                    rs.getString("senha")
-                );
+                cliente = new Cliente();
+                cliente.setNome(rs.getString("nome"));
+                cliente.setEmail(rs.getString("email"));
+                cliente.setSenha(rs.getString("senha"));
+                cliente.setDataNascimento(rs.getDate("data_nascimento").toLocalDate());
+                cliente.setTelefone(Long.parseLong(rs.getString("telefone")));
+                cliente.setCpf(Long.parseLong(rs.getString("cpf")));
+                cliente.setEndereco(rs.getString("rua") + " " + rs.getString("numero_residencial"));
+                
+            } else {
+                System.out.println("Usuário não encontrado");
             }
+            
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("Erro ao obter cliente por ID", e);

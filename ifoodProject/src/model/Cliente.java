@@ -8,19 +8,9 @@ public class Cliente extends Usuario {
     private String endereco;
     private String nome;
     private Long cpf;
+    private Integer id;
 
-    public Cliente(String email, String senha, LocalDate dataNascimento, Long telefone, 
-    		String endereco, String nome, Long cpf) {
-        super(email, senha);
-        this.dataNascimento = dataNascimento;
-        this.telefone = telefone;
-        this.endereco = endereco;
-        this.nome = nome;
-        this.cpf = cpf;
-    }
-    
-    public Cliente(int id, String nome, LocalDate dataNascimento, Long telefone, 
-    		String endereco, Long cpf, String email, String senha) {
+    public Cliente(String email, String senha, LocalDate dataNascimento, Long telefone, String endereco, String nome, Long cpf) {
         super(email, senha);
         this.dataNascimento = dataNascimento;
         this.telefone = telefone;
@@ -73,7 +63,15 @@ public class Cliente extends Usuario {
         this.cpf = cpf;
     }
 
-    public void editarDados(LocalDate dataNascimento, Long telefone, String endereco, String nome, Long cpf) {
+    public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public void editarDados(LocalDate dataNascimento, Long telefone, String endereco, String nome, Long cpf) {
         setDataNascimento(dataNascimento);
         setTelefone(telefone);
         setEndereco(endereco);
@@ -92,4 +90,3 @@ public class Cliente extends Usuario {
                "\nCPF: " + cpf;
     }
 }
-

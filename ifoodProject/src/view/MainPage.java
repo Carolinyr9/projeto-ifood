@@ -2,6 +2,11 @@ package view;
 
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Shell;
+
+import model.Cliente;
+import model.Entregador;
+import model.Funcionario;
+
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.layout.FormData;
@@ -15,6 +20,46 @@ public class MainPage {
 
 	protected Shell shell;
 	private LocalResourceManager localResourceManager;
+	private String tipoUsuario;
+	private Funcionario funcionario;
+	private Entregador entregador;
+	private Cliente cliente;
+	
+	public String getTipoUsuario() {
+		return tipoUsuario;
+	}
+
+	public void setTipoUsuario(String tipoUsuario) {
+		this.tipoUsuario = tipoUsuario;
+	}
+
+	public Funcionario getFuncionario() {
+		return funcionario;
+	}
+
+	public void setFuncionario(Funcionario funcionario) {
+		this.funcionario = funcionario;
+	}
+
+	public Entregador getEntregador() {
+		return entregador;
+	}
+
+	public void setEntregador(Entregador entregador) {
+		this.entregador = entregador;
+	}
+
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+
+	private void createResourceManager() {
+		localResourceManager = new LocalResourceManager(JFaceResources.getResources(),shell);
+	}
 	
 	public static void main(String[] args) {
 		try {
@@ -29,9 +74,6 @@ public class MainPage {
 		Display display = Display.getDefault();
 		createContents();
 		
-//		showHomeCliente();
-		showHomeFuncionario();
-//		showHomeEntregador();
 		shell.open();
 		shell.layout();
 		while (!shell.isDisposed()) {
@@ -39,6 +81,19 @@ public class MainPage {
 				display.sleep();
 			}
 		}
+	}
+	
+	public void showLogin() {
+		clearShell();
+		Login login = new Login(shell, this);
+		FormData fd_login = new FormData();
+		fd_login.left = new FormAttachment(0);
+		fd_login.right = new FormAttachment(100);
+		fd_login.top = new FormAttachment(0);
+		fd_login.bottom = new FormAttachment(90, 83); 
+		login.setLayoutData(fd_login);
+		setTipoUsuario(login.getTipoUsuario());
+		shell.layout();
 	}
 
 	private void showMenuBarClient() {
@@ -52,9 +107,9 @@ public class MainPage {
 	}
 	
 
-	private void showHomeCliente() {
+	public void showHomeCliente(Cliente cliente) {
 		clearShell();
-		HomeCliente home = new HomeCliente(shell, this);
+		HomeCliente home = new HomeCliente(shell, this, cliente);
 		FormData fd_homeFuncionario = new FormData();
 		fd_homeFuncionario.top = new FormAttachment(0);
 		fd_homeFuncionario.left = new FormAttachment(0);
@@ -65,31 +120,31 @@ public class MainPage {
 		shell.layout();
 	}
 
-	private void showClienteInfoProduct() {
-		clearShell();
-		ClienteInfoProduct infoProduct = new ClienteInfoProduct(shell, this);
-		FormData fd_infoProduct = new FormData();
-		fd_infoProduct.left = new FormAttachment(0);
-		fd_infoProduct.right = new FormAttachment(100);
-		fd_infoProduct.top = new FormAttachment(0);
-		fd_infoProduct.bottom = new FormAttachment(90, -5); 
-		infoProduct.setLayoutData(fd_infoProduct);
-		showMenuBarClient();
-		shell.layout();
-	}
+	public void showClienteInfoProduct(Integer idProduto, Integer idPrato, Cliente cliente) {
+        clearShell();
+        ClienteInfoProduct infoProduct = new ClienteInfoProduct(shell, this, idProduto, idPrato, cliente);
+        FormData fd_infoProduct = new FormData();
+        fd_infoProduct.left = new FormAttachment(0);
+        fd_infoProduct.right = new FormAttachment(100);
+        fd_infoProduct.top = new FormAttachment(0);
+        fd_infoProduct.bottom = new FormAttachment(90, -5); 
+        infoProduct.setLayoutData(fd_infoProduct);
+        showMenuBarClient();
+        shell.layout();
+    }
 	
-	public void showClienteCarrinho() {
-		clearShell();
-		ClienteCarrinho carrinho = new ClienteCarrinho(shell, this);
-		FormData fd_carrinho = new FormData();
-		fd_carrinho.left = new FormAttachment(0);
-		fd_carrinho.right = new FormAttachment(100);
-		fd_carrinho.top = new FormAttachment(0);
-		fd_carrinho.bottom = new FormAttachment(90, -5); 
-		carrinho.setLayoutData(fd_carrinho);
-		showMenuBarFuncionario();
-		shell.layout();
-	}
+	public void showClienteCarrinho(Cliente cliente) {
+        clearShell();
+        ClienteCarrinho carrinho = new ClienteCarrinho(shell, this, cliente);
+        FormData fd_carrinho = new FormData();
+        fd_carrinho.left = new FormAttachment(0);
+        fd_carrinho.right = new FormAttachment(100);
+        fd_carrinho.top = new FormAttachment(0);
+        fd_carrinho.bottom = new FormAttachment(90, -5); 
+        carrinho.setLayoutData(fd_carrinho);
+        showMenuBarFuncionario();
+        shell.layout();
+    }
 	
 	public void showClientePedidos() {
 		clearShell();
@@ -104,9 +159,9 @@ public class MainPage {
 		shell.layout();
 	}
 	
-	public void showClienteInfoPedido() {
+	public void showClienteInfoPedido(Integer id_pedido) {
 		clearShell();
-		ClienteInfoPedido clienteInfoPedido = new ClienteInfoPedido(shell, this);
+		ClienteInfoPedido clienteInfoPedido = new ClienteInfoPedido(shell, this, id_pedido);
 		FormData fd_clienteInfoPedido = new FormData();
 		fd_clienteInfoPedido.left = new FormAttachment(0);
 		fd_clienteInfoPedido.right = new FormAttachment(100);
@@ -127,7 +182,7 @@ public class MainPage {
 		menuBarFuncionario.setLayoutData(fd_menuBarFuncionario);
 	}
 	
-	private void showHomeFuncionario() {
+	public void showHomeFuncionario() {
 		clearShell();
 		HomeFuncionario homeFuncionario = new HomeFuncionario(shell, this);
 		FormData fd_homeFuncionario = new FormData();
@@ -138,7 +193,19 @@ public class MainPage {
 		homeFuncionario.setLayoutData(fd_homeFuncionario);
 		showMenuBarFuncionario();
 		shell.layout();
-		
+	}
+	
+	public void showFuncionarioItemCardapioInfo(Integer idProduct, String tipo) {
+		clearShell();
+		FuncionarioItemCardapioInfo itemCardapioInfo = new FuncionarioItemCardapioInfo(shell, this, idProduct, tipo);
+		FormData fd_itemCardapioInfo = new FormData();
+		fd_itemCardapioInfo.left = new FormAttachment(0);
+		fd_itemCardapioInfo.right = new FormAttachment(100);
+		fd_itemCardapioInfo.top = new FormAttachment(0);
+		fd_itemCardapioInfo.bottom = new FormAttachment(90, -5); 
+		itemCardapioInfo.setLayoutData(fd_itemCardapioInfo);
+		showMenuBarFuncionario();
+		shell.layout();
 	}
 	
 	private void showFuncionarioCardapioInfo() {
@@ -154,9 +221,9 @@ public class MainPage {
 		shell.layout();
 	}
 	
-	public void showFuncionarioItemCardapioInfo(Integer idProduct, String tipo) {
+	public void showFuncionarioProdutoInfo() {
 		clearShell();
-		FuncionarioItemCardapioInfo itemCardapioInfo = new FuncionarioItemCardapioInfo(shell, this, idProduct, tipo);
+		FuncionarioProdutoInfo itemCardapioInfo = new FuncionarioProdutoInfo(shell, this);
 		FormData fd_itemCardapioInfo = new FormData();
 		fd_itemCardapioInfo.left = new FormAttachment(0);
 		fd_itemCardapioInfo.right = new FormAttachment(100);
@@ -242,7 +309,7 @@ public class MainPage {
 		menuBarEntregador.setLayoutData(fd_menuBarEntregador);
 	}
 	
-	private void showHomeEntregador() {
+	public void showHomeEntregador() {
 		clearShell();
 		HomeEntregador homeEntregador = new HomeEntregador(shell, this);
 		FormData fd_homeEntregador = new FormData();
@@ -281,28 +348,35 @@ public class MainPage {
 		shell.layout();
 	}
 	
-	private void showUsuarioPerfil() {
+	public void showUsuarioPerfil() {
 		clearShell();
-		UsuarioPerfil usuarioPerfil = new UsuarioPerfil(shell, this);
+		UsuarioPerfil usuarioPerfil = new UsuarioPerfil(shell, this, this.funcionario, this.entregador, this.cliente);
 		FormData fd_usuarioPerfil = new FormData();
 		fd_usuarioPerfil.left = new FormAttachment(0);
 		fd_usuarioPerfil.right = new FormAttachment(100);
 		fd_usuarioPerfil.top = new FormAttachment(0);
 		fd_usuarioPerfil.bottom = new FormAttachment(90, -5); 
 		usuarioPerfil.setLayoutData(fd_usuarioPerfil);
+		if(tipoUsuario == "funcionario") {
+			showMenuBarFuncionario();
+		}else if(tipoUsuario == "entregador") {
+			showMenuBarEntregador();
+		}else if(tipoUsuario == "cliente") {
+			showMenuBarClient();
+		}
 		shell.layout();
 	}
 	
 	protected void navigateToScreenCliente(int screenNumber) {
 		switch (screenNumber) {
 		case 1:
-			showHomeCliente();
+			showHomeCliente(cliente);
 			break;
 		case 2:
-			showClienteInfoProduct();
+//			showClienteInfoProduct();
 			break;
 		case 3:
-			showClienteCarrinho();
+			showClienteCarrinho(this.cliente);
 			break;
 		case 4:
 			showUsuarioPerfil();
@@ -311,10 +385,10 @@ public class MainPage {
 			showClientePedidos();
 			break;
 		case 6:
-			showClienteInfoPedido();
+//			showClienteInfoPedido();
 			break;
 		default:
-			showHomeCliente();
+			showHomeCliente(cliente);
 			break;
 		}
 	}
@@ -363,7 +437,7 @@ public class MainPage {
 			showEntregadorInfoPedido();
 			break;
 		case 4:
-//			showEntregadorInfoPedido();
+			showEntregadorInfoPedido();
 			break;
 		case 5:
 			showUsuarioPerfil();
@@ -382,6 +456,8 @@ public class MainPage {
 		shell.setSize(482, 874);
 		shell.setText("Início");
 		shell.setLayout(new FormLayout());
+		
+		showLogin();
 	}
 
 	private void clearShell() {
@@ -390,9 +466,5 @@ public class MainPage {
 				control.dispose();
 			}
 		}
-	}
-
-	private void createResourceManager() {
-		localResourceManager = new LocalResourceManager(JFaceResources.getResources(),shell);
 	}
 }

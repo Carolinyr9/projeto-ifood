@@ -71,16 +71,14 @@ public class FuncionarioPedidos extends Composite {
         pedidoBanco = new PedidoBanco(dbConnection);
         
         int id = 1;
-        List<Pedido> pedidosFeitos = pedidoBanco.listarPratosProdutosPorRestaurante(id);
+        List<Pedido> pedidosFeitos = pedidoBanco.listarPedidosPorRestaurante(id);
         
         for (Pedido ped : pedidosFeitos) {
-        	System.out.println(ped.getId());
             if (ped.getStatus() != null) {
             	
                 switch (ped.getStatus().getStatus()) {
                     case ABERTO:
                         pedidoAberto.add(ped);
-                        System.out.println(ped);
                         break;
                     case EM_PREPARO:
                         pedidoEmPreparo.add(ped);

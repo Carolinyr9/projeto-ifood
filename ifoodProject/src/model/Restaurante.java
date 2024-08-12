@@ -138,4 +138,3 @@ public class Restaurante extends Usuario {
                "\nSenha: " + getSenha();
     }
 }
-

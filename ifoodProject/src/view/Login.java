@@ -29,20 +29,13 @@ import org.eclipse.swt.widgets.MessageBox;
 public class Login extends Composite {
 
     private LocalResourceManager localResourceManager;
-    private Label lbLogin;
-    private Composite composite;
-    private Label lblEmail;
-    private Text textEmail;
-    private ViewForm viewForm;
-    private Label lblSenha;
-    private Text txtSenha;
-    private Button btnSouEntregador;
-    private Label lblSaudacao;
     private UsuarioBanco banco;
     private Usuario usuario;
     private Funcionario funcionarioLogado = null;
     private Cliente clienteLogado = null;
     private Entregador entregadorLogado = null;
+    private String tipoUsuario;
+    private DBConnection connection = new DBConnection();
 
     public Funcionario getFuncionarioLogado() {
 		return funcionarioLogado;
@@ -72,17 +65,24 @@ public class Login extends Composite {
 		this.entregadorLogado = entregadorLogado;
 	}
 
-	    
-    public Login(Composite parent, DBConnection connection, Cliente cliente, Funcionario funcionario, Entregador entregador) {
+    public String getTipoUsuario() {
+		return tipoUsuario;
+	}
+
+	public void setTipoUsuario(String tipoUsuario) {
+		this.tipoUsuario = tipoUsuario;
+	}
+
+	public Login(Composite parent, MainPage mainpage) {
         super(parent, SWT.NONE);
         createResourceManager();
         setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
         setSize(482, 780);
         setLayout(new FormLayout());
         
-        this.clienteLogado = cliente;
-        this.funcionarioLogado = funcionario;
-        this.entregadorLogado = entregador;
+        this.clienteLogado = new Cliente();
+        this.funcionarioLogado = new Funcionario();
+        this.entregadorLogado = new Entregador();
         
         Composite composite = new Composite(this, SWT.NONE);
         FormData fd_composite = new FormData();
@@ -156,7 +156,7 @@ public class Login extends Composite {
         FormData fd_btnSouFuncionario = new FormData();
         fd_btnSouFuncionario.left = new FormAttachment(lblEmail, 0, SWT.LEFT);
         btnSouFuncionario.setLayoutData(fd_btnSouFuncionario);
-        btnSouFuncionario.setText("Sou funcionário");
+        btnSouFuncionario.setText("Sou funcionÃ¡rio");
         
         Button btnSouEntregador = new Button(this, SWT.RADIO);
         btnSouEntregador.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
@@ -180,29 +180,47 @@ public class Login extends Composite {
         btnConcluir.setText("Concluir");
         fd_btnConcluir.top = new FormAttachment(btnSouFuncionario, 22);
         btnConcluir.addSelectionListener(new SelectionAdapter() {
-            @Override
+            
             public void widgetSelected(SelectionEvent e) {
                 usuario = new Usuario(textEmail.getText(), txtSenha.getText());
                 banco = new UsuarioBanco(connection);
                 
                 if (btnSouCliente.getSelection()) {
                     clienteLogado = banco.logarCliente(usuario);
+                    if(clienteLogado != null) {
+                    	tipoUsuario = "cliente";
+                    	mainpage.setTipoUsuario(tipoUsuario);
+                    	mainpage.setCliente(clienteLogado);
+                    	mainpage.showHomeCliente(clienteLogado);
+                    }
                 
                 } else if (btnSouFuncionario.getSelection()) {
                     funcionarioLogado = banco.logarFuncionario(usuario);
                     
+                    if(funcionarioLogado != null) {
+                    	tipoUsuario = "funcionario";
+                    	mainpage.setTipoUsuario(tipoUsuario);
+                    	mainpage.setFuncionario(funcionarioLogado);
+                    	mainpage.showHomeFuncionario();
+                    }
+                    
+                    
                 } else if (btnSouEntregador.getSelection()) {
                     entregadorLogado = banco.logarEntregador(usuario);
                    
+                    if(clienteLogado != null) {
+                    	tipoUsuario = "entregador";
+                    	mainpage.setTipoUsuario(tipoUsuario);
+                    	mainpage.setEntregador(entregadorLogado);
+                    	mainpage.showHomeEntregador();
+                    }
                 }
                 
                 if (clienteLogado == null && funcionarioLogado == null && entregadorLogado == null) {
                     MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
                     messageBox.setMessage("Falha no login. Verifique suas credenciais.");
                     messageBox.open();
-                } else {
-                    copiar(clienteLogado, funcionarioLogado, entregadorLogado);
-                }
+                } 
             }
         });
         
@@ -213,37 +231,11 @@ public class Login extends Composite {
         fd_lblSaudacao.top = new FormAttachment(composite, 58);
         fd_lblSaudacao.right = new FormAttachment(100, -149);
         lblSaudacao.setLayoutData(fd_lblSaudacao);
-        lblSaudacao.setText("Bem vindo ao ______!");
+        lblSaudacao.setText("Bem vindo!");
     }
 
     private void createResourceManager() {
         localResourceManager = new LocalResourceManager(JFaceResources.getResources(), this);
     }
-    
-    private void copiar(Cliente cliente, Funcionario funcionario, Entregador entregador) {
-        if (cliente != null) {
-            clienteLogado.setNome(cliente.getNome());
-            clienteLogado.setEmail(cliente.getEmail());
-            clienteLogado.setSenha(cliente.getSenha());
-            clienteLogado.setDataNascimento(cliente.getDataNascimento());
-            clienteLogado.setTelefone(cliente.getTelefone());
-            clienteLogado.setCpf(cliente.getCpf());
-            clienteLogado.setEndereco(cliente.getEndereco());
-        } else if (funcionario != null) {
-            funcionarioLogado.setNome(funcionario.getNome());
-            funcionarioLogado.setEmail(funcionario.getEmail());
-            funcionarioLogado.setSenha(funcionario.getSenha());
-            funcionarioLogado.setCpf(funcionario.getCpf());
-            funcionarioLogado.setCodFuncional(funcionario.getCodFuncional());
-            funcionarioLogado.setIdRestaurante(funcionario.getIdRestaurante());
-        } else if (entregador != null) {
-            entregadorLogado.setNome(entregador.getNome());
-            entregadorLogado.setEmail(entregador.getEmail());
-            entregadorLogado.setSenha(entregador.getSenha());
-            entregadorLogado.setDataNascimento(entregador.getDataNascimento());
-            entregadorLogado.setCpf(entregador.getCpf());
-            entregadorLogado.setCnh(entregador.getCnh());
-            entregadorLogado.setEndereco(entregador.getEndereco());
-        }
-    }
+       
 }

@@ -8,6 +8,16 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+
+import database.CarrinhoBanco;
+import database.DBConnection;
+import database.PratoBanco;
+import database.ProdutoBanco;
+import model.Carrinho;
+import model.Cliente;
+import model.Prato;
+import model.Produto;
+
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.FormData;
@@ -25,73 +35,25 @@ import org.eclipse.jface.resource.FontDescriptor;
 
 public class ClienteInfoProduct extends Composite {
 
-	private Image productBannerImage;
+	private Composite compositeBtnAddCarinho;
+	private Label lblAddProductBag;
+	private Label lblAdicionarAoCarrinho;
+	private Label lblItemTitulo;
+	private Label lblItemPreco;
+	private Label lblItemDescricao;
+	private Label lblIngredientes;
 	private Image backArrowImage;
 	private Image addProductBagImage;
-	private String nomeProduto;
-	private Integer idRestaurante;
-	private Double preco;
-	private String descricao;
-	private Integer idProduto;
-	private String nomeRestaurante;
-	private String enderecoRestaurante;
+	private Image productBannerImage;
+	private Cliente cliente = null;
+	private Produto produto = null;
+	private Prato prato = null;
+	private PratoBanco bancoPrato;
+	private ProdutoBanco bancoProduto;
+	private Carrinho carrinho;
+	private CarrinhoBanco bancoCarrinho;
+	private DBConnection connection = new DBConnection();
 	
-	public String getNomeProduto() {
-		return nomeProduto;
-	}
-
-	public void setNomeProduto(String nomeProduto) {
-		this.nomeProduto = nomeProduto;
-	}
-
-	public Double getPreco() {
-		return preco;
-	}
-
-	public void setPreco(Double preco) {
-		this.preco = preco;
-	}
-
-	public String getDescricao() {
-		return descricao;
-	}
-
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
-
-	public Integer getIdProduto() {
-		return idProduto;
-	}
-
-	public void setIdProduto(Integer idProduto) {
-		this.idProduto = idProduto;
-	}
-	
-	public Integer getIdRestaurante() {
-		return idRestaurante;
-	}
-
-	public void setIdRestaurante(Integer idRestaurante) {
-		this.idRestaurante = idRestaurante;
-	}
-
-	public String getNomeRestaurante() {
-		return nomeRestaurante;
-	}
-
-	public void setNomeRestaurante(String nomeRestaurante) {
-		this.nomeRestaurante = nomeRestaurante;
-	}
-
-	public String getEnderecoRestaurante() {
-		return enderecoRestaurante;
-	}
-
-	public void setEnderecoRestaurante(String enderecoRestaurante) {
-		this.enderecoRestaurante = enderecoRestaurante;
-	}
-
 	private LocalResourceManager localResourceManager;
 	
 	private Display display = getDisplay();
@@ -99,19 +61,86 @@ public class ClienteInfoProduct extends Composite {
     private void createResourceManager() {
 		localResourceManager = new LocalResourceManager(JFaceResources.getResources(), this);
 	}
+    
+    private void getProdutoPrato(Integer idProduto, Integer idPrato) {
+        if(idPrato != 0) {
+            bancoPrato = new PratoBanco(connection);
+            prato = bancoPrato.visualizarPrato(idPrato);
 
-	public ClienteInfoProduct(Composite parent, MainPage mainPage) {
+        }else if(idProduto != 0) {
+            bancoProduto = new ProdutoBanco(connection);
+            produto = bancoProduto.visualizarProduto(idProduto);
+        }
+    }
+    
+    private void setLabels(Prato prato, Produto produto, MainPage mainPage, Cliente cliente) {
+    	if(prato != null) {
+    		lblItemTitulo.setText(prato.getNome());
+    		lblItemDescricao.setText(prato.getDescricao());
+    		lblItemPreco.setText("R$" + prato.getPreco());
+    		lblIngredientes.setText(prato.getIngredientes());
+    		System.out.println("Id: " + cliente.getId());
+    		carrinho = new Carrinho(cliente.getId(),prato.getIdRestaurante(), prato.getIdPrato(),0,prato.getPreco(),cliente.getEndereco(),1);
+    		compositeBtnAddCarinho.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseDown(MouseEvent e) {
+                    bancoCarrinho.criarCarrinho(carrinho);
+                	mainPage.showClienteCarrinho(cliente);
+                }
+            });
+    		lblAddProductBag.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseDown(MouseEvent e) {
+                	bancoCarrinho.criarCarrinho(carrinho);
+                	mainPage.showClienteCarrinho(cliente);
+                }
+            });
+    		lblAdicionarAoCarrinho.addMouseListener(new MouseAdapter() {
+    	        @Override
+    	        public void mouseDown(MouseEvent e) {
+    	        	bancoCarrinho.criarCarrinho(carrinho);
+    	        	mainPage.showClienteCarrinho(cliente);
+    	        }
+    	    });
+    	}else {
+    		lblItemTitulo.setText(produto.getNome());
+    		lblItemDescricao.setText(produto.getDescricao());
+    		lblItemPreco.setText("R$" + produto.getPreco());
+    		carrinho = new Carrinho(cliente.getId(),produto.getIdRestaurante(), 0,produto.getIdProduto(),produto.getPreco(),cliente.getEndereco(),1);
+    		compositeBtnAddCarinho.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseDown(MouseEvent e) {
+                    bancoCarrinho.criarCarrinho(carrinho);
+                	mainPage.showClienteCarrinho(cliente);
+                }
+            });
+    		compositeBtnAddCarinho.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseDown(MouseEvent e) {
+                	bancoCarrinho.criarCarrinho(carrinho);
+                    mainPage.showClienteCarrinho(cliente);
+                }
+            });
+    		lblAdicionarAoCarrinho.addMouseListener(new MouseAdapter() {
+    	        @Override
+    	        public void mouseDown(MouseEvent e) {
+    	        	bancoCarrinho.criarCarrinho(carrinho);
+    	        	mainPage.showClienteCarrinho(cliente);
+    	        }
+    	    });
+    	}
+    }
+
+	public ClienteInfoProduct(Composite parent, MainPage mainPage, Integer idProduto, Integer idPrato, Cliente clienteLogado) {
 		super(parent, SWT.NONE);
 		createResourceManager();
 		setLayout(new FormLayout());
 		setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));		
-
-		setNomeProduto("Pizza Meia Margherita Meio Frango");
-		setPreco(65.66);
-		setDescricao("A \"Pizza Meia Margherita Meio Frango com Azeitonas Pretas e Tomate\" da Boa Pizza combina o clássico sabor da Margherita com a ousadia do frango.");
-		setIdProduto(1);
-		setNomeRestaurante("Pizzaria Manoel");
-		setEnderecoRestaurante("Rua das flores, 79");
+		
+		getProdutoPrato(idProduto, idPrato);
+		bancoCarrinho = new CarrinhoBanco(connection);
+		cliente = clienteLogado;
+		System.out.println(cliente.getNome());
 		
 		productBannerImage = new Image(display, "./src/assets/images/productBanner.png");
 		backArrowImage = new Image(display, "./src/assets/images/backArrow.png");
@@ -141,7 +170,7 @@ public class ClienteInfoProduct extends Composite {
         compositeItemInfo.setLayoutData(fd_compositeItemInfo);
         new Label(compositeItemInfo, SWT.NONE);
 
-        Label lblItemTitulo = new Label(compositeItemInfo, SWT.NONE);
+        lblItemTitulo = new Label(compositeItemInfo, SWT.NONE);
         lblItemTitulo.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
         lblItemTitulo.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(19, 41, 61))));
         lblItemTitulo.setAlignment(SWT.CENTER);
@@ -149,9 +178,8 @@ public class ClienteInfoProduct extends Composite {
         GridData gd_lblItemTitulo = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
         gd_lblItemTitulo.widthHint = 459;
         lblItemTitulo.setLayoutData(gd_lblItemTitulo);
-        lblItemTitulo.setText(getNomeProduto());
 
-        Label lblItemPreco = new Label(compositeItemInfo, SWT.NONE);
+        lblItemPreco = new Label(compositeItemInfo, SWT.NONE);
         lblItemPreco.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
         lblItemPreco.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 100, 148))));
         lblItemPreco.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 13, SWT.NORMAL)));
@@ -160,9 +188,8 @@ public class ClienteInfoProduct extends Composite {
         gd_lblItemPreco.heightHint = 42;
         gd_lblItemPreco.widthHint = 455;
         lblItemPreco.setLayoutData(gd_lblItemPreco);
-        lblItemPreco.setText("R$" + getPreco().toString());
 
-        Label lblItemDescricao = new Label(compositeItemInfo, SWT.WRAP | SWT.CENTER);
+        lblItemDescricao = new Label(compositeItemInfo, SWT.WRAP | SWT.CENTER);
         lblItemDescricao.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
         lblItemDescricao.setAlignment(SWT.CENTER);
         GridData gd_lblItemDescricao = new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1);
@@ -170,21 +197,25 @@ public class ClienteInfoProduct extends Composite {
         gd_lblItemDescricao.widthHint = 355;
         lblItemDescricao.setLayoutData(gd_lblItemDescricao);
         lblItemDescricao.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-        lblItemDescricao.setText(getDescricao());
+        
+        if(idPrato != 0) {
+        	lblIngredientes = new Label(compositeItemInfo, SWT.WRAP | SWT.CENTER);
+            lblIngredientes.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
+            lblIngredientes.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
+            lblIngredientes.setAlignment(SWT.CENTER);
+            GridData gd_lblIngredientes = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+            gd_lblIngredientes.heightHint = 122;
+            gd_lblIngredientes.widthHint = 404;
+            lblIngredientes.setLayoutData(gd_lblIngredientes);
+        }
 
-        Composite compositeBtnAddCarinho = new Composite(compositeItemInfo, SWT.NONE);
+        compositeBtnAddCarinho = new Composite(compositeItemInfo, SWT.NONE);
         compositeBtnAddCarinho.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
         compositeBtnAddCarinho.setLayout(new GridLayout(2, false));
         GridData gd_compositeBtnAddCarinho = new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1);
         gd_compositeBtnAddCarinho.heightHint = 60;
         gd_compositeBtnAddCarinho.widthHint = 272;
         compositeBtnAddCarinho.setLayoutData(gd_compositeBtnAddCarinho);
-        compositeBtnAddCarinho.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseDown(MouseEvent e) {
-                mainPage.showClienteCarrinho();
-            }
-        });
         compositeBtnAddCarinho.addPaintListener(new PaintListener() {
             @Override
             public void paintControl(PaintEvent e) {
@@ -199,8 +230,8 @@ public class ClienteInfoProduct extends Composite {
                 gc.drawRoundRectangle(0, 0, bounds.width - 1, bounds.height - 1, arcWidth, arcHeight);
             }
         });
-
-        Label lblAddProductBag = new Label(compositeBtnAddCarinho, SWT.NONE);
+                
+        lblAddProductBag = new Label(compositeBtnAddCarinho, SWT.NONE);
         lblAddProductBag.setAlignment(SWT.CENTER);
         lblAddProductBag.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 100, 148))));
         GridData gd_lblAddProductBag = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
@@ -208,27 +239,17 @@ public class ClienteInfoProduct extends Composite {
         gd_lblAddProductBag.heightHint = 49;
         lblAddProductBag.setLayoutData(gd_lblAddProductBag);
         lblAddProductBag.setImage(addProductBagImage);
-        lblAddProductBag.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseDown(MouseEvent e) {
-            	mainPage.showClienteCarrinho();
-            }
-        });
-
-        Label lblAdicionarAoCarrinho = new Label(compositeBtnAddCarinho, SWT.NONE);
-        lblAdicionarAoCarrinho.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-        lblAdicionarAoCarrinho.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.BOLD)));
-        lblAdicionarAoCarrinho.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 100, 148))));
-        GridData gd_lblAdicionarAoCarrinho = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-        gd_lblAdicionarAoCarrinho.widthHint = 189;
-        lblAdicionarAoCarrinho.setLayoutData(gd_lblAdicionarAoCarrinho);
-        lblAdicionarAoCarrinho.setText("Adicionar ao carrinho");
-        lblAdicionarAoCarrinho.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseDown(MouseEvent e) {
-            	mainPage.showClienteCarrinho();
-            }
-        });
+        
+                        
+	    lblAdicionarAoCarrinho = new Label(compositeBtnAddCarinho, SWT.NONE);
+	    lblAdicionarAoCarrinho.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
+	    lblAdicionarAoCarrinho.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.BOLD)));
+	    lblAdicionarAoCarrinho.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 100, 148))));
+	    GridData gd_lblAdicionarAoCarrinho = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+	    gd_lblAdicionarAoCarrinho.widthHint = 189;
+	    lblAdicionarAoCarrinho.setLayoutData(gd_lblAdicionarAoCarrinho);
+	    lblAdicionarAoCarrinho.setText("Adicionar ao carrinho");
+	    
 
         btnBack.addPaintListener(new PaintListener() {
             @Override
@@ -242,5 +263,7 @@ public class ClienteInfoProduct extends Composite {
             	mainPage.navigateToScreenCliente(1);
             }
         });
+        
+        setLabels(prato, produto, mainPage, clienteLogado);
 	}
 }

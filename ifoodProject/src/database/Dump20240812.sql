@@ -36,7 +36,7 @@ CREATE TABLE `cardapio` (
 
 LOCK TABLES `cardapio` WRITE;
 /*!40000 ALTER TABLE `cardapio` DISABLE KEYS */;
-INSERT INTO `cardapio` VALUES (3703,1,0,0),(7498,1,0,0),(885,1,0,0),(7912,1,0,NULL),(2979,1,1946,NULL),(5134,1,3857,NULL),(8061,1,NULL,9081),(5128,1,4035,NULL),(8272,1,5393,NULL),(3061,1,6019,NULL),(7234,1,NULL,6972),(4091,1,NULL,2735),(1,1,6530,NULL),(1,1,8558,NULL);
+INSERT INTO `cardapio` VALUES (3703,1,0,0),(7498,1,0,0),(885,1,0,0),(7912,1,0,NULL),(2979,1,1946,NULL),(5134,1,3857,NULL),(8061,1,NULL,9081),(5128,1,4035,NULL),(8272,1,5393,NULL),(3061,1,6019,NULL),(7234,1,NULL,6972),(4091,1,NULL,2735),(1,1,6530,NULL),(1,1,8558,NULL),(1,1,NULL,837),(1,1,NULL,6864),(1,1,6883,NULL),(1,1,3494,NULL);
 /*!40000 ALTER TABLE `cardapio` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -123,7 +123,7 @@ CREATE TABLE `prato` (
 
 LOCK TABLES `prato` WRITE;
 /*!40000 ALTER TABLE `prato` DISABLE KEYS */;
-INSERT INTO `prato` VALUES (6019,'Pizza Quatro Queijos','Nossa pizza é deliciosaa','Queijo provolone, mussarela, parmesão e gorgonzola, além do creme de leite ou requeijão e manteiga',54.55,1),(6530,'Pizza Frango com Requeijão','Nossa pizza de calabresa combina uma crocante base com molho de tomate, queijo derretido, calabresa apimentada e cebolas, finalizada com orégano.','Frango desfiado, requeijão e queijo',67.99,1),(8558,'Pizza Calabresa','Nossa pizza de calabresa combina uma crocante base com molho de tomate, queijo derretido, calabresa apimentada e cebolas, finalizada com orégano.','Linguiça calabresa e queijo mussarela',49.99,1);
+INSERT INTO `prato` VALUES (6019,'Pizza Quatro Queijos','Nossa pizza é deliciosa','Queijo provolone, mussarela, parmesão e gorgonzola, além do creme de leite ou requeijão e manteiga',54.55,1),(6530,'Pizza Frango com Requeijão','Nossa pizza de calabresa combina uma crocante base com molho de tomate, queijo derretido, calabresa apimentada e cebolas, finalizada com orégano.','Frango desfiado, requeijão e queijo',67.99,1),(8558,'Pizza Calabresa','Nossa pizza de calabresa combina uma crocante base com molho de tomate, queijo derretido, calabresa apimentada e cebolas, finalizada com orégano.','Linguiça calabresa e queijo mussarela.',49.95,1),(6883,'Fogazza de Bauru','Nossa fogazza é maravilhosa!','Presunto, queijo e oregano',35.00,1),(3494,'Fogazza de Frango','Nossa fogazza é maravilhosa!','Frango, requeijão, queijo e oregano',35.00,1);
 /*!40000 ALTER TABLE `prato` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -149,7 +149,7 @@ CREATE TABLE `produto` (
 
 LOCK TABLES `produto` WRITE;
 /*!40000 ALTER TABLE `produto` DISABLE KEYS */;
-INSERT INTO `produto` VALUES (6972,'Refrigerante Coca-cola - 350ml','Lata de coca delícia!',9.50,1),(2735,'Refrigerante Fanta Uva - 350ml','Refrigerante Fanta Uva em lata',7.50,1);
+INSERT INTO `produto` VALUES (6972,'Refrigerante Coca-cola - 350ml','Lata de coca delícia!',9.50,1),(2735,'Refrigerante Fanta Uva - 350ml','Refrigerante Fanta Uva em lata',7.50,1),(837,'Suco de uva - 500ml','Suco de uva caseiro',10.90,1),(6864,'Suco de Laranja - 1L','Suco de laranja natural',19.70,1);
 /*!40000 ALTER TABLE `produto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -180,6 +180,7 @@ CREATE TABLE `restaurante` (
 
 LOCK TABLES `restaurante` WRITE;
 /*!40000 ALTER TABLE `restaurante` DISABLE KEYS */;
+INSERT INTO `restaurante` VALUES (1,'Pizzaria','787654654','2154654','Rua da Luz','Guarulhos','SP','348','956354654','Pizzaria'),(1,'Pizzaria','787654654','2154654','Rua da Luz','Guarulhos','SP','348','956354654','Pizzaria');
 /*!40000 ALTER TABLE `restaurante` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -191,23 +192,24 @@ DROP TABLE IF EXISTS `usuario`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `usuario` (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `nome` varchar(100) CHARACTER SET utf16 COLLATE utf16_bin NOT NULL,
-  `data_nascimento` date NOT NULL,
-  `telefone` varchar(15) CHARACTER SET utf16 COLLATE utf16_bin NOT NULL,
-  `rua` varchar(255) CHARACTER SET utf16 COLLATE utf16_bin NOT NULL,
-  `cidade` varchar(100) CHARACTER SET utf16 COLLATE utf16_bin NOT NULL,
-  `estado` varchar(2) CHARACTER SET utf16 COLLATE utf16_bin NOT NULL,
-  `cep` varchar(8) CHARACTER SET utf16 COLLATE utf16_bin NOT NULL,
-  `numero_residencial` varchar(10) CHARACTER SET utf16 COLLATE utf16_bin NOT NULL,
-  `cpf` varchar(11) CHARACTER SET utf16 COLLATE utf16_bin NOT NULL,
-  `cnh` varchar(11) CHARACTER SET utf16 COLLATE utf16_bin NOT NULL,
-  `codigo_funcional` varchar(20) CHARACTER SET utf16 COLLATE utf16_bin NOT NULL,
+  `data_nascimento` date DEFAULT NULL,
+  `telefone` varchar(15) CHARACTER SET utf16 COLLATE utf16_bin DEFAULT NULL,
+  `rua` varchar(255) CHARACTER SET utf16 COLLATE utf16_bin DEFAULT NULL,
+  `cidade` varchar(100) CHARACTER SET utf16 COLLATE utf16_bin DEFAULT NULL,
+  `estado` varchar(2) CHARACTER SET utf16 COLLATE utf16_bin DEFAULT NULL,
+  `cep` varchar(8) CHARACTER SET utf16 COLLATE utf16_bin DEFAULT NULL,
+  `numero_residencial` varchar(10) CHARACTER SET utf16 COLLATE utf16_bin DEFAULT NULL,
+  `cpf` varchar(11) CHARACTER SET utf16 COLLATE utf16_bin DEFAULT NULL,
+  `cnh` varchar(11) CHARACTER SET utf16 COLLATE utf16_bin DEFAULT NULL,
+  `codigo_funcional` varchar(20) CHARACTER SET utf16 COLLATE utf16_bin DEFAULT NULL,
   `email` varchar(100) CHARACTER SET utf16 COLLATE utf16_bin NOT NULL,
   `senha` varchar(255) CHARACTER SET utf16 COLLATE utf16_bin NOT NULL,
   `tipo` enum('administrador','cliente','entregador','funcionario') CHARACTER SET utf16 COLLATE utf16_bin NOT NULL,
-  `id_restaurante` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `id_restaurante` int DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -216,6 +218,7 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
+INSERT INTO `usuario` VALUES (1,'Jéssica',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'0101010101',NULL,'001','jessica@email.com','1234','funcionario',1),(2,'Carol','2025-09-20','1194444444','Rua das Flores','Sãp Paulo','SP','0707070','78','4676412366',NULL,NULL,'carol@email.com','1234','cliente',NULL),(3,'Adriely','2004-01-01','119888888','Rua Saturno','Guarulhos','SP','0780569','52','5656230500','12345678',NULL,'adriely@email.com','1234','entregador',NULL);
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -645,10 +648,10 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `Inserir_Carrinho`(IN `v_id_prato` INT, IN `v_id_produto` INT, IN `v_id_restaurante` INT, IN `v_preco` DOUBLE, IN `v_endereco_entrega` VARCHAR(255), IN `v_quantidade` INT)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Inserir_Carrinho`(IN v_id_cliente INT, IN v_id_prato INT, IN v_id_produto INT, IN v_id_restaurante INT, IN v_preco DOUBLE, IN v_endereco_entrega VARCHAR(255), IN v_quantidade INT)
 BEGIN
-    INSERT INTO carrinho (id_prato, id_produto, id_restaurante, preco, endereco_entrega, quantidade) 
-    VALUES (v_id_prato, v_id_produto, v_id_restaurante, v_preco, v_endereco_entrega, v_quantidade);
+    INSERT INTO carrinho (id_cliente, id_prato, id_produto, id_restaurante, preco, endereco_entrega, quantidade) 
+    VALUES (v_id_cliente, v_id_prato, v_id_produto, v_id_restaurante, v_preco, v_endereco_entrega, v_quantidade);
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -760,7 +763,6 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `inserir_pedido`(
-	 IN p_id INT,
     IN p_ids_produtos JSON,
     IN p_ids_pratos JSON,
     IN p_status ENUM('aberto', 'em preparo', 'a caminho', 'entregue', 'cancelado'),
@@ -772,7 +774,6 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `inserir_pedido`(
 )
 BEGIN
     INSERT INTO pedidos (
-		id,
         ids_produtos, 
         ids_pratos, 
         status, 
@@ -784,7 +785,6 @@ BEGIN
         data_pedido,
         data_atualizacao
     ) VALUES (
-		p_id,
         p_ids_produtos, 
         p_ids_pratos, 
         p_status, 
@@ -1072,6 +1072,48 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `Logar_Cliente` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Logar_Cliente`(IN `v_email` VARCHAR(255), IN `v_senha` VARCHAR(255))
+BEGIN
+    SELECT id, nome, data_nascimento, telefone, rua, cidade, estado, cep, numero_residencial, cpf, email, senha
+    FROM usuario
+    WHERE email = v_email AND senha = v_senha;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `Logar_Entregador` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Logar_Entregador`(IN `v_email` VARCHAR(255), IN `v_senha` VARCHAR(255))
+BEGIN
+    SELECT id, nome, data_nascimento, telefone, rua, cidade, estado, cep, numero_residencial, cpf, cnh, email, senha
+    FROM usuario
+    WHERE email = v_email AND senha = v_senha;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `Logar_Funcionario` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -1311,4 +1353,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-08-10 18:21:55
+-- Dump completed on 2024-08-12 18:37:33
