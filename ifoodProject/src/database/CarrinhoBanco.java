@@ -18,15 +18,16 @@ public class CarrinhoBanco {
 
     // Método para criar um novo item no carrinho
     public void criarCarrinho(Carrinho carrinho) {
-        String sql = "CALL Inserir_Carrinho(?, ?, ?, ?, ?, ?)";
+        String sql = "CALL Inserir_Carrinho(?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
-            stmt.setInt(1, carrinho.getIdPrato());
-            stmt.setInt(2, carrinho.getIdProduto());
-            stmt.setInt(3, carrinho.getIdRestaurante());
-            stmt.setDouble(4, carrinho.getPreco());
-            stmt.setString(5, carrinho.getEnderecoEntrega());
-            stmt.setInt(6, carrinho.getQuantidade());
+        	stmt.setInt(1, carrinho.getIdCliente());
+            stmt.setInt(2, carrinho.getIdPrato());
+            stmt.setInt(3, carrinho.getIdProduto());
+            stmt.setInt(4, carrinho.getIdRestaurante());
+            stmt.setDouble(5, carrinho.getPreco());
+            stmt.setString(6, carrinho.getEnderecoEntrega());
+            stmt.setInt(7, carrinho.getQuantidade());
 
             stmt.execute();
         } catch (SQLException e) {
@@ -38,24 +39,24 @@ public class CarrinhoBanco {
     // Método para visualizar um item do carrinho pelo ID
     public List<Carrinho> visualizarCarrinho(int id) {
         String sql = "CALL Selecionar_Carrinho(?)";
-        List<Carrinho> listaCarrinhos = null;
-        //Carrinho carrinho = null;
+        List<Carrinho> listaCarrinhos = new ArrayList<Carrinho>();
 
         try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
 
-            listaCarrinhos = new ArrayList<Carrinho>();
-            int i = 0;
-            while(rs.next()) {
-            	listaCarrinhos.get(i).setId(rs.getInt("id"));
-            	listaCarrinhos.get(i).setIdPrato(rs.getInt("id_prato"));
-            	listaCarrinhos.get(i).setIdProduto(rs.getInt("id_produto"));
-            	listaCarrinhos.get(i).setIdRestaurante(rs.getInt("id_restaurante"));
-            	listaCarrinhos.get(i).setPreco(rs.getDouble("preco"));
-            	listaCarrinhos.get(i).setEnderecoEntrega(rs.getString("endereco_entrega"));
-            	listaCarrinhos.get(i).setQuantidade(rs.getInt("quantidade"));
-            	i++;
+            while (rs.next()) {
+                Carrinho carrinho = new Carrinho();
+                carrinho.setId(rs.getInt("id"));
+                carrinho.setIdCliente(rs.getInt("id_cliente"));
+                carrinho.setIdPrato(rs.getInt("id_prato"));
+                carrinho.setIdProduto(rs.getInt("id_produto"));
+                carrinho.setIdRestaurante(rs.getInt("id_restaurante"));
+                carrinho.setPreco(rs.getDouble("preco"));
+                carrinho.setEnderecoEntrega(rs.getString("endereco_entrega"));
+                carrinho.setQuantidade(rs.getInt("quantidade"));
+                
+                listaCarrinhos.add(carrinho);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -63,6 +64,7 @@ public class CarrinhoBanco {
         }
         return listaCarrinhos;
     }
+
 
     // Método para excluir um item do carrinho
     public void excluirCarrinho(int id) {
@@ -76,4 +78,5 @@ public class CarrinhoBanco {
             throw new RuntimeException("Erro ao excluir item do carrinho", e);
         }
     }
+    
 }
