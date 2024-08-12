@@ -9,11 +9,14 @@ import org.eclipse.swt.widgets.Label;
 
 import database.DBConnection;
 import database.RestauranteBanco;
+import model.Cliente;
 import model.Restaurante;
 
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -46,7 +49,7 @@ public class HomeCliente extends Composite {
         localResourceManager = new LocalResourceManager(JFaceResources.getResources(), this);
     }
 
-    public HomeCliente(Composite parent, MainPage mainPage) {
+    public HomeCliente(Composite parent, MainPage mainPage, Cliente cliente) {
         super(parent, SWT.NONE);
         createResourceManager();
         setSize(482, 836);
@@ -156,8 +159,8 @@ public class HomeCliente extends Composite {
         	rl_compositePratos.spacing = 15;
         	compositePratos.setLayout(rl_compositePratos);
         	
-        	Integer idpratoInteger = 0;
-        	Integer idprodutoInteger = 1;
+        	Integer idpratoInteger = 1;
+        	Integer idprodutoInteger = 0;
         	
         	/*Aqui é feito um loop para exibir os itens da sessão do cardápio
         	 * Add a função que irá pegar os dados*/
@@ -166,6 +169,12 @@ public class HomeCliente extends Composite {
         		compositeItem1.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
         		compositeItem1.setLayout(new GridLayout(1, false));
         		compositeItem1.setLayoutData(new RowData(147, 212));
+        		compositeItem1.addMouseListener(new MouseAdapter() {
+        	        @Override
+        	        public void mouseDown(MouseEvent e) {
+        	        	mainPage.showClienteInfoProduct(idprodutoInteger, idpratoInteger, cliente);
+        	        }
+        	    });
         		
         		Button buttonImagePizza1 = new Button(compositeItem1, SWT.NONE);
         		GridData gd_buttonImagePizza1 = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
@@ -173,8 +182,7 @@ public class HomeCliente extends Composite {
         		buttonImagePizza1.addSelectionListener(new SelectionAdapter() {
         			@Override
         			public void widgetSelected(SelectionEvent e) {
-        				/*Aqui é chamada a função para ir para a tela ClienteInfoProduct*/
-        				mainPage.showClienteInfoProduct(idprodutoInteger, idpratoInteger);
+        				mainPage.showClienteInfoProduct(idprodutoInteger, idpratoInteger, cliente);
         			}
         		});
         		buttonImagePizza1.addPaintListener( new PaintListener() {
@@ -200,6 +208,12 @@ public class HomeCliente extends Composite {
         		lblTituloItem1.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(19, 41, 61))));
             	/*Colocar aqui o nome do item, dentro de setText()*/
         		lblTituloItem1.setText("Pizza de Peperonni");
+        		lblTituloItem1.addMouseListener(new MouseAdapter() {
+        	        @Override
+        	        public void mouseDown(MouseEvent e) {
+        	        	mainPage.showClienteInfoProduct(idprodutoInteger, idpratoInteger, cliente);
+        	        }
+        	    });
         		
         		Label lblPrecoItem1 = new Label(compositeItem1, SWT.NONE);
         		GridData gd_lblPrecoItem1 = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
@@ -212,6 +226,12 @@ public class HomeCliente extends Composite {
         		lblPrecoItem1.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.BOLD)));
             	/*Colocar aqui o preço do item, dentro de setText()*/
         		lblPrecoItem1.setText("R$46,99");
+        		lblPrecoItem1.addMouseListener(new MouseAdapter() {
+        	        @Override
+        	        public void mouseDown(MouseEvent e) {
+        	        	mainPage.showClienteInfoProduct(idprodutoInteger, idpratoInteger, cliente);
+        	        }
+        	    });
         	}
         	scrolledComposite_1.setContent(compositePratos);
         	scrolledComposite_1.setMinSize(compositePratos.computeSize(SWT.DEFAULT, SWT.DEFAULT));
