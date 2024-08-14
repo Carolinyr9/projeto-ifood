@@ -19,12 +19,4 @@ public class Pagamento {
 	public void setFormaPagamento(String formaPagamento) {
 		this.formaPagamento = formaPagamento;
 	}
-	
-	public void adicionarFormaDePagamento() {
-		
-	}
-	
-	public void editarFormaDePagamento() {
-		
-	}
 }

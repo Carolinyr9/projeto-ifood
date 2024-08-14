@@ -40,7 +40,6 @@ public class StatusPedido {
         setHorarioStatus(LocalDateTime.now());
     }
     
-
     @Override
     public String toString() {
         return "StatusPedido{" +

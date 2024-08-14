@@ -2,9 +2,9 @@ package model;
 
 import java.util.List;
 
-public class Restaurante extends Usuario {
+public class Restaurante extends Usuario implements ModelInterface {
     private String cnpj;
-    private int id;
+    private Integer id;
     private String nome;
     private String telefone;
     private Endereco endereco;
@@ -36,11 +36,11 @@ public class Restaurante extends Usuario {
         return nome;
     }
 
-    public int getId() {
+    public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

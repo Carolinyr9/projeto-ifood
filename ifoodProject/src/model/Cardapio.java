@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Cardapio {
-    private int id;
+public class Cardapio implements ModelInterface {
+    private Integer id;
     private int id_restaurante;
     private List<ItemCardapio> itensCardapio;
     private List<ItemCardapio> produtosCardapios;
@@ -34,11 +34,11 @@ public class Cardapio {
         this.itensCardapio = itensCardapio;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -49,14 +49,6 @@ public class Cardapio {
             textoCardapio.append("\n").append(itemCardapio.toString());
         }
         return textoCardapio.toString();
-    }
-    
-    public void adicionarItem(ItemCardapio item) {
-        itensCardapio.add(item);
-    }
-    
-    public void removerItem(int id) {
-        itensCardapio.remove(id);
     }
 }
 

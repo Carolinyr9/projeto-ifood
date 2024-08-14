@@ -57,18 +57,6 @@ public class Funcionario extends Usuario {
 	public void setCpf(Long cpf) {
 		this.cpf = cpf;
 	}
-
-	public void aceitarPedido() {
-		
-	}
-	
-	public void editarDados(String email, String senha, String codFuncional, String nome, Long cpf) {
-		setCodFuncional(codFuncional);
-	}
-	
-	public String consultarDados() {
-		return toString();
-	}
 	
 	public String toString() {
 		return "Funcionario [codFuncional=" + codFuncional + ", nome=" + nome + ", cpf=" + cpf + "]";
