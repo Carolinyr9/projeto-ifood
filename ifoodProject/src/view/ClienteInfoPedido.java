@@ -12,8 +12,11 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -159,7 +162,6 @@ public class ClienteInfoPedido extends Composite {
 		lblNumpedido.setText("Pedido #" + pedido.getId().toString());
 		Label labelHorizontalRestauranteInfo = new Label(compositeRestauranteInfo, SWT.SEPARATOR | SWT.HORIZONTAL);
 		labelHorizontalRestauranteInfo.setBounds(10, 112, 360, 2);
-		
 		
 		ProgressBar progressBar = new ProgressBar(compositeRestauranteInfo, SWT.NONE);
 		progressBar.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 255, 64))));
@@ -340,6 +342,43 @@ public class ClienteInfoPedido extends Composite {
 		lblPrecoTotalFinal.setAlignment(SWT.RIGHT);
 		lblPrecoTotalFinal.setBounds(226, 111, 134, 23);
 		lblPrecoTotalFinal.setText(String.format("R$ %.2f", precoFinal));
+		new Label(compositeInfoPedido, SWT.NONE);
+		
+		Button btnCancelarPedido = new Button(compositeInfoPedido, SWT.NONE);
+		btnCancelarPedido.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				PedidoBanco banco = new PedidoBanco(connection);
+				
+				banco.atualizarStatusProduto(pedido.getId(), "cancelado");
+			}
+		});
+		btnCancelarPedido.setText("Cancelar pedido");
+		btnCancelarPedido.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
+		btnCancelarPedido.setBounds(149, 203, 111, 35);
+		btnCancelarPedido.addPaintListener(new PaintListener() {
+			@Override
+			public void paintControl(PaintEvent e) {
+				GC gc = e.gc;
+				Rectangle rect = btnCancelarPedido.getBounds();
+				Color blue = new Color(getDisplay(), new RGB(19, 41, 61));
+				Color white = new Color(getDisplay(), new RGB(255, 255, 255));
+				
+				gc.setAntialias(SWT.ON);
+				gc.setBackground(blue);
+				gc.fillRoundRectangle(0, 0, rect.width, rect.height, 20, 20);
+				
+				gc.setForeground(white);
+				gc.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
+				String text = "Cancelar pedido";
+				int textWidth = gc.textExtent(text).x;
+				int textHeight = gc.textExtent(text).y;
+				gc.drawText(text, (rect.width - textWidth) / 2, (rect.height - textHeight) / 2, true);
+				
+				blue.dispose();
+				white.dispose();
+			}
+		});
 		
 		scrolledComposite.setContent(compositeInfoPedido);
 		scrolledComposite.setMinSize(compositeInfoPedido.computeSize(SWT.DEFAULT, SWT.DEFAULT));

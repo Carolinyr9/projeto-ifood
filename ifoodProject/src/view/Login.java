@@ -25,6 +25,7 @@ import org.eclipse.jface.resource.FontDescriptor;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.Shell;
 
 public class Login extends Composite {
 
@@ -181,46 +182,56 @@ public class Login extends Composite {
         fd_btnConcluir.top = new FormAttachment(btnSouFuncionario, 22);
         btnConcluir.addSelectionListener(new SelectionAdapter() {
             
+            private Shell shell;
+
+            @Override
             public void widgetSelected(SelectionEvent e) {
                 usuario = new Usuario(textEmail.getText(), txtSenha.getText());
                 banco = new UsuarioBanco(connection);
                 
+                Shell shell = getShell();
+                
                 if (btnSouCliente.getSelection()) {
                     clienteLogado = banco.logarCliente(usuario);
-                    if(clienteLogado != null) {
-                    	tipoUsuario = "cliente";
-                    	mainpage.setTipoUsuario(tipoUsuario);
-                    	mainpage.setCliente(clienteLogado);
-                    	mainpage.showHomeCliente(clienteLogado);
+                    if(clienteLogado != null && clienteLogado.getNome() != null ) {
+                        tipoUsuario = "cliente";
+                        mainpage.setTipoUsuario(tipoUsuario);
+                        mainpage.setCliente(clienteLogado);
+                        mainpage.showHomeCliente(clienteLogado);
+                    } else {
+                        MessageBox messageBox = new MessageBox(shell, SWT.ICON_ERROR | SWT.OK);
+                        messageBox.setMessage("Falha no login. Verifique suas credenciais.");
+                        messageBox.open();
                     }
-                
+
                 } else if (btnSouFuncionario.getSelection()) {
                     funcionarioLogado = banco.logarFuncionario(usuario);
-                    
-                    if(funcionarioLogado != null) {
-                    	tipoUsuario = "funcionario";
-                    	mainpage.setTipoUsuario(tipoUsuario);
-                    	mainpage.setFuncionario(funcionarioLogado);
-                    	mainpage.showHomeFuncionario();
+
+                    if(funcionarioLogado != null && funcionarioLogado.getNome() != null) {
+                        tipoUsuario = "funcionario";
+                        mainpage.setTipoUsuario(tipoUsuario);
+                        mainpage.setFuncionario(funcionarioLogado);
+                        mainpage.showHomeFuncionario();
+                    } else {
+                        MessageBox messageBox = new MessageBox(shell, SWT.ICON_ERROR | SWT.OK);
+                        messageBox.setMessage("Falha no login. Verifique suas credenciais.");
+                        messageBox.open();
                     }
-                    
-                    
+
                 } else if (btnSouEntregador.getSelection()) {
                     entregadorLogado = banco.logarEntregador(usuario);
-                   
-                    if(clienteLogado != null) {
-                    	tipoUsuario = "entregador";
-                    	mainpage.setTipoUsuario(tipoUsuario);
-                    	mainpage.setEntregador(entregadorLogado);
-                    	mainpage.showHomeEntregador();
+
+                    if(entregadorLogado != null && entregadorLogado.getNome() != null) {
+                        tipoUsuario = "entregador";
+                        mainpage.setTipoUsuario(tipoUsuario);
+                        mainpage.setEntregador(entregadorLogado);
+                        mainpage.showHomeEntregador();
+                    } else {
+                        MessageBox messageBox = new MessageBox(shell, SWT.ICON_ERROR | SWT.OK);
+                        messageBox.setMessage("Falha no login. Verifique suas credenciais.");
+                        messageBox.open();
                     }
                 }
-                
-                if (clienteLogado == null && funcionarioLogado == null && entregadorLogado == null) {
-                    MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
-                    messageBox.setMessage("Falha no login. Verifique suas credenciais.");
-                    messageBox.open();
-                } 
             }
         });
         

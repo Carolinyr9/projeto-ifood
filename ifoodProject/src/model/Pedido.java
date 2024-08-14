@@ -90,7 +90,7 @@ public class Pedido {
     }
 
     public LocalDateTime getEstimativaTempo() {
-        return estimativaTempo;
+        return dataPedido.plusHours(1);
     }
 
     public void setEstimativaTempo(LocalDateTime estimativaTempo) {

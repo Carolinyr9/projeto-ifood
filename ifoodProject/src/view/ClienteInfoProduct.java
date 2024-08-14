@@ -52,7 +52,7 @@ public class ClienteInfoProduct extends Composite {
 	private ProdutoBanco bancoProduto;
 	private Carrinho carrinho;
 	private CarrinhoBanco bancoCarrinho;
-	private DBConnection connection = new DBConnection("localhost", "3307", "bddelivery", "root", "2024Root.");
+	private DBConnection connection = new DBConnection();
 	
 	private LocalResourceManager localResourceManager;
 	

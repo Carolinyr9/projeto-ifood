@@ -86,7 +86,7 @@ public class FuncionarioCardapioInfo extends Composite {
 		}
 		
 		arrowIcon = new Image(display, "./src/assets/images/backArrow.png");
-		nomeCardapio = "Pizzas";
+		nomeCardapio = "Pratos";
 		
 		Composite compositeHeader = new Composite(this, SWT.NONE);
 		compositeHeader.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 100, 145))));

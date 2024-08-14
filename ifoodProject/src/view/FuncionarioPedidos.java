@@ -205,9 +205,7 @@ public class FuncionarioPedidos extends Composite {
             List<ItemCardapio> itensCardapio = obterItensCardapio(pedido);
 
             Label lblNomeCliente = new Label(compositeCardPedido, SWT.NONE);
-            // ARRUMAR + + restaurante.getNome()
-            // NÃO FUNCIONA PQ AINDA N TEMOS RESTAURANTES CADASTRADOS
-            lblNomeCliente.setText("Carol" ); // ARRUMAR e colocar + restauranter.getNome()
+            lblNomeCliente.setText(cliente.getNome());
             lblNomeCliente.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
             lblNomeCliente.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
             lblNomeCliente.setBounds(22, 53, 380, 25);
