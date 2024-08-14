@@ -71,15 +71,6 @@ public class Cliente extends Usuario {
 		this.id = id;
 	}
 
-	public void editarDados(LocalDate dataNascimento, Long telefone, String endereco, String nome, Long cpf) {
-        setDataNascimento(dataNascimento);
-        setTelefone(telefone);
-        setEndereco(endereco);
-        setNome(nome);
-        setCpf(cpf);
-        System.out.println("Dados do cliente editados: " + this.toString());
-    }
-
     @Override
     public String toString() {
         return "Cliente" +

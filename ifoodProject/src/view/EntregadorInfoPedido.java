@@ -180,10 +180,12 @@ public class EntregadorInfoPedido extends Composite {
 		switch (pedido.getStatus().getStatus()) {
 			case ABERTO:
 				progressBar.setSelection(0);
+				lblMudarStatusPara.setText("");
 				btnMudarStatus.setText("");
 				break;
 			case EM_PREPARO:
 				progressBar.setSelection(1);
+				lblMudarStatusPara.setText("");
 				btnMudarStatus.setText("");
 				break;
 			case A_CAMINHO:
@@ -193,16 +195,19 @@ public class EntregadorInfoPedido extends Composite {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
 						PedidoBanco banco = new PedidoBanco(connection);
-						
 						banco.atualizarStatusProduto(pedido.getId(), "entregue");
 					}
 				});
 				break;
 			case ENTREGUE:
 				progressBar.setSelection(3);
+				lblMudarStatusPara.setText("");
+				btnMudarStatus.setText("");
 				break;
 			case CANCELADO:
 				progressBar.setSelection(0);
+				lblMudarStatusPara.setText("");
+				btnMudarStatus.setText("");
 				break;
 		}
 		

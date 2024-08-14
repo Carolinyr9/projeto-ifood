@@ -72,25 +72,6 @@ public class Entregador extends Usuario {
         this.cnh = cnh;
     }
 
-    public void aceitarEntrega() {
-        // Implementar lógica para aceitar entrega
-        System.out.println("Entrega aceita pelo entregador");
-    }
-
-    public void escolherRota() {
-        // Implementar lógica para escolher a rota
-        System.out.println("Rota escolhida pelo entregador");
-    }
-
-    public void editarDados(LocalDate dataNascimento, Long telefone, String nome, Long cpf, Long cnh) {
-        setDataNascimento(dataNascimento);
-        setTelefone(telefone);
-        setNome(nome);
-        setCpf(cpf);
-        setCnh(cnh);
-        System.out.println("Dados do entregador editados: " + this.toString());
-    }
-
     @Override
     public String toString() {
         return "Entregador" +

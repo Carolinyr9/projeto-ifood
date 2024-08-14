@@ -1,7 +1,7 @@
 package model;
 
-public class Carrinho {
-	private int id;
+public class Carrinho implements ModelInterface {
+	private Integer id;
 	private int idCliente;
 	private int idRestaurante;
 	private int idPrato;
@@ -78,7 +78,7 @@ public class Carrinho {
 		this.idProduto = idProduto;
 	}
 	
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
@@ -88,5 +88,9 @@ public class Carrinho {
 
 	public void setIdCliente(int idCliente) {
 		this.idCliente = idCliente;
+	}
+	
+	public void setId(Integer id) {
+		this.id = id;		
 	}
 }

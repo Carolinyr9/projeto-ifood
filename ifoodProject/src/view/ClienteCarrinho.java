@@ -330,7 +330,7 @@ public class ClienteCarrinho extends Composite {
         			pedido.setPrecoTotal(total);
         			pedido.setIdCarrinho(carrinhoLista.get(0).getId());
         			pedido.setDataPedido(dataAgora);
-        			pedido.setEstimativaTempo(dataAgora.plusMinutes(30));
+        			pedido.setEstimativaTempo(dataAgora.plusHours(1));
         			
         			bancoPedido.criarPedido(pedido);
         			for(int i = 0; i < carrinhoLista.size(); i++) {

@@ -29,8 +29,4 @@ public class Avaliacao {
 	public void setComentário(String comentário) {
 		this.comentário = comentário;
 	}
-	
-	public void adicionarAvaliacao() {
-		
-	}
 }

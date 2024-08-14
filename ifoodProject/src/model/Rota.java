@@ -39,11 +39,6 @@ public class Rota {
         this.estimativaTempo = estimativaTempo;
     }
 
-    public void calcularRota() {
-        // Implementar lógica de cálculo de rota usando uma API
-        System.out.println("Calculando rota para latitude: " + latitude + ", longitude: " + longitude);
-    }
-
     @Override
     public String toString() {
         return "Rota" +

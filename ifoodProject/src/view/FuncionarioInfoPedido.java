@@ -204,13 +204,18 @@ public class FuncionarioInfoPedido extends Composite {
 				break;
 			case A_CAMINHO:
 				progressBar.setSelection(2);
-				btnMudarStatus.setText("Entregue");
+				lblMudarStatusPara.setText("");
+				btnMudarStatus.setText("");
 				break;
 			case ENTREGUE:
 				progressBar.setSelection(3);
+				lblMudarStatusPara.setText("");
+				btnMudarStatus.setText("");
 				break;
 			case CANCELADO:
 				progressBar.setSelection(0);
+				lblMudarStatusPara.setText("");
+				btnMudarStatus.setText("");
 				break;
 		}
 		

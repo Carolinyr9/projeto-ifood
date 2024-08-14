@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 
-public class Pedido {
+public class Pedido implements ModelInterface {
     private Integer id;
     private List<Integer> idsPratos;
     private List<Integer> idsProdutos;
@@ -90,7 +90,7 @@ public class Pedido {
     }
 
     public LocalDateTime getEstimativaTempo() {
-        return estimativaTempo;
+        return dataPedido.plusHours(1);
     }
 
     public void setEstimativaTempo(LocalDateTime estimativaTempo) {
