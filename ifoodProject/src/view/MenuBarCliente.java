@@ -60,7 +60,7 @@ public class MenuBarCliente extends Composite {
 		btnImageHome.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				mainPage.navigateToScreenCliente(1);
+				mainPage.showHomeCliente();
 			}
 		});
 		btnImageHome.addPaintListener( new PaintListener() {
@@ -80,7 +80,7 @@ public class MenuBarCliente extends Composite {
 		btnImagePedidos.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				mainPage.navigateToScreenCliente(5);
+				mainPage.showClientePedidos();
 			}
 		});
 		btnImagePedidos.addPaintListener( new PaintListener() {
@@ -100,10 +100,9 @@ public class MenuBarCliente extends Composite {
 		btnImagePerson.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				mainPage.navigateToScreenCliente(4);
+				mainPage.showUsuarioPerfil();
 			}
 		});
-		/* Função para adicionar imagem e tirar bordas */
 		btnImagePerson.addPaintListener( new PaintListener() {
 			  @Override
 			  public void paintControl( PaintEvent event ) {
@@ -124,7 +123,6 @@ public class MenuBarCliente extends Composite {
 				mainPage.showClienteCarrinho(cliente);
 			}
 		});
-		/* Função para adicionar imagem e tirar bordas */
 		btnImageBag.addPaintListener( new PaintListener() {
 			  @Override
 			  public void paintControl( PaintEvent event ) {

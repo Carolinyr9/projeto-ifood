@@ -96,7 +96,7 @@ public class MainPage {
 		shell.layout();
 	}
 
-	private void showMenuBarClient() {
+	public void showMenuBarClient() {
 		MenuBarCliente menuBarClient = new MenuBarCliente(shell, this, this.cliente);
 		FormData fd_menuBarClient = new FormData();
 		fd_menuBarClient.bottom = new FormAttachment(100);
@@ -107,12 +107,12 @@ public class MainPage {
 	}
 	
 
-	public void showHomeCliente(Cliente cliente) {
+	public void showHomeCliente() {
 		System.out.println(cliente.getNome());
 		System.out.println(cliente.getId());
 		System.out.println(cliente.getNome());
 		clearShell();
-		HomeCliente home = new HomeCliente(shell, this, cliente);
+		HomeCliente home = new HomeCliente(shell, this, this.cliente);
 		FormData fd_homeFuncionario = new FormData();
 		fd_homeFuncionario.top = new FormAttachment(0);
 		fd_homeFuncionario.left = new FormAttachment(0);
@@ -175,7 +175,7 @@ public class MainPage {
 		shell.layout();
 	}
 
-	private void showMenuBarFuncionario() {
+	public void showMenuBarFuncionario() {
 		MenuBarFuncionario menuBarFuncionario = new MenuBarFuncionario(shell, this);
 		FormData fd_menuBarFuncionario = new FormData();
 		fd_menuBarFuncionario.bottom = new FormAttachment(100);
@@ -198,9 +198,9 @@ public class MainPage {
 		shell.layout();
 	}
 	
-	public void showFuncionarioCardapioInfo() {
+	public void showFuncionarioCardapioInfo(String nomeSessaoCardapio) {
 		clearShell();
-		FuncionarioCardapioInfo cadCardapioInfo = new FuncionarioCardapioInfo(shell, this);
+		FuncionarioCardapioInfo cadCardapioInfo = new FuncionarioCardapioInfo(shell, this, nomeSessaoCardapio);
 		FormData fd_cadapioInfo = new FormData();
 		fd_cadapioInfo.left = new FormAttachment(0);
 		fd_cadapioInfo.right = new FormAttachment(100);
@@ -211,9 +211,9 @@ public class MainPage {
 		shell.layout();
 	}
 	
-	public void showFuncionarioItemCardapioInfo(Integer idProduct, String tipo) {
+	public void showFuncionarioItemCardapioInfo(Integer idProduct, String tipo, String nomeSessaoCardapio) {
 		clearShell();
-		FuncionarioItemCardapioInfo itemCardapioInfo = new FuncionarioItemCardapioInfo(shell, this, idProduct, tipo);
+		FuncionarioItemCardapioInfo itemCardapioInfo = new FuncionarioItemCardapioInfo(shell, this, idProduct, tipo, nomeSessaoCardapio);
 		FormData fd_itemCardapioInfo = new FormData();
 		fd_itemCardapioInfo.left = new FormAttachment(0);
 		fd_itemCardapioInfo.right = new FormAttachment(100);
@@ -224,20 +224,7 @@ public class MainPage {
 		shell.layout();
 	}
 	
-	public void showFuncionarioProdutoInfo() {
-		clearShell();
-		FuncionarioProdutoInfo itemCardapioInfo = new FuncionarioProdutoInfo(shell, this);
-		FormData fd_itemCardapioInfo = new FormData();
-		fd_itemCardapioInfo.left = new FormAttachment(0);
-		fd_itemCardapioInfo.right = new FormAttachment(100);
-		fd_itemCardapioInfo.top = new FormAttachment(0);
-		fd_itemCardapioInfo.bottom = new FormAttachment(90, -5); 
-		itemCardapioInfo.setLayoutData(fd_itemCardapioInfo);
-		showMenuBarFuncionario();
-		shell.layout();
-	}
-	
-	private void showFuncionarioCadPratoCardapio() {
+	public void showFuncionarioCadPratoCardapio() {
 		clearShell();
 		FuncionarioCadPratoCardapio cadPratoCardapio = new FuncionarioCadPratoCardapio(shell, this);
 		FormData fd_cadPratoCardapio = new FormData();
@@ -250,7 +237,7 @@ public class MainPage {
 		shell.layout();
 	}
 	
-	private void showFuncionarioCadProdutoCardapio() {
+	public void showFuncionarioCadProdutoCardapio() {
 		clearShell();
 		FuncionarioCadProdutoCardapio cadProdutoCardapio = new FuncionarioCadProdutoCardapio(shell, this);
 		FormData fd_cadProdutoCardapio = new FormData();
@@ -263,7 +250,7 @@ public class MainPage {
 		shell.layout();
 	}
 	
-	private void showFuncionarioCadCardapio() {
+	public void showFuncionarioCadCardapio() {
 		clearShell();
 		FuncionarioCadCardapio cadCardapio = new FuncionarioCadCardapio(shell, this);
 		FormData fd_cadCardapio = new FormData();
@@ -276,7 +263,7 @@ public class MainPage {
 		shell.layout();
 	}
 	
-	private void showFuncionarioPedidos() {
+	public void showFuncionarioPedidos() {
 		clearShell();
 		FuncionarioPedidos pedidosFuncionario = new FuncionarioPedidos(shell, this);
 		FormData fd_pedidosFuncionario = new FormData();
@@ -302,7 +289,7 @@ public class MainPage {
 		shell.layout();
 	}
 	
-	private void showMenuBarEntregador() {
+	public void showMenuBarEntregador() {
 		MenuBarEntregador menuBarEntregador = new MenuBarEntregador(shell, this);
 		FormData fd_menuBarEntregador = new FormData();
 		fd_menuBarEntregador.bottom = new FormAttachment(100);
@@ -325,7 +312,7 @@ public class MainPage {
 		shell.layout();
 	}
 	
-	private void showEntregadorPedidos() {
+	public void showEntregadorPedidos() {
 		clearShell();
 		EntregadorPedidos entregadorPedidos = new EntregadorPedidos(shell, this);
 		FormData fd_entregadorPedidos = new FormData();
@@ -368,89 +355,7 @@ public class MainPage {
 			showMenuBarClient();
 		}
 		shell.layout();
-	}
-	
-	protected void navigateToScreenCliente(int screenNumber) {
-		switch (screenNumber) {
-		case 1:
-			showHomeCliente(cliente);
-			break;
-		case 2:
-
-			break;
-		case 3:
-			showClienteCarrinho(this.cliente);
-			break;
-		case 4:
-			showUsuarioPerfil();
-			break;
-		case 5:
-			showClientePedidos();
-			break;
-		case 6:
-//			showClienteInfoPedido();
-			break;
-		default:
-			showHomeCliente(cliente);
-			break;
-		}
-	}
-	
-	protected void navigateToScreenFuncionario(int screenNumber) {
-		switch (screenNumber) {
-		case 1:
-			showHomeFuncionario();
-			break;
-		case 2:
-			showFuncionarioCardapioInfo();
-			break;
-		case 3:
-			showFuncionarioPedidos();
-			break;
-		case 4:
-			showFuncionarioCadPratoCardapio();
-			break;
-		case 5:
-			showFuncionarioCadCardapio();
-			break;
-		case 6:
-//			showFuncionarioInfoPedido();
-			break;
-		case 7:
-			showUsuarioPerfil();
-			break;
-		case 8:
-			showFuncionarioCadProdutoCardapio();
-			break;
-		default:
-			showHomeFuncionario();
-			break;
-		}
-	}
-	
-	protected void navigateToScreenEntregador(int screenNumber) {
-		switch (screenNumber) {
-		case 1:
-			showHomeEntregador();
-			break;
-		case 2:
-			showEntregadorPedidos();
-			break;
-		case 3:
-//			showEntregadorInfoPedido();
-			break;
-		case 4:
-//			showEntregadorInfoPedido();
-			break;
-		case 5:
-			showUsuarioPerfil();
-			break;
-		default:
-			showHomeEntregador();
-			break;
-		}
-	}
-	
+	}	
 
 	protected void createContents() {
 		shell = new Shell();

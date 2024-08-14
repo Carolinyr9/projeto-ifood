@@ -61,8 +61,7 @@ public class MenuBarEntregador extends Composite {
 		btnImageRestaurant.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				System.out.println("Lupa clicada");
-				mainPage.navigateToScreenEntregador(1);
+				mainPage.showHomeEntregador();
 			}
 		});
 		btnImageRestaurant.addPaintListener( new PaintListener() {
@@ -82,7 +81,6 @@ public class MenuBarEntregador extends Composite {
 		btnImageStar.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				System.out.println("House clicada");
 			}
 		});
 		btnImageStar.addPaintListener( new PaintListener() {
@@ -102,7 +100,7 @@ public class MenuBarEntregador extends Composite {
 		btnImageTasks.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				mainPage.navigateToScreenEntregador(2);
+				mainPage.showEntregadorPedidos();
 			}
 		});
 		btnImageTasks.addPaintListener( new PaintListener() {
@@ -122,7 +120,7 @@ public class MenuBarEntregador extends Composite {
 		btnImagePerson.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				mainPage.navigateToScreenEntregador(5);
+				mainPage.showUsuarioPerfil();
 			}
 		});
 		btnImagePerson.addPaintListener( new PaintListener() {
@@ -152,7 +150,7 @@ public class MenuBarEntregador extends Composite {
                 GC gc = e.gc;
                 gc.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(232, 241, 242))));
                 int width = getClientArea().width;
-                gc.drawLine(0, 0, width, 0); // Draw top border
+                gc.drawLine(0, 0, width, 0);
             }
         });
     }
