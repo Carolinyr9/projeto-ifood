@@ -198,7 +198,7 @@ public class MainPage {
 		shell.layout();
 	}
 	
-	private void showFuncionarioCardapioInfo() {
+	public void showFuncionarioCardapioInfo() {
 		clearShell();
 		FuncionarioCardapioInfo cadCardapioInfo = new FuncionarioCardapioInfo(shell, this);
 		FormData fd_cadapioInfo = new FormData();
@@ -289,9 +289,9 @@ public class MainPage {
 		shell.layout();
 	}
 	
-	private void showFuncionarioInfoPedido() {
+	public void showFuncionarioInfoPedido(Integer id_pedido) {
 		clearShell();
-		FuncionarioInfoPedido funcionarioInfoPedido = new FuncionarioInfoPedido(shell, this);
+		FuncionarioInfoPedido funcionarioInfoPedido = new FuncionarioInfoPedido(shell, this, id_pedido);
 		FormData fd_funcionarioInfoPedido = new FormData();
 		fd_funcionarioInfoPedido.left = new FormAttachment(0);
 		fd_funcionarioInfoPedido.right = new FormAttachment(100);
@@ -338,9 +338,9 @@ public class MainPage {
 		shell.layout();
 	}
 	
-	private void showEntregadorInfoPedido() {
+	public void showEntregadorInfoPedido(Integer id_pedido) {
 		clearShell();
-		EntregadorInfoPedido entregadorInfoPedido = new EntregadorInfoPedido(shell, this);
+		EntregadorInfoPedido entregadorInfoPedido = new EntregadorInfoPedido(shell, this,id_pedido);
 		FormData fd_entregadorInfoPedido = new FormData();
 		fd_entregadorInfoPedido.left = new FormAttachment(0);
 		fd_entregadorInfoPedido.right = new FormAttachment(100);
@@ -414,7 +414,7 @@ public class MainPage {
 			showFuncionarioCadCardapio();
 			break;
 		case 6:
-			showFuncionarioInfoPedido();
+//			showFuncionarioInfoPedido();
 			break;
 		case 7:
 			showUsuarioPerfil();
@@ -437,10 +437,10 @@ public class MainPage {
 			showEntregadorPedidos();
 			break;
 		case 3:
-			showEntregadorInfoPedido();
+//			showEntregadorInfoPedido();
 			break;
 		case 4:
-			showEntregadorInfoPedido();
+//			showEntregadorInfoPedido();
 			break;
 		case 5:
 			showUsuarioPerfil();

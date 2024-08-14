@@ -1,5 +1,8 @@
 package view;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.jface.resource.ColorDescriptor;
 import org.eclipse.jface.resource.FontDescriptor;
 import org.eclipse.jface.resource.JFaceResources;
@@ -9,14 +12,8 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -24,36 +21,80 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.ProgressBar;
+
+import database.CarrinhoBanco;
+import database.DBConnection;
+import database.PedidoBanco;
+import database.PratoBanco;
+import database.ProdutoBanco;
+import database.RestauranteBanco;
+import model.Carrinho;
+import model.ItemCardapio;
+import model.Pedido;
+import model.Prato;
+import model.Produto;
+import model.Restaurante;
 
 public class EntregadorInfoPedido extends Composite {
-		
+	
 	private LocalResourceManager localResourceManager;
 	private Display display = getDisplay();
+	private Image restauranteLogoPqIcon;
+	private Pedido pedido;
+	private Integer idPedido;
+	private DBConnection connection = new DBConnection();
+	private PedidoBanco bancoPedido;
+	private Restaurante restaurante;
+	private RestauranteBanco bancoRestaurante;
+	private CarrinhoBanco bancoCarrinho;
+	private ProdutoBanco bancoProduto;
+	private PratoBanco bancoPrato;
 
-    private void createResourceManager() {
+	private void createResourceManager() {
 		localResourceManager = new LocalResourceManager(JFaceResources.getResources(), this);
 	}
 
-
-    public EntregadorInfoPedido(Composite parent, MainPage mainPage) {
+	public EntregadorInfoPedido(Composite parent, MainPage mainPage, Integer id_pedido) {
 		super(parent, SWT.NONE);
 		createResourceManager();
+		setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
 		setSize(482, 774);
-		setLayout(new FormLayout());
+		GridLayout gridLayout = new GridLayout(1, false);
+		gridLayout.marginWidth = 0;
+		gridLayout.verticalSpacing = 0;
+		gridLayout.marginHeight = 0;
+		gridLayout.horizontalSpacing = 0;
+		setLayout(gridLayout);
+
+		idPedido = id_pedido;
+
+		bancoPedido = new PedidoBanco(connection);
+		pedido = bancoPedido.visualizarPedido(idPedido);
 		
-		Integer numItens = 20;
-		
+		bancoRestaurante = new RestauranteBanco(connection);
+		restaurante = bancoRestaurante.visualizarRestaurante(pedido.getIdRestaurante());
+        String enderecoRestaurante = restaurante.getRua() + ", " + restaurante.getNumeroResidencial() + " - " + restaurante.getCidade() + ", " + restaurante.getEstado();
+
+		bancoProduto = new ProdutoBanco(connection);
+		bancoPrato = new PratoBanco(connection);
+
+		// Use os itens dessa lista para mostrar as informações
+		List<ItemCardapio> itensCardapio = obterItensCardapio(this.pedido);
+
+		// Aplique a lógica para o preço total usando itensCardapio
+		Double precoTotal = calcularPrecoTotal(itensCardapio);
+
 		Image arrowIcon = new Image(display, "./src/assets/images/backArrow.png");
+		restauranteLogoPqIcon = new Image(display, "./src/assets/images/restauranteLogoPqIcon.png");
 		
 		Composite compositeHeader = new Composite(this, SWT.NONE);
+		GridData gd_compositeHeader = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_compositeHeader.heightHint = 71;
+		gd_compositeHeader.widthHint = 478;
+		compositeHeader.setLayoutData(gd_compositeHeader);
 		compositeHeader.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 100, 145))));
-		FormData fd_compositeHeader = new FormData();
-		fd_compositeHeader.top = new FormAttachment(0);
-		fd_compositeHeader.left = new FormAttachment(0);
-		fd_compositeHeader.bottom = new FormAttachment(0, 73);
-		fd_compositeHeader.right = new FormAttachment(0, 482);
-		compositeHeader.setLayoutData(fd_compositeHeader);
-		
+
 		Label lblTelaTitulo = new Label(compositeHeader, SWT.CENTER);
 		lblTelaTitulo.setAlignment(SWT.CENTER);
 		lblTelaTitulo.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(232, 241, 242))));
@@ -61,7 +102,7 @@ public class EntregadorInfoPedido extends Composite {
 		lblTelaTitulo.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 16, SWT.NORMAL)));
 		lblTelaTitulo.setBounds(86, 20, 95, 43);
 		lblTelaTitulo.setText("Pedido");
-		
+
 		Button btnBack = new Button(compositeHeader, SWT.NONE);
 		btnBack.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -69,296 +110,296 @@ public class EntregadorInfoPedido extends Composite {
 				mainPage.navigateToScreenEntregador(2);
 			}
 		});
-		btnBack.addPaintListener( new PaintListener() {
-			  @Override
-			  public void paintControl( PaintEvent event ) {
-			    event.gc.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 100, 148))));
-			    event.gc.fillRectangle( event.x, event.y, event.width, event.height );
-			    event.gc.drawImage(arrowIcon, 0, 0);
-			  }
-			} );
+		btnBack.addPaintListener(new PaintListener() {
+			@Override
+			public void paintControl(PaintEvent event) {
+				event.gc.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 100, 148))));
+				event.gc.fillRectangle(event.x, event.y, event.width, event.height);
+				event.gc.drawImage(arrowIcon, 0, 0);
+			}
+		});
 		btnBack.setBounds(20, 10, 60, 53);
 		
 		ScrolledComposite scrolledComposite = new ScrolledComposite(this, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
-		FormData fd_scrolledComposite = new FormData();
-		fd_scrolledComposite.top = new FormAttachment(compositeHeader, 6);
-		fd_scrolledComposite.bottom = new FormAttachment(100, 10);
-		fd_scrolledComposite.right = new FormAttachment(compositeHeader, 0, SWT.RIGHT);
-		fd_scrolledComposite.left = new FormAttachment(0);
-		scrolledComposite.setLayoutData(fd_scrolledComposite);
+		scrolledComposite.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
+		GridData gd_scrolledComposite = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_scrolledComposite.heightHint = 697;
+		gd_scrolledComposite.widthHint = 480;
+		scrolledComposite.setLayoutData(gd_scrolledComposite);
 		scrolledComposite.setExpandHorizontal(true);
 		scrolledComposite.setExpandVertical(true);
 		
-		Composite compositePedido = new Composite(scrolledComposite, SWT.NONE);
-		compositePedido.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-		GridLayout gl_compositePedido = new GridLayout(2, false);
-		gl_compositePedido.marginLeft = 40;
-		gl_compositePedido.verticalSpacing = 15;
-		compositePedido.setLayout(gl_compositePedido);
-		
-		Composite compositeRestauranteInfo = new Composite(compositePedido, SWT.NONE);
-		GridData gd_compositeRestauranteInfo = new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1);
+		Composite compositeInfoPedido = new Composite(scrolledComposite, SWT.NONE);
+		compositeInfoPedido.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
+		scrolledComposite.setContent(compositeInfoPedido);
+		scrolledComposite.setMinSize(compositeInfoPedido.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+		GridLayout gl_compositeInfoPedido = new GridLayout(1, false);
+		gl_compositeInfoPedido.marginLeft = 35;
+		compositeInfoPedido.setLayout(gl_compositeInfoPedido);
+
+		Composite compositeRestauranteInfo = new Composite(compositeInfoPedido, SWT.NONE);
+		GridData gd_compositeRestauranteInfo = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_compositeRestauranteInfo.widthHint = 401;
+		compositeRestauranteInfo.setLayoutData(gd_compositeRestauranteInfo);
 		gd_compositeRestauranteInfo.widthHint = 387;
-		gd_compositeRestauranteInfo.heightHint = 125;
+		gd_compositeRestauranteInfo.heightHint = 197;
 		compositeRestauranteInfo.setLayoutData(gd_compositeRestauranteInfo);
 		compositeRestauranteInfo.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
 		
-		Label lblNomeRestaurante = new Label(compositeRestauranteInfo, SWT.NONE);
-		lblNomeRestaurante.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
-		lblNomeRestaurante.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-		lblNomeRestaurante.setBounds(34, 44, 340, 28);
-		/* Abaixo, dentro da função setText(), colocar o nome do restaurante*/
-		lblNomeRestaurante.setText("New Label");
-		
-		Label lblEnderecorestaurante = new Label(compositeRestauranteInfo, SWT.NONE);
-		lblEnderecorestaurante.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
-		lblEnderecorestaurante.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-		lblEnderecorestaurante.setBounds(34, 78, 340, 28);
-		/* Abaixo, dentro da função setText(), colocar o endereço do restaurante*/
-		lblEnderecorestaurante.setText("EnderecoRestaurante");
+		Label lblStatus = new Label(compositeRestauranteInfo, SWT.NONE);
+		lblStatus.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
+		lblStatus.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
+		lblStatus.setBounds(34, 44, 340, 28);
+		lblStatus.setText(pedido.getStatusString());
 		
 		Label lblNumpedido = new Label(compositeRestauranteInfo, SWT.NONE);
 		lblNumpedido.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 12, SWT.NORMAL)));
 		lblNumpedido.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
 		lblNumpedido.setBounds(34, 10, 239, 28);
-		/* Abaixo, dentro da função setText(), colocar o número do pedido*/
-		lblNumpedido.setText("NumPedido");
-		
+		lblNumpedido.setText("Pedido #" + pedido.getId().toString());
 		Label labelHorizontalRestauranteInfo = new Label(compositeRestauranteInfo, SWT.SEPARATOR | SWT.HORIZONTAL);
-		labelHorizontalRestauranteInfo.setBounds(10, 112, 360, 2);
+		labelHorizontalRestauranteInfo.setBounds(10, 185, 360, 2);
 		
-		Composite compositeClienteInfo = new Composite(compositePedido, SWT.NONE);
+		
+		ProgressBar progressBar = new ProgressBar(compositeRestauranteInfo, SWT.NONE);
+		progressBar.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 255, 64))));
+		progressBar.setMaximum(3);
+		progressBar.setSelection(1);
+		progressBar.setBounds(84, 83, 212, 23);
+		
+		Button btnMudarStatus = new Button(compositeRestauranteInfo, SWT.NONE);
+		btnMudarStatus.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+			}
+		});
+		btnMudarStatus.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 10, SWT.NORMAL)));
+		btnMudarStatus.setBounds(128, 143, 119, 30);
+		
+		
+		Label lblMudarStatusPara = new Label(compositeRestauranteInfo, SWT.NONE);
+		lblMudarStatusPara.setBounds(123, 117, 150, 20);
+		lblMudarStatusPara.setText("Mudar status para:");
+		
+		switch (pedido.getStatus().getStatus()) {
+			case ABERTO:
+				progressBar.setSelection(0);
+				btnMudarStatus.setText("");
+				break;
+			case EM_PREPARO:
+				progressBar.setSelection(1);
+				btnMudarStatus.setText("");
+				break;
+			case A_CAMINHO:
+				progressBar.setSelection(2);
+				btnMudarStatus.setText("Entregue");
+				btnMudarStatus.addSelectionListener(new SelectionAdapter() {
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+						PedidoBanco banco = new PedidoBanco(connection);
+						
+						banco.atualizarStatusProduto(pedido.getId(), "entregue");
+					}
+				});
+				break;
+			case ENTREGUE:
+				progressBar.setSelection(3);
+				break;
+			case CANCELADO:
+				progressBar.setSelection(0);
+				break;
+		}
+		
+		Composite compositeClienteInfo = new Composite(compositeInfoPedido, SWT.NONE);
 		GridData gd_compositeClienteInfo = new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1);
-		gd_compositeClienteInfo.heightHint = 141;
+		gd_compositeClienteInfo.widthHint = 387;
+		gd_compositeClienteInfo.heightHint = 83;
 		compositeClienteInfo.setLayoutData(gd_compositeClienteInfo);
 		compositeClienteInfo.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-		
-		Label lblNomecliente = new Label(compositeClienteInfo, SWT.NONE);
-		lblNomecliente.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
-		lblNomecliente.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-		lblNomecliente.setBounds(28, 10, 339, 25);
-		/* Abaixo, dentro da função setText(), colocar o nome do cliente*/
-		lblNomecliente.setText("NomeCliente");
 		
 		Label lblPrevisoDeEntrega = new Label(compositeClienteInfo, SWT.NONE);
 		lblPrevisoDeEntrega.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(19, 41, 61))));
 		lblPrevisoDeEntrega.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
 		lblPrevisoDeEntrega.setAlignment(SWT.CENTER);
-		lblPrevisoDeEntrega.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 10, SWT.NORMAL)));
-		lblPrevisoDeEntrega.setBounds(10, 72, 339, 25);
-		lblPrevisoDeEntrega.setText("Previsão de entrega:");
+		lblPrevisoDeEntrega.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 14, SWT.NORMAL)));
+		lblPrevisoDeEntrega.setBounds(10, 10, 367, 28);
+		lblPrevisoDeEntrega.setText("Previsão de entrega");
 		
-		Label labelHoraEntrega = new Label(compositeClienteInfo, SWT.NONE);
-		labelHoraEntrega.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-		labelHoraEntrega.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(36, 123, 160))));
-		labelHoraEntrega.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.BOLD)));
-		labelHoraEntrega.setAlignment(SWT.CENTER);
-		labelHoraEntrega.setBounds(127, 96, 117, 25);
-		/* Abaixo, dentro da função setText(), colocar a previsão de entrega do pedido*/
-		labelHoraEntrega.setText("22:21 - 22:31");
+		Label lblHora = new Label(compositeClienteInfo, SWT.NONE);
+		lblHora.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 0, 0))));
+		lblHora.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
+		lblHora.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
+		lblHora.setAlignment(SWT.CENTER);
+		lblHora.setBounds(10, 44, 367, 28);
+		lblHora.setText(String.format("%02d:%02d", pedido.getEstimativaTempo().getHour(), pedido.getEstimativaTempo().getMinute()));
+
+		Label labelHorizontalClienteInfo = new Label(compositeClienteInfo, SWT.SEPARATOR | SWT.HORIZONTAL);
+		labelHorizontalClienteInfo.setBounds(10, 79, 360, 2);
+
+		Composite compositeRestauranteCard = new Composite(compositeInfoPedido, SWT.NONE);
+		GridData gd_compositeRestauranteCard = new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1);
+		gd_compositeRestauranteCard.widthHint = 387;
+		gd_compositeRestauranteCard.heightHint = 125;
+		compositeRestauranteCard.setLayoutData(gd_compositeRestauranteCard);
+		compositeRestauranteCard.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
+
+		Label lblLogoRestaurante = new Label(compositeRestauranteCard, SWT.NONE);
+		lblLogoRestaurante.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
+		lblLogoRestaurante.setImage(restauranteLogoPqIcon);
+		lblLogoRestaurante.setBounds(10, 10, 90, 88);
+
+		Label lblRestauranteNome = new Label(compositeRestauranteCard, SWT.NONE);
+		lblRestauranteNome.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(19, 41, 61))));
+		lblRestauranteNome.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
+		lblRestauranteNome.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 14, SWT.NORMAL)));
+		lblRestauranteNome.setAlignment(SWT.CENTER);
+		lblRestauranteNome.setBounds(76, 10, 289, 30);
+		lblRestauranteNome.setText(restaurante.getNome());
+
+		Label lblRestauranteEndereco = new Label(compositeRestauranteCard, SWT.NONE);
+		lblRestauranteEndereco.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(19, 41, 61))));
+		lblRestauranteEndereco.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
+		lblRestauranteEndereco.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
+		lblRestauranteEndereco.setAlignment(SWT.CENTER);
+		lblRestauranteEndereco.setBounds(76, 46, 289, 30);
+		lblRestauranteEndereco.setText(enderecoRestaurante);
+
+		Label labelHorizontalRestauranteCard = new Label(compositeRestauranteCard, SWT.SEPARATOR | SWT.HORIZONTAL);
+		labelHorizontalRestauranteCard.setBounds(10, 113, 360, 2);
+
+		Label lblItensPedido = new Label(compositeInfoPedido, SWT.NONE);
+		lblItensPedido.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(19, 41, 61))));
+		lblItensPedido.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
+		lblItensPedido.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 14, SWT.NORMAL)));
+		lblItensPedido.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		lblItensPedido.setText("Itens do Pedido");
 		
-		Label lblHorizontalclienteinfo = new Label(compositeClienteInfo, SWT.SEPARATOR | SWT.HORIZONTAL);
-		lblHorizontalclienteinfo.setText("HorizontalClienteInfo");
-		lblHorizontalclienteinfo.setBounds(10, 129, 360, 2);
-		
-		Label lblEndereco = new Label(compositeClienteInfo, SWT.NONE);
-		lblEndereco.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 10, SWT.NORMAL)));
-		lblEndereco.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-		lblEndereco.setBounds(27, 41, 360, 25);
-		/* Abaixo, dentro da função setText(), colocar o endereço do cliente*/
-		lblEndereco.setText("Endereco");
-		
-		Composite compositeStatus = new Composite(compositePedido, SWT.NONE);
-		GridData gd_compositeStatus = new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1);
-		gd_compositeStatus.heightHint = 120;
-		compositeStatus.setLayoutData(gd_compositeStatus);
-		compositeStatus.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 100, 141))));
-		
-		Label lblStatusEmRota = new Label(compositeStatus, SWT.NONE);
-		lblStatusEmRota.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-		lblStatusEmRota.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 100, 141))));
-		lblStatusEmRota.setAlignment(SWT.CENTER);
-		lblStatusEmRota.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
-		lblStatusEmRota.setBounds(0, 10, 384, 25);
-		/* Abaixo, dentro da função setText(), colocar o status do pedido*/
-		lblStatusEmRota.setText("Status: Em rota de entrega");
-		
-		Label label = new Label(compositeStatus, SWT.SEPARATOR | SWT.HORIZONTAL);
-		label.setBounds(108, 41, 162, 2);
-		
-		Label lblMudarStatusPara = new Label(compositeStatus, SWT.NONE);
-		lblMudarStatusPara.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 100, 141))));
-		lblMudarStatusPara.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-		lblMudarStatusPara.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 10, SWT.NORMAL)));
-		lblMudarStatusPara.setBounds(27, 49, 240, 20);
-		lblMudarStatusPara.setText("Mudar status para:");
-		
-		Button btnMudaStatus = new Button(compositeStatus, SWT.NONE);
-		btnMudaStatus.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				/* Criar a função que muda o status do pedido*/
-			}
-		});
-		btnMudaStatus.addPaintListener(new PaintListener() {
-			@Override
-			public void paintControl(PaintEvent e) {
-				GC gc = e.gc;
-				Rectangle rect = btnMudaStatus.getBounds();
-				Color white = new Color(getDisplay(), new RGB(255, 255, 255));
-				
-				gc.setAntialias(SWT.ON);
-				gc.setBackground(white);
-				gc.fillRoundRectangle(0, 0, rect.width, rect.height, 20, 20);
-				
-				gc.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
-				String text = "Pedido entregue";
-				int textWidth = gc.textExtent(text).x;
-				int textHeight = gc.textExtent(text).y;
-				gc.drawText(text, (rect.width - textWidth) / 2, (rect.height - textHeight) / 2, true);
-				
-				white.dispose();
-			}
-		});
-		btnMudaStatus.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
-		btnMudaStatus.setBounds(109, 75, 161, 30);
-		btnMudaStatus.setText("Pedido entregue");
-		
-		Composite compositeItensPedido = new Composite(compositePedido, SWT.NONE);
-		GridLayout gl_compositeItensPedido = new GridLayout(2, false);
-		gl_compositeItensPedido.marginLeft = 15;
-		compositeItensPedido.setLayout(gl_compositeItensPedido);
-		GridData gd_compositeItensPedido = new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1);
-		gd_compositeItensPedido.widthHint = 380;
+		// Defina a largura para todos os itens no pedido
+		GridData gd_lblItemNome = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_lblItemNome.widthHint = 200;
+
+		Composite compositeItensPedido = new Composite(compositeInfoPedido, SWT.NONE);
+		compositeItensPedido.setLayout(new GridLayout(2, false));
+		GridData gd_compositeItensPedido = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_compositeItensPedido.widthHint = 384;
 		compositeItensPedido.setLayoutData(gd_compositeItensPedido);
-		compositeItensPedido.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
 		
-		Label lblResumoDoPedido = new Label(compositeItensPedido, SWT.NONE);
-		lblResumoDoPedido.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
-		lblResumoDoPedido.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-		lblResumoDoPedido.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 10, SWT.NORMAL)));
-		lblResumoDoPedido.setText("Resumo do pedido");
-		
-		Composite compositeItens = new Composite(compositeItensPedido, SWT.NONE);
-		GridData gd_compositeItens = new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1);
-		gd_compositeItens.widthHint = 340;
-		compositeItens.setLayoutData(gd_compositeItens);
-		compositeItens.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-		GridLayout gl_compositeItens = new GridLayout(2, false);
-		gl_compositeItens.marginLeft = 10;
-		gl_compositeItens.horizontalSpacing = 10;
-		compositeItens.setLayout(gl_compositeItens);
-		
-		/* Nesse for é mostrado os pedidos existentes*/
-		for(int i = 0; i < numItens; i++) {
-			Label lblItem = new Label(compositeItens, SWT.WRAP);
-			lblItem.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 100, 141))));
-			lblItem.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-			lblItem.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
+		// Use a lista de itensCardapio para preencher os itens do pedido
+		for (ItemCardapio item : itensCardapio) {
+			Label lblItem = new Label(compositeItensPedido, SWT.WRAP);
 			GridData gd_lblItem = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-			gd_lblItem.widthHint = 223;
+			gd_lblItem.widthHint = 277;
 			lblItem.setLayoutData(gd_lblItem);
-			lblItem.setText("Item");
+			lblItem.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 12, SWT.NORMAL)));
+			lblItem.setText(item.getNome());
 			
-			Label lblPreco = new Label(compositeItens, SWT.NONE);
-			lblPreco.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 10, SWT.NORMAL)));
-			lblPreco.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-			GridData gd_lblPreco = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-			gd_lblPreco.widthHint = 84;
-			lblPreco.setLayoutData(gd_lblPreco);
-			lblPreco.setText("Preco");
-		}	
+			Label lblItemPreco = new Label(compositeItensPedido, SWT.NONE);
+			GridData gd_lblItemPreco = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+			gd_lblItemPreco.widthHint = 88;
+			lblItemPreco.setLayoutData(gd_lblItemPreco);
+			lblItemPreco.setText(String.format("R$ %.2f", item.getPreco()));
+		}
+		Double precoFinal = precoTotal + 5;			
+
+		Composite compositeResumo = new Composite(compositeInfoPedido, SWT.NONE);
+		GridData gd_compositeResumo = new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1);
+		gd_compositeResumo.widthHint = 387;
+		gd_compositeResumo.heightHint = 147;
+		compositeResumo.setLayoutData(gd_compositeResumo);
+		compositeResumo.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
 		
-		Label lblTotal = new Label(compositeItensPedido, SWT.NONE);
-		GridData gd_lblTotal = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-		gd_lblTotal.widthHint = 217;
-		lblTotal.setLayoutData(gd_lblTotal);
-		lblTotal.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(19, 41, 61))));
-		lblTotal.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-		lblTotal.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
-		lblTotal.setText("Total");
+		Label labelHorizontalResumo = new Label(compositeResumo, SWT.SEPARATOR | SWT.HORIZONTAL);
+		labelHorizontalResumo.setBounds(10, 0, 360, 2);
+				
+		Label lblSubTotal = new Label(compositeResumo, SWT.NONE);
+		lblSubTotal.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 12, SWT.NORMAL)));
+		lblSubTotal.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
+		lblSubTotal.setBounds(20, 10, 92, 23);
+		lblSubTotal.setText("SubTotal");
 		
-		Label lblPrecototal = new Label(compositeItensPedido, SWT.NONE);
-		lblPrecototal.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(19, 41, 61))));
-		lblPrecototal.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-		lblPrecototal.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
-		lblPrecototal.setText("PrecoTotal");
+		Label lblSubTotalPreco = new Label(compositeResumo, SWT.NONE);
+		lblSubTotalPreco.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 12, SWT.NORMAL)));
+		lblSubTotalPreco.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
+		lblSubTotalPreco.setAlignment(SWT.RIGHT);
+		lblSubTotalPreco.setBounds(256, 10, 104, 23);
+		lblSubTotalPreco.setText(String.format("R$ %.2f", precoTotal));
 		
-		Composite compositeButtons = new Composite(compositePedido, SWT.NONE);
-		compositeButtons.setLayout(null);
-		compositeButtons.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-		GridData gd_compositeButtons = new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1);
-		gd_compositeButtons.heightHint = 51;
-		gd_compositeButtons.widthHint = 389;
-		compositeButtons.setLayoutData(gd_compositeButtons);
+		Label lblTaxaEntrega = new Label(compositeResumo, SWT.NONE);
+		lblTaxaEntrega.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 12, SWT.NORMAL)));
+		lblTaxaEntrega.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
+		lblTaxaEntrega.setBounds(20, 39, 142, 23);
+		lblTaxaEntrega.setText("Taxa de entrega");
+				
+		Label lblPrecoTaxaEntrega = new Label(compositeResumo, SWT.NONE);
+		lblPrecoTaxaEntrega.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 12, SWT.NORMAL)));
+		lblPrecoTaxaEntrega.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
+		lblPrecoTaxaEntrega.setAlignment(SWT.RIGHT);
+		lblPrecoTaxaEntrega.setBounds(256, 39, 104, 23);
+		lblPrecoTaxaEntrega.setText(String.format("R$ %.2f", 5.00));
+										
+		Label lblDesconto = new Label(compositeResumo, SWT.NONE);
+		lblDesconto.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 12, SWT.NORMAL)));
+		lblDesconto.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
+		lblDesconto.setBounds(20, 68, 92, 23);
+		lblDesconto.setText("Desconto");
+														
+		Label lblPrecoDesconto = new Label(compositeResumo, SWT.NONE);
+		lblPrecoDesconto.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 12, SWT.NORMAL)));
+		lblPrecoDesconto.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
+		lblPrecoDesconto.setAlignment(SWT.RIGHT);
+		lblPrecoDesconto.setBounds(256, 68, 104, 23);
+		lblPrecoDesconto.setText(String.format("Sem desconto"));
 		
-		Button btnCalcularRota = new Button(compositeButtons, SWT.NONE);
-		btnCalcularRota.setBounds(33, 5, 133, 35);
-		btnCalcularRota.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
-		btnCalcularRota.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 100, 141))));
-		btnCalcularRota.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-		btnCalcularRota.setText("Calcular rota");
-		btnCalcularRota.addPaintListener(new PaintListener() {
-			@Override
-			public void paintControl(PaintEvent e) {
-				GC gc = e.gc;
-				Rectangle rect = btnCalcularRota.getBounds();
-				Color blue = new Color(getDisplay(), new RGB(0, 100, 141));
-				Color white = new Color(getDisplay(), new RGB(255, 255, 255));
-				
-				gc.setAntialias(SWT.ON);
-				gc.setBackground(blue);
-				gc.fillRoundRectangle(0, 0, rect.width, rect.height, 20, 20);
-				
-				gc.setForeground(white);
-				gc.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
-				String text = "Calcular rota";
-				int textWidth = gc.textExtent(text).x;
-				int textHeight = gc.textExtent(text).y;
-				gc.drawText(text, (rect.width - textWidth) / 2, (rect.height - textHeight) / 2, true);
-				
-				blue.dispose();
-				white.dispose();
-			}
-		});
+		Label labelHorizontalResumo2 = new Label(compositeResumo, SWT.SEPARATOR | SWT.HORIZONTAL);
+		labelHorizontalResumo2.setBounds(10, 103, 360, 2);
 		
-		Button btnReportarErro = new Button(compositeButtons, SWT.NONE);
-		btnReportarErro.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-			}
-		});
-		btnReportarErro.addPaintListener(new PaintListener() {
-			@Override
-			public void paintControl(PaintEvent e) {
-				GC gc = e.gc;
-				Rectangle rect = btnReportarErro.getBounds();
-				Color blue = new Color(getDisplay(), new RGB(0, 100, 141));
-				Color white = new Color(getDisplay(), new RGB(255, 255, 255));
-				
-				gc.setAntialias(SWT.ON);
-				gc.setBackground(blue);
-				gc.fillRoundRectangle(0, 0, rect.width, rect.height, 20, 20);
-				
-				gc.setForeground(white);
-				gc.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
-				String text = "Reportar erro";
-				int textWidth = gc.textExtent(text).x;
-				int textHeight = gc.textExtent(text).y;
-				gc.drawText(text, (rect.width - textWidth) / 2, (rect.height - textHeight) / 2, true);
-				
-				blue.dispose();
-				white.dispose();
-			}
-		});
-		btnReportarErro.setBounds(203, 5, 133, 35);
-		btnReportarErro.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-		btnReportarErro.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
-		btnReportarErro.setText("Reportar erro");
-		btnReportarErro.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 100, 141))));
+		Label lblPrecoFinal = new Label(compositeResumo, SWT.NONE);
+		lblPrecoFinal.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 12, SWT.NORMAL)));
+		lblPrecoFinal.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
+		lblPrecoFinal.setBounds(20, 111, 70, 23);
+		lblPrecoFinal.setText("Total");
 		
-		scrolledComposite.setContent(compositePedido);
-		scrolledComposite.setMinSize(compositePedido.computeSize(SWT.DEFAULT, SWT.DEFAULT));
-	
+		Label lblPrecoTotalFinal = new Label(compositeResumo, SWT.NONE);
+		lblPrecoTotalFinal.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 12, SWT.NORMAL)));
+		lblPrecoTotalFinal.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
+		lblPrecoTotalFinal.setAlignment(SWT.RIGHT);
+		lblPrecoTotalFinal.setBounds(226, 111, 134, 23);
+		lblPrecoTotalFinal.setText(String.format("R$ %.2f", precoFinal));
+		
+		scrolledComposite.setContent(compositeInfoPedido);
+		scrolledComposite.setMinSize(compositeInfoPedido.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 	}
+    
+    private List<ItemCardapio> obterItensCardapio(Pedido pedido) {
+        PratoBanco pratoBanco = new PratoBanco(connection);
+        ProdutoBanco produtoBanco = new ProdutoBanco(connection);
+        List<ItemCardapio> itens = new ArrayList<>();
+        for (Integer idPrato : pedido.getIdsPratos()) {
+            Prato prato = pratoBanco.visualizarPrato(idPrato);
+            
+            System.out.println("id do prato");
+            System.out.println(prato.getIdPrato());
+            if(prato != null) {
+            	itens.add(prato);
+            }
+        }
+        for (Integer idProduto : pedido.getIdsProdutos()) {
+            Produto produto = produtoBanco.visualizarProduto(idProduto);
+            System.out.println("id do prato");
+            System.out.println(produto.getIdPrato());
+            if(produto != null) {
+            	itens.add(produto);
+            }
+        }
+        return itens;
+    }
+    
+    private Double calcularPrecoTotal(List<ItemCardapio> itens) {
+    	Double preco = 0.0;
+    	for (ItemCardapio item : itens) {
+    		preco += item.getPreco();
+		}
+    	
+    	return preco;
+    }
 }

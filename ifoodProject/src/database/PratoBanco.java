@@ -16,7 +16,7 @@ public class PratoBanco {
 
     // Método para criar um novo prato
     public boolean criarPrato(Prato prato) {
-        String sql = "CALL Inserir_Prato(?, ?, ?, ?, ?, ?)";
+        String sql = "CALL Inserir_Prato(?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
         	stmt.setInt(1, prato.getIdPrato());
@@ -25,6 +25,7 @@ public class PratoBanco {
             stmt.setString(4, prato.getIngredientes());
             stmt.setDouble(5, prato.getPreco());
             stmt.setInt(6, prato.getIdRestaurante());
+            stmt.setString(7, prato.getImagem());
 
             stmt.execute();
             return true;
@@ -51,6 +52,7 @@ public class PratoBanco {
                 prato.setIngredientes(rs.getString("ingredientes"));
                 prato.setPreco(rs.getDouble("preco"));
                 prato.setIdRestaurante(rs.getInt("id_restaurante"));
+                prato.setImagem(rs.getString("imagem"));
             } else {
                 System.out.println("Nenhum prato encontrado com o ID: " + id);
             }

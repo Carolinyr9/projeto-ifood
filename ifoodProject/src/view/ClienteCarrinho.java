@@ -310,15 +310,14 @@ public class ClienteCarrinho extends Composite {
         		public void widgetSelected(SelectionEvent e) {
         			StatusPedido statusPedido = new StatusPedido(Status.ABERTO);
         			
-        			for(int i = 0; i < carrinhoLista.size(); i++) {
-        				
-        				if(prato.size() > 0) {
-        					idPratos.add(prato.get(i).getIdPrato());
-        				}
-        				if(produto.size() > 0) {
-        					idProdutos.add(produto.get(i).getIdProduto());
-        				}
+        			for (int i = 0; i < prato.size(); i++) {
+        			    idPratos.add(prato.get(i).getIdPrato());
         			}
+
+        			for (int i = 0; i < produto.size(); i++) {
+        			    idProdutos.add(produto.get(i).getIdProduto());
+        			}
+        			
         			LocalDateTime dataAgora = LocalDateTime.now();
         			pedido = new Pedido();
         			pedido.setIdsPratos(idPratos);

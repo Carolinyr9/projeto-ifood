@@ -245,7 +245,7 @@ public class FuncionarioPedidos extends Composite {
             btnVerMais.addSelectionListener(new SelectionAdapter() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
-                	mainPage.showClienteInfoPedido(pedido.getId());
+                	mainPage.showFuncionarioInfoPedido(pedido.getId());
                 }
             });
             btnVerMais.addPaintListener(new PaintListener() {

@@ -6,12 +6,14 @@ public class Prato extends ItemCardapio {
     private String descricao;
     private int id;
     private String ingredientes;
+    private String imagem;
 
-	public Prato(int idRestaurante, Double preco, String nome, String descricao, String ingredientes) {
+	public Prato(int idRestaurante, Double preco, String nome, String descricao, String ingredientes, String imagem) {
 		super(idRestaurante, preco, nome);
 		this.descricao = descricao;
 		this.id = generateRandomId();
 		this.ingredientes = ingredientes;
+		this.imagem = imagem;
 	}
 
 	public Prato() {
@@ -46,7 +48,15 @@ public class Prato extends ItemCardapio {
         this.ingredientes = ingredientes;
     }
 
-    public String toString() {
+    public String getImagem() {
+		return imagem;
+	}
+
+	public void setImagem(String imagem) {
+		this.imagem = imagem;
+	}
+
+	public String toString() {
         return "Prato" +
                 "\nNome: " + getNome() +
                 "\nDescrição: " + descricao +

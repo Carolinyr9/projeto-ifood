@@ -16,7 +16,7 @@ public class ProdutoBanco {
 
     // Método para criar um novo produto
     public boolean criarProduto(Produto produto) {
-        String sql = "CALL Inserir_Produto(?, ?, ?, ?, ?)";
+        String sql = "CALL Inserir_Produto(?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
         	stmt.setInt(1, produto.getIdProduto());
@@ -24,7 +24,7 @@ public class ProdutoBanco {
             stmt.setString(3, produto.getDescricao());
             stmt.setDouble(4, produto.getPreco());
             stmt.setInt(5, produto.getIdRestaurante());
-
+            stmt.setString(6, produto.getImagem());
             stmt.execute();
             
             return true;
@@ -50,6 +50,7 @@ public class ProdutoBanco {
                 produto.setDescricao(rs.getString("descricao"));
                 produto.setPreco(rs.getDouble("preco"));
                 produto.setIdRestaurante(rs.getInt("id_restaurante"));
+                produto.setImagem(rs.getString("imagem"));
             }
         } catch (SQLException e) {
             e.printStackTrace();

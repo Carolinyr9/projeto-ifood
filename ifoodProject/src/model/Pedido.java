@@ -43,6 +43,10 @@ public class Pedido {
         Random random = new Random();
         return random.nextInt(10000) + 1;
     }
+	
+	public String getStatusString() {
+        return status.getStatus().toString();
+    }
 
 	public LocalDateTime getDataPedido() {
 		return dataPedido;

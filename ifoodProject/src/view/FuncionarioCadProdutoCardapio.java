@@ -19,6 +19,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import database.ProdutoBanco;
@@ -33,15 +34,21 @@ import org.eclipse.swt.widgets.FileDialog;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.GridData;
 
 public class FuncionarioCadProdutoCardapio extends Composite {
 		
 	private LocalResourceManager localResourceManager;
+	private Shell shell = getShell();
 	private Display display = getDisplay();
+	MessageBox messageBox = new MessageBox(shell, SWT.ICON_INFORMATION | SWT.OK);
 	private FileDialog fileImage = new FileDialog(getShell(), SWT.OPEN);
 	private String selectedFile;
+	private String fileName;
 	private Text textPreco;
 	private Text txtTitulo;
 	private Text txtDescricao;
@@ -50,6 +57,14 @@ public class FuncionarioCadProdutoCardapio extends Composite {
 
     private void createResourceManager() {
 		localResourceManager = new LocalResourceManager(JFaceResources.getResources(), this);
+	}
+    
+    public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 	}
 
     public FuncionarioCadProdutoCardapio(Composite parent, MainPage mainPage) {
@@ -141,9 +156,27 @@ public class FuncionarioCadProdutoCardapio extends Composite {
 		btnAdicionarImagem.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				fileImage.setFilterExtensions(new String[] {"*.jpg", "*.png", "*.gif"});
-	            selectedFile = fileImage.open();
-			}
+		        String fileNameAux = "";
+		        fileImage.setFilterExtensions(new String[] {"*.png", "*.jpeg", "*.jpg", "*.gif"});
+		        selectedFile = fileImage.open();
+
+		        if (selectedFile != null) {
+		            Path sourcePath = Paths.get(selectedFile);
+		            fileNameAux = sourcePath.getFileName().toString();
+		            setFileName(fileNameAux);
+		            Path destinationPath = Paths.get("./src/assets/images/", sourcePath.getFileName().toString());
+
+		            
+		            try {
+		                Files.copy(sourcePath, destinationPath);
+		                messageBox.setMessage("Imagem arquivada com sucesso!");
+		                messageBox.open();
+		            } catch (IOException e1) {
+		            	messageBox.setMessage("Erro ao copiar o arquivo: " + e1.getMessage());
+		            	messageBox.open();
+		            }
+		        }
+		    }
 		});
 		btnAdicionarImagem.addPaintListener(new PaintListener() {
 			@Override
@@ -190,10 +223,6 @@ public class FuncionarioCadProdutoCardapio extends Composite {
 		btnConcluir.addSelectionListener(new SelectionAdapter() {
 		    @Override
 		    public void widgetSelected(SelectionEvent e) {
-		        if (selectedFile != null) {
-		            System.out.println("Selected file: " + selectedFile);
-		            saveFile(selectedFile, "./src/assets/images/"); // Salvar no diretório especificado
-		        }
 
 		        String titulo = txtTitulo.getText();
 		        double preco = Double.parseDouble(textPreco.getText());
@@ -201,7 +230,7 @@ public class FuncionarioCadProdutoCardapio extends Composite {
 		        
 		        int idRestaurante = 1;
 		        
-		        Produto produto = new Produto(idRestaurante, preco, titulo, descricao);
+		        Produto produto = new Produto(idRestaurante, preco, titulo, descricao, fileName);
 		        
 		        Cardapio cardapio = new Cardapio();
 		        cardapio.adicionarItem(produto);
@@ -210,15 +239,14 @@ public class FuncionarioCadProdutoCardapio extends Composite {
 		        produtoBanco = new ProdutoBanco(dbConnection);
 		        boolean isInserted = produtoBanco.criarProduto(produto);
 		        
-		        MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
 		        if (isInserted) {
-		            System.out.println("Prato inserido com sucesso!");
-		            messageBox.setMessage("Produto criado com sucesso!");
-		        } else {
-		            System.out.println("Erro ao inserir o prato!");
-		            messageBox.setMessage("Erro ao criar o produto!");
-		        }
-		        messageBox.open();
+					messageBox.setMessage("Produto inserido com sucesso!");
+	                messageBox.open();
+				} else {
+					messageBox.setMessage("Erro ao inserir o produto!");
+	                messageBox.open();
+
+				}
 		        
 		        cardapioBanco = new CardapioBanco(dbConnection);
 		        cardapioBanco.criarCardapio(cardapio);

@@ -155,9 +155,6 @@ public class FuncionarioCardapioInfo extends Composite {
 		Composite compositeItensCardapio = new Composite(scrolledComposite, SWT.NONE);
 		compositeItensCardapio.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
 		compositeItensCardapio.setLayout(new GridLayout(1, false));
-		scrolledComposite.setContent(compositeItensCardapio);
-		scrolledComposite.setMinSize(compositeItensCardapio.computeSize(SWT.DEFAULT, SWT.DEFAULT));
-		
 		
 		btnAdicionarItem.addPaintListener(new PaintListener() {
 			@Override
@@ -243,6 +240,9 @@ public class FuncionarioCardapioInfo extends Composite {
 			new Label(compositeItem1, SWT.NONE);
 			new Label(compositeItensCardapio, SWT.NONE);
 		}
+		
+		scrolledComposite.setContent(compositeItensCardapio);
+		scrolledComposite.setMinSize(compositeItensCardapio.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 	}
 		
 	

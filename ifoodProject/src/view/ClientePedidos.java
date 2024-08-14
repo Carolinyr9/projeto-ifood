@@ -223,7 +223,7 @@ public class ClientePedidos extends Composite {
             lblPrecoTotal.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
             lblPrecoTotal.setBounds(22, 84, 210, 25);
             
-            Label lblItensPedido = new Label(compositeCardPedido, SWT.NONE);
+            Label lblItensPedido = new Label(compositeCardPedido, SWT.NONE | SWT.WRAP);
             List<String> itens = new ArrayList<>();
             for (int i = 0; i < Math.min(itensCardapio.size(), 2); i++) {
             	ItemCardapio item = itensCardapio.get(i);

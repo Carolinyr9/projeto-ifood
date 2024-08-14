@@ -1,5 +1,10 @@
 package view;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import org.eclipse.jface.resource.ColorDescriptor;
 import org.eclipse.jface.resource.FontDescriptor;
 import org.eclipse.jface.resource.JFaceResources;
@@ -18,6 +23,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import database.PratoBanco;
@@ -36,9 +43,12 @@ import org.eclipse.swt.layout.GridData;
 public class FuncionarioCadPratoCardapio extends Composite {
 		
 	private LocalResourceManager localResourceManager;
+	private Shell shell = getShell();
+	private MessageBox messageBox = new MessageBox(shell, SWT.ICON_INFORMATION | SWT.OK);
 	private Display display = getDisplay();
 	private FileDialog fileImage = new FileDialog(getShell(), SWT.OPEN);
 	private String selectedFile;
+	private String fileName;
 	private Text textPreco;
 	private Text txtTitulo;
 	private Text txtDescricao;
@@ -48,6 +58,14 @@ public class FuncionarioCadPratoCardapio extends Composite {
 
 	private void createResourceManager() {
 		localResourceManager = new LocalResourceManager(JFaceResources.getResources(), this);
+	} 
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 	}
 
 	public FuncionarioCadPratoCardapio(Composite parent, MainPage mainPage) {
@@ -149,13 +167,33 @@ public class FuncionarioCadPratoCardapio extends Composite {
 		gd_btnAdicionarImagem.widthHint = 178;
 		btnAdicionarImagem.setLayoutData(gd_btnAdicionarImagem);
 		btnAdicionarImagem.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
+		
 		btnAdicionarImagem.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				fileImage.setFilterExtensions(new String[] {"*.jpg", "*.png", "*.gif"});
-	            selectedFile = fileImage.open();
-			}
+		        String fileNameAux = "";
+		        fileImage.setFilterExtensions(new String[] {"*.jpg", "*.jpeg", "*.png", "*.gif"});
+		        selectedFile = fileImage.open();
+
+		        if (selectedFile != null) {
+		            Path sourcePath = Paths.get(selectedFile);
+		            fileNameAux = sourcePath.getFileName().toString();
+		            setFileName(fileNameAux);
+		            Path destinationPath = Paths.get("./src/assets/images/", sourcePath.getFileName().toString());
+
+		            
+		            try {
+		                Files.copy(sourcePath, destinationPath);
+		                messageBox.setMessage("Imagem arquivada com sucesso!");
+		                messageBox.open();
+		            } catch (IOException e1) {
+		            	messageBox.setMessage("Erro ao copiar o arquivo: " + e1.getMessage());
+		            	messageBox.open();
+		            }
+		        }
+		    }
 		});
+		
 		btnAdicionarImagem.addPaintListener(new PaintListener() {
 			@Override
 			public void paintControl(PaintEvent e) {
@@ -198,27 +236,28 @@ public class FuncionarioCadPratoCardapio extends Composite {
 		btnConcluir.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				// Colocar função p salvar imagem
 				String titulo = txtTitulo.getText();
 				double preco = Double.parseDouble(textPreco.getText());
 				String descricao = txtDescricao.getText();
 				String ingredientes = txtIngredientes.getText();
 				
 				int idRestaurante = 1;
-				Prato prato = new Prato(idRestaurante, preco, titulo, descricao, ingredientes);
+				Prato prato = new Prato(idRestaurante, preco, titulo, descricao, ingredientes, fileName);
 				
 				Cardapio cardapio = new Cardapio();
 				cardapio.adicionarItem(prato);
-				
-				// Crie uma instância de DBConnection
+
 				DBConnection dbConnection = new DBConnection();
 				pratoBanco = new PratoBanco(dbConnection);
 				boolean isInserted = pratoBanco.criarPrato(prato);
 				
 				if (isInserted) {
-					System.out.println("Prato inserido com sucesso!");
+					messageBox.setMessage("Prato inserido com sucesso!");
+	                messageBox.open();
 				} else {
-					System.out.println("Erro ao inserir o prato!");
+					messageBox.setMessage("Erro ao inserir o prato!");
+	                messageBox.open();
+
 				}
 				
 				cardapioBanco = new CardapioBanco(dbConnection);

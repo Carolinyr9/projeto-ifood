@@ -5,11 +5,13 @@ import java.util.Random;
 public class Produto extends ItemCardapio {
     private String descricao;
     private int id;
+    private String imagem;
 
-	public Produto(int idRestaurante, Double preco, String nome, String descricao) {
+	public Produto(int idRestaurante, Double preco, String nome, String descricao,String imagem) {
 		super(idRestaurante, preco, nome);
 		this.descricao = descricao;
 		this.id = generateRandomId();
+		this.imagem = imagem;
 	}
 
 	public Produto() {
@@ -42,7 +44,15 @@ public class Produto extends ItemCardapio {
         System.out.println("Produto editado: " + this.toString());
     }
 
-    @Override
+    public String getImagem() {
+		return imagem;
+	}
+
+	public void setImagem(String imagem) {
+		this.imagem = imagem;
+	}
+
+	@Override
     public String toString() {
         return "Produto" +
                "\nNome: " + getNome() +

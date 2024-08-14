@@ -17,7 +17,7 @@ public class PedidoBanco {
         this.connection = connection;
     }
 
-    // Método para criar um novo pedido
+ // Método para criar um novo pedido
     public void criarPedido(Pedido pedido) {
         String sql = "CALL inserir_pedido(?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -52,9 +52,12 @@ public class PedidoBanco {
                 pedido.setId(rs.getInt("id"));
                 pedido.setIdsProdutos(convertJsonToList(rs.getString("ids_produtos")));
                 pedido.setIdsPratos(convertJsonToList(rs.getString("ids_pratos")));
-                Status status = Status.valueOf(rs.getString("status"));
-                LocalDateTime horarioStatus = rs.getTimestamp("data_atualizacao").toLocalDateTime();
-                pedido.setStatus(new StatusPedido(status, horarioStatus));
+                String statusStr = rs.getString("status");
+                if (statusStr != null) {
+                    Status status = Status.valueOf(statusStr.toUpperCase());
+                    LocalDateTime horarioStatus = rs.getTimestamp("data_atualizacao").toLocalDateTime();
+                    pedido.setStatus(new StatusPedido(status, horarioStatus));
+                }
                 pedido.setIdCarrinho(rs.getInt("id_carrinho"));
                 pedido.setIdCliente(rs.getInt("id_cliente"));
                 pedido.setIdEntregador(rs.getInt("id_entregador"));
@@ -83,7 +86,7 @@ public class PedidoBanco {
         }
     }
 
-//    Método para listar pratos e produtos por restaurante
+ // Método para listar pratos e produtos por restaurante
     public List<Pedido> listarPedidosPorRestaurante(int idRestaurante) {
         String sql = "CALL listar_pratos_produtos_por_restaurante(?)";
         List<Pedido> pedidos = new ArrayList<>();
@@ -138,7 +141,7 @@ public class PedidoBanco {
     }
 
 
- // Método para listar todos os pedidos
+    // Método para listar todos os pedidos
     public List<Pedido> listarTodosPedidos() {
         String sql = "CALL listar_todos_pedidos()";
         List<Pedido> pedidos = new ArrayList<>();
@@ -173,7 +176,7 @@ public class PedidoBanco {
         return pedidos;
     }
 
- // Método para listar pedidos por cliente
+    // Método para listar pedidos por cliente
     public List<Pedido> listarPedidosPorCliente(int idCliente) {
         String sql = "CALL listar_pedidos_por_cliente(?)";
         List<Pedido> pedidos = new ArrayList<>();
@@ -226,16 +229,34 @@ public class PedidoBanco {
         }
         return pedidos;
     }
+    
+    public void atualizarStatusProduto(int idPedido, String novoStatus) {
+        String sql = "CALL atualizar_status_pedido(?, ?)";
 
-    // Método auxiliar para converter JSON string para List<Integer>
+        try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
+            stmt.setInt(1, idPedido);        // Define o ID do produto como o primeiro parâmetro
+            stmt.setString(2, novoStatus);    // Define o novo status como o segundo parâmetro
+
+            stmt.executeUpdate();  // Executa a procedure de atualização
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao atualizar o status do produto", e);
+        }
+    }
+
     private List<Integer> convertJsonToList(String json) {
         List<Integer> list = new ArrayList<>();
-        json = json.replace("[", "").replace("]", ""); // Remove colchetes
+        json = json.replace("[", "").replace("]", ""); 
         String[] items = json.split(",");
         for (String item : items) {
-        	if(item.equals(null)) {
-        		list.add(Integer.parseInt(item.trim()));
-        	}
+            if (!item.trim().isEmpty()) {
+                try {
+                    list.add(Integer.parseInt(item.trim()));
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return list;
     }

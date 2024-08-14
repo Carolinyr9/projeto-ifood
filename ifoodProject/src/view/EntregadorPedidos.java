@@ -245,7 +245,7 @@ public class EntregadorPedidos extends Composite {
             btnVerMais.addSelectionListener(new SelectionAdapter() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
-                	mainPage.showClienteInfoPedido(pedido.getId());
+                	mainPage.showEntregadorInfoPedido(pedido.getId());
                 }
             });
             btnVerMais.addPaintListener(new PaintListener() {
