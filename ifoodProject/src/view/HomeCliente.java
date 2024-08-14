@@ -41,7 +41,6 @@ public class HomeCliente extends Composite {
 
 	private DBConnection connection = new DBConnection();
     private Image bannerImage;
-    private Image pizza1;
     private Image restauranteLogoImage;
     private LocalResourceManager localResourceManager;
     private Display display = getDisplay();
@@ -61,8 +60,12 @@ public class HomeCliente extends Composite {
     public HomeCliente(Composite parent, MainPage mainPage, Cliente cliente) {
         super(parent, SWT.NONE);
         createResourceManager();
-        setSize(482, 836);
+        setSize(472, 836);
         setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
+        
+
+        bannerImage = new Image(display, "./src/assets/images/Banner.png");
+        restauranteLogoImage = new Image(display, "./src/assets/images/restauranteLogo.png");
         
         banco = new RestauranteBanco(connection);
         restaurante = banco.visualizarRestaurante(1);
@@ -86,19 +89,17 @@ public class HomeCliente extends Composite {
         }
         GridLayout gridLayout = new GridLayout(1, false);
         gridLayout.horizontalSpacing = 0;
-        gridLayout.marginWidth = 0;
         gridLayout.verticalSpacing = 0;
         gridLayout.marginHeight = 0;
+        gridLayout.marginWidth = 0;
         setLayout(gridLayout);
         
         ScrolledComposite scrolledComposite = new ScrolledComposite(this, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
-        GridData gd_scrolledComposite = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-        gd_scrolledComposite.widthHint = 480;
-        gd_scrolledComposite.heightHint = 834;
+        GridData gd_scrolledComposite = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
+        gd_scrolledComposite.widthHint = 472;
         scrolledComposite.setLayoutData(gd_scrolledComposite);
-        
-        bannerImage = new Image(display, "./src/assets/images/Banner.png");
-        restauranteLogoImage = new Image(display, "./src/assets/images/restauranteLogo.png");
+        scrolledComposite.setExpandHorizontal(true);
+        scrolledComposite.setExpandVertical(true);
 
         Composite compositeHomeCliente = new Composite(scrolledComposite, SWT.NONE);
         compositeHomeCliente.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
@@ -111,7 +112,7 @@ public class HomeCliente extends Composite {
         Composite compositeRestauranteInfo = new Composite(compositeHomeCliente, SWT.NONE);
         compositeRestauranteInfo.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
         GridData gd_compositeRestauranteInfo = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-        gd_compositeRestauranteInfo.widthHint = 470;
+        gd_compositeRestauranteInfo.widthHint = 473;
         gd_compositeRestauranteInfo.heightHint = 282;
         compositeRestauranteInfo.setLayoutData(gd_compositeRestauranteInfo);
 
@@ -132,11 +133,10 @@ public class HomeCliente extends Composite {
         lblRestauranteNome.setText(restaurante.getNome());
 
         Label lblRestauranteDescricao = new Label(compositeRestauranteInfo, SWT.WRAP);
-        lblRestauranteDescricao.setBounds(163, 157, 293, 62);
+        lblRestauranteDescricao.setBounds(176, 157, 280, 62);
         lblRestauranteDescricao.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 9, SWT.BOLD)));
         lblRestauranteDescricao.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-        lblRestauranteDescricao.setAlignment(SWT.CENTER);
-        lblRestauranteDescricao.setText("Bem-vindo Ã  " + restaurante.getNome());
+        lblRestauranteDescricao.setText("Bem-vindo à " + restaurante.getNome());
 
         Label lblRestauranteEndereco = new Label(compositeRestauranteInfo, SWT.WRAP);
         lblRestauranteEndereco.setBounds(86, 235, 318, 38);
@@ -150,11 +150,8 @@ public class HomeCliente extends Composite {
         compositeRestauranteCardapio.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
         compositeRestauranteCardapio.setLayout(new GridLayout(1, false));
         GridData gd_compositeRestauranteCardapio = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-        gd_compositeRestauranteCardapio.widthHint = 470;
+        gd_compositeRestauranteCardapio.widthHint = 477;
         compositeRestauranteCardapio.setLayoutData(gd_compositeRestauranteCardapio);
-        System.out.println(pratoLista.get(0).getImagem());
-  
-        
         
         if(pratoLista.size() > 0) {	
         	
@@ -192,11 +189,10 @@ public class HomeCliente extends Composite {
     			Composite compositeItem1 = new Composite(compositePratos, SWT.NONE);
     			compositeItem1.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
     			compositeItem1.setLayout(new GridLayout(1, false));
-    			compositeItem1.setLayoutData(new RowData(147, 212));
+    			compositeItem1.setLayoutData(new RowData(147, 220));
     			compositeItem1.addMouseListener(new MouseAdapter() {
     				@Override
     				public void mouseDown(MouseEvent e) {
-    					System.out.println("id: " + cliente.getId());
     					mainPage.showClienteInfoProduct(0, idPrato, cliente);
     				}
     			});
@@ -260,9 +256,6 @@ public class HomeCliente extends Composite {
     		scrolledCompositePrato.setMinSize(compositePratos.computeSize(SWT.DEFAULT, SWT.DEFAULT));
     	}
         
-        
-        
-		
 		if(produtoLista.size() > 0) {
 			Label lblTituloSessaoCardapio = new Label(compositeRestauranteCardapio, SWT.NONE);
 			lblTituloSessaoCardapio.setAlignment(SWT.CENTER);
@@ -275,7 +268,7 @@ public class HomeCliente extends Composite {
 			
 			ScrolledComposite scrolledCompositeProdutos = new ScrolledComposite(compositeRestauranteCardapio, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 			GridData gd_scrolledCompositeProdutos = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-			gd_scrolledCompositeProdutos.heightHint = 291;
+			gd_scrolledCompositeProdutos.heightHint = 231;
 			gd_scrolledCompositeProdutos.widthHint = 458;
 			scrolledCompositeProdutos.setLayoutData(gd_scrolledCompositeProdutos);
 			scrolledCompositeProdutos.setExpandHorizontal(true);
@@ -291,13 +284,16 @@ public class HomeCliente extends Composite {
 			
 			for(int j = 0; j < produtoLista.size(); j++) {
 				String imgProdutoCaminho = "./src/assets/images/" + produtoLista.get(j).getImagem();
-            	Image produtoImg = new Image(display, imgProdutoCaminho);	
+	        	Image produtoImg = new Image(display, imgProdutoCaminho);	
 				int idProduto = produtoLista.get(j).getIdProduto();
 				
 				Composite compositeItem1 = new Composite(compositeProdutos, SWT.NONE);
 				compositeItem1.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-				compositeItem1.setLayout(new GridLayout(1, false));
-				compositeItem1.setLayoutData(new RowData(147, 212));
+				GridLayout gl_compositeItem1 = new GridLayout(1, false);
+				gl_compositeItem1.marginWidth = 0;
+				gl_compositeItem1.horizontalSpacing = 0;
+				compositeItem1.setLayout(gl_compositeItem1);
+				compositeItem1.setLayoutData(new RowData(147, 220));
 				compositeItem1.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseDown(MouseEvent e) {
@@ -311,7 +307,8 @@ public class HomeCliente extends Composite {
 				buttonImagePizza1.addSelectionListener(new SelectionAdapter() {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
-						mainPage.showClienteInfoProduct(idProduto, 0, cliente);					}
+						mainPage.showClienteInfoProduct(idProduto, 0, cliente);					
+					}
 				});
 				buttonImagePizza1.addPaintListener( new PaintListener() {
 					@Override
@@ -322,7 +319,7 @@ public class HomeCliente extends Composite {
 					}
 				} );
 				buttonImagePizza1.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-				gd_buttonImagePizza1.widthHint = 140;
+				gd_buttonImagePizza1.widthHint = 144;
 				gd_buttonImagePizza1.heightHint = 116;
 				buttonImagePizza1.setLayoutData(gd_buttonImagePizza1);
 				
@@ -342,7 +339,7 @@ public class HomeCliente extends Composite {
 					}
 				});
 				
-				Label lblPrecoItem1 = new Label(compositeItem1, SWT.NONE);
+				Label lblPrecoItem1 = new Label(compositeItem1, SWT.WRAP);
 				GridData gd_lblPrecoItem1 = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 				gd_lblPrecoItem1.heightHint = 23;
 				gd_lblPrecoItem1.widthHint = 117;
@@ -362,10 +359,8 @@ public class HomeCliente extends Composite {
 			scrolledCompositeProdutos.setContent(compositeProdutos);
 			scrolledCompositeProdutos.setMinSize(compositeProdutos.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 		}
-        
+
         scrolledComposite.setContent(compositeHomeCliente);
-        scrolledComposite.setMinSize(compositeRestauranteCardapio.computeSize(SWT.DEFAULT, SWT.DEFAULT));
-        scrolledComposite.setExpandHorizontal(true);
-        scrolledComposite.setExpandVertical(true);
+        scrolledComposite.setMinSize(compositeHomeCliente.computeSize(SWT.DEFAULT, SWT.DEFAULT));
     }
 }

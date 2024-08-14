@@ -79,10 +79,8 @@ public class FuncionarioInfoPedido extends Composite {
 		bancoProduto = new ProdutoBanco(connection);
 		bancoPrato = new PratoBanco(connection);
 
-		// Use os itens dessa lista para mostrar as informações
 		List<ItemCardapio> itensCardapio = obterItensCardapio(this.pedido);
 
-		// Aplique a lógica para o preço total usando itensCardapio
 		Double precoTotal = calcularPrecoTotal(itensCardapio);
 
 		Image arrowIcon = new Image(display, "./src/assets/images/backArrow.png");
@@ -107,7 +105,7 @@ public class FuncionarioInfoPedido extends Composite {
 		btnBack.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				mainPage.navigateToScreenEntregador(2);
+				mainPage.showFuncionarioPedidos();
 			}
 		});
 		btnBack.addPaintListener(new PaintListener() {
@@ -122,8 +120,7 @@ public class FuncionarioInfoPedido extends Composite {
 		
 		ScrolledComposite scrolledComposite = new ScrolledComposite(this, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 		scrolledComposite.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-		GridData gd_scrolledComposite = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-		gd_scrolledComposite.heightHint = 697;
+		GridData gd_scrolledComposite = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
 		gd_scrolledComposite.widthHint = 480;
 		scrolledComposite.setLayoutData(gd_scrolledComposite);
 		scrolledComposite.setExpandHorizontal(true);
@@ -384,16 +381,13 @@ public class FuncionarioInfoPedido extends Composite {
         for (Integer idPrato : pedido.getIdsPratos()) {
             Prato prato = pratoBanco.visualizarPrato(idPrato);
             
-            System.out.println("id do prato");
-            System.out.println(prato.getIdPrato());
             if(prato != null) {
             	itens.add(prato);
             }
         }
         for (Integer idProduto : pedido.getIdsProdutos()) {
             Produto produto = produtoBanco.visualizarProduto(idProduto);
-            System.out.println("id do prato");
-            System.out.println(produto.getIdPrato());
+            
             if(produto != null) {
             	itens.add(produto);
             }

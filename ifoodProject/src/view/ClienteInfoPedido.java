@@ -79,10 +79,8 @@ public class ClienteInfoPedido extends Composite {
 		bancoProduto = new ProdutoBanco(connection);
 		bancoPrato = new PratoBanco(connection);
 
-		// Use os itens dessa lista para mostrar as informações
 		List<ItemCardapio> itensCardapio = obterItensCardapio(this.pedido);
 
-		// Aplique a lógica para o preço total usando itensCardapio
 		Double precoTotal = calcularPrecoTotal(itensCardapio);
 
 		Image arrowIcon = new Image(display, "./src/assets/images/backArrow.png");
@@ -107,7 +105,7 @@ public class ClienteInfoPedido extends Composite {
 		btnBack.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				mainPage.navigateToScreenEntregador(2);
+				mainPage.showClientePedidos();
 			}
 		});
 		btnBack.addPaintListener(new PaintListener() {
@@ -352,16 +350,13 @@ public class ClienteInfoPedido extends Composite {
         for (Integer idPrato : pedido.getIdsPratos()) {
             Prato prato = pratoBanco.visualizarPrato(idPrato);
             
-            System.out.println("id do prato");
-            System.out.println(prato.getIdPrato());
             if(prato != null) {
             	itens.add(prato);
             }
         }
         for (Integer idProduto : pedido.getIdsProdutos()) {
             Produto produto = produtoBanco.visualizarProduto(idProduto);
-            System.out.println("id do prato");
-            System.out.println(produto.getIdPrato());
+            
             if(produto != null) {
             	itens.add(produto);
             }

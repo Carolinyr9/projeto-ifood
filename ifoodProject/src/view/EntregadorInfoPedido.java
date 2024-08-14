@@ -29,7 +29,6 @@ import database.PedidoBanco;
 import database.PratoBanco;
 import database.ProdutoBanco;
 import database.RestauranteBanco;
-import model.Carrinho;
 import model.ItemCardapio;
 import model.Pedido;
 import model.Prato;
@@ -79,10 +78,8 @@ public class EntregadorInfoPedido extends Composite {
 		bancoProduto = new ProdutoBanco(connection);
 		bancoPrato = new PratoBanco(connection);
 
-		// Use os itens dessa lista para mostrar as informações
 		List<ItemCardapio> itensCardapio = obterItensCardapio(this.pedido);
 
-		// Aplique a lógica para o preço total usando itensCardapio
 		Double precoTotal = calcularPrecoTotal(itensCardapio);
 
 		Image arrowIcon = new Image(display, "./src/assets/images/backArrow.png");
@@ -107,7 +104,7 @@ public class EntregadorInfoPedido extends Composite {
 		btnBack.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				mainPage.navigateToScreenEntregador(2);
+				mainPage.showUsuarioPerfil();
 			}
 		});
 		btnBack.addPaintListener(new PaintListener() {
@@ -121,13 +118,12 @@ public class EntregadorInfoPedido extends Composite {
 		btnBack.setBounds(20, 10, 60, 53);
 		
 		ScrolledComposite scrolledComposite = new ScrolledComposite(this, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
-		scrolledComposite.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-		GridData gd_scrolledComposite = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-		gd_scrolledComposite.heightHint = 697;
+		GridData gd_scrolledComposite = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
 		gd_scrolledComposite.widthHint = 480;
 		scrolledComposite.setLayoutData(gd_scrolledComposite);
 		scrolledComposite.setExpandHorizontal(true);
 		scrolledComposite.setExpandVertical(true);
+		scrolledComposite.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
 		
 		Composite compositeInfoPedido = new Composite(scrolledComposite, SWT.NONE);
 		compositeInfoPedido.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
@@ -273,8 +269,7 @@ public class EntregadorInfoPedido extends Composite {
 		lblItensPedido.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 14, SWT.NORMAL)));
 		lblItensPedido.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		lblItensPedido.setText("Itens do Pedido");
-		
-		// Defina a largura para todos os itens no pedido
+
 		GridData gd_lblItemNome = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_lblItemNome.widthHint = 200;
 
@@ -284,7 +279,6 @@ public class EntregadorInfoPedido extends Composite {
 		gd_compositeItensPedido.widthHint = 384;
 		compositeItensPedido.setLayoutData(gd_compositeItensPedido);
 		
-		// Use a lista de itensCardapio para preencher os itens do pedido
 		for (ItemCardapio item : itensCardapio) {
 			Label lblItem = new Label(compositeItensPedido, SWT.WRAP);
 			GridData gd_lblItem = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
@@ -377,16 +371,13 @@ public class EntregadorInfoPedido extends Composite {
         for (Integer idPrato : pedido.getIdsPratos()) {
             Prato prato = pratoBanco.visualizarPrato(idPrato);
             
-            System.out.println("id do prato");
-            System.out.println(prato.getIdPrato());
             if(prato != null) {
             	itens.add(prato);
             }
         }
         for (Integer idProduto : pedido.getIdsProdutos()) {
             Produto produto = produtoBanco.visualizarProduto(idProduto);
-            System.out.println("id do prato");
-            System.out.println(produto.getIdPrato());
+
             if(produto != null) {
             	itens.add(produto);
             }

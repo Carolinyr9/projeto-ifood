@@ -44,7 +44,8 @@ public class ClienteInfoProduct extends Composite {
 	private Label lblIngredientes;
 	private Image backArrowImage;
 	private Image addProductBagImage;
-	private Image productBannerImage;
+	private Image pratoBannerImage;
+	private Image produtoBannerImage;
 	private Cliente cliente = null;
 	private Produto produto = null;
 	private Prato prato = null;
@@ -52,7 +53,7 @@ public class ClienteInfoProduct extends Composite {
 	private ProdutoBanco bancoProduto;
 	private Carrinho carrinho;
 	private CarrinhoBanco bancoCarrinho;
-	private DBConnection connection = new DBConnection("localhost", "3307", "bddelivery", "root", "2024Root.");
+	private DBConnection connection = new DBConnection();
 	
 	private LocalResourceManager localResourceManager;
 	
@@ -141,7 +142,8 @@ public class ClienteInfoProduct extends Composite {
 		bancoCarrinho = new CarrinhoBanco(connection);
 		cliente = clienteLogado;
 		
-		productBannerImage = new Image(display, "./src/assets/images/productBanner.png");
+		pratoBannerImage = new Image(display, "./src/assets/images/pratoBanner.png");
+		produtoBannerImage =  new Image(display, "./src/assets/images/produtoBanner.jpg");
 		backArrowImage = new Image(display, "./src/assets/images/backArrow.png");
 		addProductBagImage = new Image(display, "./src/assets/images/addProductBag.png");
 
@@ -151,7 +153,11 @@ public class ClienteInfoProduct extends Composite {
         fd_compositeItemBanner.top = new FormAttachment(0);
         fd_compositeItemBanner.bottom = new FormAttachment(0, 293);
         compositeItemBanner.setLayoutData(fd_compositeItemBanner);
-        compositeItemBanner.setBackgroundImage(productBannerImage);
+        if(idPrato != 0) {
+        	compositeItemBanner.setBackgroundImage(pratoBannerImage);
+        }else{
+        	compositeItemBanner.setBackgroundImage(produtoBannerImage); 	
+        } 
 
         Canvas btnBack = new Canvas(compositeItemBanner, SWT.NONE);
         btnBack.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TRANSPARENT));
@@ -202,9 +208,9 @@ public class ClienteInfoProduct extends Composite {
             lblIngredientes.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
             lblIngredientes.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
             lblIngredientes.setAlignment(SWT.CENTER);
-            GridData gd_lblIngredientes = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+            GridData gd_lblIngredientes = new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1);
             gd_lblIngredientes.heightHint = 122;
-            gd_lblIngredientes.widthHint = 404;
+            gd_lblIngredientes.widthHint = 355;
             lblIngredientes.setLayoutData(gd_lblIngredientes);
         }
 
@@ -259,7 +265,7 @@ public class ClienteInfoProduct extends Composite {
         btnBack.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseDown(MouseEvent e) {
-            	mainPage.navigateToScreenCliente(1);
+            	mainPage.showHomeCliente();
             }
         });
         
