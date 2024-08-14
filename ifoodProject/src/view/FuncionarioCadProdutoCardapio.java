@@ -92,7 +92,7 @@ public class FuncionarioCadProdutoCardapio extends Composite {
 		btnBack.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				mainPage.navigateToScreenFuncionario(2);
+				mainPage.showHomeFuncionario();
 			}
 		});
 		btnBack.addPaintListener( new PaintListener() {
@@ -149,7 +149,7 @@ public class FuncionarioCadProdutoCardapio extends Composite {
 		
 		
 		Button btnAdicionarImagem = new Button(compositeForm, SWT.NONE);
-		GridData gd_btnAdicionarImagem = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		GridData gd_btnAdicionarImagem = new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1);
 		gd_btnAdicionarImagem.widthHint = 178;
 		btnAdicionarImagem.setLayoutData(gd_btnAdicionarImagem);
 		btnAdicionarImagem.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
@@ -217,7 +217,7 @@ public class FuncionarioCadProdutoCardapio extends Composite {
 		
 		
 		Button btnConcluir = new Button(compositeForm, SWT.NONE);
-		GridData gd_btnConcluir = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		GridData gd_btnConcluir = new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1);
 		gd_btnConcluir.widthHint = 99;
 		btnConcluir.setLayoutData(gd_btnConcluir);
 		btnConcluir.addSelectionListener(new SelectionAdapter() {

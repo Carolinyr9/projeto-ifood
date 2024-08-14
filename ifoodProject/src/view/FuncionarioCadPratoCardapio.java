@@ -87,13 +87,13 @@ public class FuncionarioCadPratoCardapio extends Composite {
 		lblTelaTitulo.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 100, 145))));
 		lblTelaTitulo.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 16, SWT.NORMAL)));
 		lblTelaTitulo.setBounds(86, 12, 259, 51);
-		lblTelaTitulo.setText("Cadastrar Produto");
+		lblTelaTitulo.setText("Cadastrar Prato");
 		
 		Button btnBack = new Button(compositeHeader, SWT.NONE);
 		btnBack.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				mainPage.navigateToScreenFuncionario(2);
+				mainPage.showHomeFuncionario();
 			}
 		});
 		btnBack.addPaintListener( new PaintListener() {
@@ -163,11 +163,32 @@ public class FuncionarioCadPratoCardapio extends Composite {
 		txtIngredientes.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
 		
 		Button btnAdicionarImagem = new Button(compositeForm, SWT.NONE);
-		GridData gd_btnAdicionarImagem = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-		gd_btnAdicionarImagem.widthHint = 178;
+		GridData gd_btnAdicionarImagem = new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1);
+		gd_btnAdicionarImagem.widthHint = 189;
 		btnAdicionarImagem.setLayoutData(gd_btnAdicionarImagem);
 		btnAdicionarImagem.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
-		
+		btnAdicionarImagem.setText("Adicionar Imagem");
+		btnAdicionarImagem.addPaintListener(new PaintListener() {
+			@Override
+			public void paintControl(PaintEvent e) {
+				GC gc = e.gc;
+				Rectangle rect = btnAdicionarImagem.getBounds();
+				Color blue = new Color(getDisplay(), new RGB(19, 41, 61));
+				Color white = new Color(getDisplay(), new RGB(255, 255, 255));
+				gc.setAntialias(SWT.ON);
+				gc.setBackground(blue);
+				gc.fillRoundRectangle(0, 0, rect.width, rect.height, 20, 20);
+				gc.setForeground(white);
+				gc.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
+				String text = "Adicionar Imagem";
+				int textWidth = gc.textExtent(text).x;
+				int textHeight = gc.textExtent(text).y;
+				gc.drawText(text, (rect.width - textWidth) / 2, (rect.height - textHeight) / 2, true);
+
+				blue.dispose();
+				white.dispose();
+			}
+		});
 		btnAdicionarImagem.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -194,25 +215,6 @@ public class FuncionarioCadPratoCardapio extends Composite {
 		    }
 		});
 		
-		btnAdicionarImagem.addPaintListener(new PaintListener() {
-			@Override
-			public void paintControl(PaintEvent e) {
-				GC gc = e.gc;
-				Rectangle rect = btnAdicionarImagem.getBounds();
-				Color blue = new Color(getDisplay(), new RGB(19, 41, 61));
-				Color white = new Color(getDisplay(), new RGB(255, 255, 255));
-				gc.setAntialias(SWT.ON);
-				gc.setBackground(blue);
-				gc.fillRoundRectangle(0, 0, rect.width, rect.height, 20, 20);
-				gc.setForeground(white);
-				gc.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
-				gc.drawText("Adicionar Imagem", rect.width / 4, rect.height / 4, true);
-				blue.dispose();
-				white.dispose();
-			}
-		});
-		btnAdicionarImagem.setText("Adicionar Imagem");
-		
 		Label lblDescricao = new Label(compositeForm, SWT.NONE);
 		lblDescricao.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 100, 142))));
 		lblDescricao.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 12, SWT.BOLD)));
@@ -228,8 +230,8 @@ public class FuncionarioCadPratoCardapio extends Composite {
 		txtDescricao.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
 		
 		Button btnConcluir = new Button(compositeForm, SWT.NONE);
-		GridData gd_btnConcluir = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-		gd_btnConcluir.widthHint = 330;
+		GridData gd_btnConcluir = new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1);
+		gd_btnConcluir.widthHint = 146;
 		gd_btnConcluir.heightHint = 33;
 		btnConcluir.setLayoutData(gd_btnConcluir);
 		btnConcluir.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 12, SWT.NORMAL)));
@@ -276,7 +278,11 @@ public class FuncionarioCadPratoCardapio extends Composite {
 				gc.fillRoundRectangle(0, 0, rect.width, rect.height, 20, 20);
 				gc.setForeground(white);
 				gc.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
-				gc.drawText("Concluir", rect.width / 3, rect.height / 4, true);
+				String text = "Concluir";
+				int textWidth = gc.textExtent(text).x;
+				int textHeight = gc.textExtent(text).y;
+				gc.drawText(text, (rect.width - textWidth) / 2, (rect.height - textHeight) / 2, true);
+
 				blue.dispose();
 				white.dispose();
 			}

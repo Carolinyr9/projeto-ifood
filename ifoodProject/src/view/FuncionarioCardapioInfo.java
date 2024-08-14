@@ -44,15 +44,32 @@ public class FuncionarioCardapioInfo extends Composite {
 
 	private LocalResourceManager localResourceManager;
 	private Image arrowIcon;
+	private Label lblItemTitulo;
+	private Label lblPrecoItem1;
 	private Display display = getDisplay();
-	private String nomeCardapio;
 	private CardapioBanco cardapioBanco;
+	private String nomeSessao;
+	private List<String> nomePratosCardapio;
+	private List<String> nomeProdutosCardapio;
+	private List<Double> precoPratosCardapio;
+	private List<Double> precoProdutosCardapio;
 
 	private void createResourceManager() {
 		localResourceManager = new LocalResourceManager(JFaceResources.getResources(), this);
 	}
+	
+	private void setLabels(int i) {
+		
+		if(nomeSessao == "Pratos") {
+			lblItemTitulo.setText(nomePratosCardapio.get(i));
+			lblPrecoItem1.setText("R$" + precoPratosCardapio.get(i).toString());
+		}else if(nomeSessao == "Produtos"){
+			lblItemTitulo.setText(nomeProdutosCardapio.get(i));
+			lblPrecoItem1.setText("R$" + precoProdutosCardapio.get(i).toString());
+		}
+	}
 
-	public FuncionarioCardapioInfo(Composite parent, MainPage mainPage) {
+	public FuncionarioCardapioInfo(Composite parent, MainPage mainPage, String nomeSessaoCardapio) {
 		super(parent, SWT.NONE);
         Shell shell = new Shell(display);
 		createResourceManager();		
@@ -60,33 +77,37 @@ public class FuncionarioCardapioInfo extends Composite {
 		setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
 		setLayout(new FormLayout());
 		
-		/*Grupo de teste - Depois apagar */
+		nomeSessao = nomeSessaoCardapio;
 		DBConnection dbConnection = new DBConnection();
 		Cardapio cardapio = new Cardapio();
 		cardapioBanco = new CardapioBanco(dbConnection);
 		cardapioBanco.criarCardapio(cardapio);
 		int id = 1;
 		List<ItemCardapio> itens = cardapioBanco.listarCardapioPorRestaurante(id);
-		List<String> nomeItensCardapio = new ArrayList<String>();
-		List<Double> precoItensCardapio = new ArrayList<Double>();
-		List<Integer> idItensCardapio = new ArrayList<Integer>();
+		List<Integer> idProdutosCardapio = new ArrayList<Integer>();
+		List<Integer> idPratosCardapio = new ArrayList<Integer>();
 		List<String> tipoItensCardapio = new ArrayList<String>();
+		nomePratosCardapio = new ArrayList<String>();
+		nomeProdutosCardapio = new ArrayList<String>();
+		precoPratosCardapio = new ArrayList<Double>();
+		precoProdutosCardapio = new ArrayList<Double>();
 	
 		for (ItemCardapio item: itens) {
 			if (item instanceof Prato) {
-				idItensCardapio.add(item.getIdPrato());
+				idPratosCardapio.add(item.getIdPrato());
 				tipoItensCardapio.add("Prato");
+				nomePratosCardapio.add(item.getNome());
+				precoPratosCardapio.add(item.getPreco());
 			} else 
 				if(item instanceof Produto) {
-					idItensCardapio.add(item.getIdProduto());
+					idProdutosCardapio.add(item.getIdProduto());
 					tipoItensCardapio.add("Produto");
+					nomeProdutosCardapio.add(item.getNome());
+					precoProdutosCardapio.add(item.getPreco());
 				}
-			nomeItensCardapio.add(item.getNome());
-			precoItensCardapio.add(item.getPreco());
 		}
 		
 		arrowIcon = new Image(display, "./src/assets/images/backArrow.png");
-		nomeCardapio = "Pizzas";
 		
 		Composite compositeHeader = new Composite(this, SWT.NONE);
 		compositeHeader.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 100, 145))));
@@ -103,14 +124,18 @@ public class FuncionarioCardapioInfo extends Composite {
 		lblTelaCardapioTitulo.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 100, 145))));
 		lblTelaCardapioTitulo.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 16, SWT.NORMAL)));
 		lblTelaCardapioTitulo.setBounds(85, 12, 336, 51);
-		lblTelaCardapioTitulo.setText(nomeCardapio);
+		lblTelaCardapioTitulo.setText(nomeSessao);
 		
 		Button btnAdicionarItem = new Button(this, SWT.NONE);
 		btnAdicionarItem.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
 		btnAdicionarItem.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				openRadioDialog(shell,mainPage);
+				if(nomeSessao == "Pratos") {
+					mainPage.showFuncionarioCadPratoCardapio();
+				}else if(nomeSessao == "Produtos"){
+					mainPage.showFuncionarioCadProdutoCardapio();
+				}
 				
 			}
 		});
@@ -123,7 +148,7 @@ public class FuncionarioCardapioInfo extends Composite {
 		btnBack.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				mainPage.navigateToScreenFuncionario(1);
+				mainPage.showHomeFuncionario();
 			}
 		});
 		btnBack.setBounds(20, 10, 60, 53);
@@ -135,7 +160,6 @@ public class FuncionarioCardapioInfo extends Composite {
 		    event.gc.drawImage(arrowIcon, 0, 0);
 		  }
 		} );
-		
 		
 		fd_btnAdicionarItem.left = new FormAttachment(0, 48);
 		fd_btnAdicionarItem.right = new FormAttachment(0, 241);
@@ -178,8 +202,14 @@ public class FuncionarioCardapioInfo extends Composite {
 			}
 		});
 		
+		int numSize = 0;
+		if(nomeSessaoCardapio == "Pratos") {
+			numSize = nomePratosCardapio.size();
+		}else {
+			numSize = nomeProdutosCardapio.size();
+		}
 		
-		for(int i = 0; i < itens.size(); i++) {
+		for(int i = 0; i < numSize; i++) {
 			int num = i;
 			Composite compositeItem1 = new Composite(compositeItensCardapio, SWT.NONE);
 			GridLayout gl_compositeItem1 = new GridLayout(7, false);
@@ -206,11 +236,16 @@ public class FuncionarioCardapioInfo extends Composite {
 			compositeItem1.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseDown(MouseEvent e) {
-					mainPage.showFuncionarioItemCardapioInfo(idItensCardapio.get(num), tipoItensCardapio.get(num));
+					
+					if(nomeSessao == "Pratos") {
+						mainPage.showFuncionarioItemCardapioInfo(idPratosCardapio.get(num), "Prato", nomeSessao);
+					}else if(nomeSessao == "Produtos"){
+						mainPage.showFuncionarioItemCardapioInfo(idProdutosCardapio.get(num), "Produto", nomeSessao);
+					}
 				}
 			});
 			
-			Label lblItemTitulo = new Label(compositeItem1, SWT.WRAP);
+			lblItemTitulo = new Label(compositeItem1, SWT.WRAP);
 			GridData gd_lblItemTitulo = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 			gd_lblItemTitulo.heightHint = 60;
 			gd_lblItemTitulo.widthHint = 205;
@@ -219,80 +254,36 @@ public class FuncionarioCardapioInfo extends Composite {
 			lblItemTitulo.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
 			lblItemTitulo.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 12, SWT.BOLD)));
 			lblItemTitulo.setBounds(25, 23, 187, 28);
-			lblItemTitulo.setText(nomeItensCardapio.get(i));
+			lblItemTitulo.setText("A");
 			lblItemTitulo.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseDown(MouseEvent e) {
-					mainPage.showFuncionarioItemCardapioInfo(idItensCardapio.get(num), tipoItensCardapio.get(num));
+					
+					if(nomeSessao == "Pratos") {
+						mainPage.showFuncionarioItemCardapioInfo(idPratosCardapio.get(num), "Prato", nomeSessao);
+					}else if(nomeSessao == "Produtos"){
+						mainPage.showFuncionarioItemCardapioInfo(idProdutosCardapio.get(num), "Produto", nomeSessao);
+					}
 				}
 			});
 			new Label(compositeItem1, SWT.NONE);
 			
-			Label lblPrecoItem1 = new Label(compositeItem1, SWT.NONE);
+			lblPrecoItem1 = new Label(compositeItem1, SWT.NONE);
 			lblPrecoItem1.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
 			lblPrecoItem1.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_DARK_RED));
 			lblPrecoItem1.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
 			lblPrecoItem1.setBounds(252, 26, 74, 28);
-			lblPrecoItem1.setText("R$" + precoItensCardapio.get(i).toString());
+			lblPrecoItem1.setText("R$");
 			new Label(compositeItem1, SWT.NONE);
 			new Label(compositeItem1, SWT.NONE);
 			new Label(compositeItem1, SWT.NONE);
 			new Label(compositeItem1, SWT.NONE);
 			new Label(compositeItensCardapio, SWT.NONE);
+			
+			setLabels(i);
 		}
 		
 		scrolledComposite.setContent(compositeItensCardapio);
 		scrolledComposite.setMinSize(compositeItensCardapio.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 	}
-		
-	
-	
-	private static void openRadioDialog(Shell parent,MainPage mainPage) {
-        Shell dialog = new Shell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
-        dialog.setText("Escolha uma opção");
-        GridLayout gl_dialog = new GridLayout(1, false);
-        gl_dialog.verticalSpacing = 10;
-        gl_dialog.marginTop = 20;
-        gl_dialog.marginLeft = 30;
-        dialog.setLayout(gl_dialog);
-        
-        Label lblTipo = new Label(dialog, SWT.CENTER);
-        lblTipo.setText("Que tipo de item deseja adicionar?");
-
-        // Adiciona opções de rádio buttons
-        Button optionPrato = new Button(dialog, SWT.RADIO);
-        optionPrato.setText("Prato");
-        optionPrato.setSelection(true); // Seleciona a primeira opção por padrão
-
-        Button optionProduto = new Button(dialog, SWT.RADIO);
-        optionProduto.setText("Produto");
-
-        // Botão OK
-        Button okButton = new Button(dialog, SWT.PUSH);
-        okButton.setText("Prosseguir");
-        GridData gridData = new GridData(SWT.CENTER, SWT.CENTER, true, false);
-        okButton.setLayoutData(gridData);
-
-        okButton.addListener(SWT.Selection, event -> {
-            if (optionPrato.getSelection()) {
-                pratoSelecionado(mainPage);
-            } else if (optionProduto.getSelection()) {
-            	produtoSelecionado(mainPage);
-            }
-            dialog.close();
-        });
-
-        dialog.setSize(350, 250);
-        dialog.open();
-    }
-
-    private static void pratoSelecionado(MainPage mainPage) {
-    	//Prato prato = new Prato();
-    	mainPage.navigateToScreenFuncionario(4);
-    }
-
-    private static void produtoSelecionado(MainPage mainPage) {
-    	//Produto produto = new Produto();
-    	mainPage.navigateToScreenFuncionario(8);
-    }
 }

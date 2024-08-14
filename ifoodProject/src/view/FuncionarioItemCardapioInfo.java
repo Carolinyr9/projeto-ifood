@@ -47,7 +47,7 @@ public class FuncionarioItemCardapioInfo extends Composite {
     private ProdutoBanco produtoBanco;
     private PratoBanco pratoBanco;
 
-    public FuncionarioItemCardapioInfo(Composite parent, MainPage mainPage, Integer idProduct, String tipo) {
+    public FuncionarioItemCardapioInfo(Composite parent, MainPage mainPage, Integer idProduct, String tipo, String nomeSessaoCardapio) {
         super(parent, SWT.NONE);
         createResourceManager();
         setSize(468, 714);
@@ -88,14 +88,18 @@ public class FuncionarioItemCardapioInfo extends Composite {
         lblItem1.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(232, 241, 242))));
         lblItem1.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 100, 145))));
         lblItem1.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 16, SWT.NORMAL)));
-        lblItem1.setBounds(86, 12, 96, 51);
-        lblItem1.setText("Item #1");
+        lblItem1.setBounds(86, 12, 156, 51);
+        if ("Prato".equals(tipo)) {
+        	lblItem1.setText("Item #"+prato.getIdPrato());
+        }else {
+        	lblItem1.setText("Item #"+produto.getIdProduto());
+        }
 
         Button btnBack = new Button(compositeHeader, SWT.NONE);
         btnBack.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                mainPage.navigateToScreenFuncionario(2);
+                mainPage.showFuncionarioCardapioInfo(nomeSessaoCardapio);
             }
         });
         btnBack.addPaintListener(new PaintListener() {
