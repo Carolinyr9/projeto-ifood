@@ -64,7 +64,7 @@ public class FuncionarioCadCardapio extends Composite {
 		btnBack.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				mainPage.navigateToScreenFuncionario(1);
+				mainPage.showHomeFuncionario();
 			}
 		});
 		btnBack.addPaintListener( new PaintListener() {

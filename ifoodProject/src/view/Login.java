@@ -77,7 +77,7 @@ public class Login extends Composite {
         super(parent, SWT.NONE);
         createResourceManager();
         setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-        setSize(482, 780);
+        setSize(466, 780);
         setLayout(new FormLayout());
         
         this.clienteLogado = new Cliente();
@@ -98,7 +98,7 @@ public class Login extends Composite {
         lbLogin.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 100, 148))));
         lbLogin.setText("Login");
         lbLogin.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 18, SWT.BOLD)));
-        lbLogin.setBounds(191, 10, 78, 37);
+        lbLogin.setBounds(191, 10, 78, 48);
         
         Label lblEmail = new Label(this, SWT.NONE);
         lblEmail.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 14, SWT.NORMAL)));
@@ -191,7 +191,7 @@ public class Login extends Composite {
                     	tipoUsuario = "cliente";
                     	mainpage.setTipoUsuario(tipoUsuario);
                     	mainpage.setCliente(clienteLogado);
-                    	mainpage.showHomeCliente(clienteLogado);
+                    	mainpage.showHomeCliente();
                     }
                 
                 } else if (btnSouFuncionario.getSelection()) {
@@ -225,13 +225,14 @@ public class Login extends Composite {
         });
         
         Label lblSaudacao = new Label(this, SWT.NONE);
+        lblSaudacao.setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
         lblSaudacao.setForeground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(0, 100, 148))));
         lblSaudacao.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
         FormData fd_lblSaudacao = new FormData();
         fd_lblSaudacao.top = new FormAttachment(composite, 58);
-        fd_lblSaudacao.right = new FormAttachment(100, -149);
+        fd_lblSaudacao.left = new FormAttachment(0, 135);
         lblSaudacao.setLayoutData(fd_lblSaudacao);
-        lblSaudacao.setText("Bem vindo!");
+        lblSaudacao.setText("Bem vindo ao SIEGEG!");
     }
 
     private void createResourceManager() {
