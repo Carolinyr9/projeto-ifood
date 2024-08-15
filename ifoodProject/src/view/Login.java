@@ -31,7 +31,6 @@ public class Login extends Composite {
 
     private LocalResourceManager localResourceManager;
     private UsuarioBanco banco;
-    private Usuario usuario;
     private Funcionario funcionarioLogado = null;
     private Cliente clienteLogado = null;
     private Entregador entregadorLogado = null;
@@ -48,10 +47,6 @@ public class Login extends Composite {
 
 	public Cliente getClienteLogado() {
 		return clienteLogado;
-	}
-
-	public Usuario getUsuario() {
-		return usuario;
 	}
 
 	public void setClienteLogado(Cliente clienteLogado) {
@@ -78,7 +73,7 @@ public class Login extends Composite {
         super(parent, SWT.NONE);
         createResourceManager();
         setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-        setSize(466, 780);
+        setSize(465, 780);
         setLayout(new FormLayout());
         
         this.clienteLogado = new Cliente();
@@ -186,18 +181,19 @@ public class Login extends Composite {
 
             @Override
             public void widgetSelected(SelectionEvent e) {
-                usuario = new Usuario(textEmail.getText(), txtSenha.getText());
+                String email = textEmail.getText();
+                String senha = txtSenha.getText();
                 banco = new UsuarioBanco(connection);
                 
                 Shell shell = getShell();
                 
                 if (btnSouCliente.getSelection()) {
-                    clienteLogado = banco.logarCliente(usuario);
+                    clienteLogado = banco.logarCliente(email, senha);
                     if(clienteLogado != null && clienteLogado.getNome() != null ) {
                         tipoUsuario = "cliente";
                         mainpage.setTipoUsuario(tipoUsuario);
                         mainpage.setCliente(clienteLogado);
-                        mainpage.showHomeCliente(clienteLogado);
+                        mainpage.showHomeCliente();
                     } else {
                         MessageBox messageBox = new MessageBox(shell, SWT.ICON_ERROR | SWT.OK);
                         messageBox.setMessage("Falha no login. Verifique suas credenciais.");
@@ -205,7 +201,7 @@ public class Login extends Composite {
                     }
 
                 } else if (btnSouFuncionario.getSelection()) {
-                    funcionarioLogado = banco.logarFuncionario(usuario);
+                    funcionarioLogado = banco.logarFuncionario(email, senha);
 
                     if(funcionarioLogado != null && funcionarioLogado.getNome() != null) {
                         tipoUsuario = "funcionario";
@@ -219,7 +215,7 @@ public class Login extends Composite {
                     }
 
                 } else if (btnSouEntregador.getSelection()) {
-                    entregadorLogado = banco.logarEntregador(usuario);
+                    entregadorLogado = banco.logarEntregador(email, senha);
 
                     if(entregadorLogado != null && entregadorLogado.getNome() != null) {
                         tipoUsuario = "entregador";
@@ -241,9 +237,9 @@ public class Login extends Composite {
         lblSaudacao.setFont(localResourceManager.create(FontDescriptor.createFrom("Segoe UI", 11, SWT.NORMAL)));
         FormData fd_lblSaudacao = new FormData();
         fd_lblSaudacao.top = new FormAttachment(composite, 58);
-        fd_lblSaudacao.left = new FormAttachment(0, 135);
+        fd_lblSaudacao.right = new FormAttachment(100, -150);
         lblSaudacao.setLayoutData(fd_lblSaudacao);
-        lblSaudacao.setText("Bem vindo ao SIEGEG!");
+        lblSaudacao.setText("Bem vindo ao SIEG!");
     }
 
     private void createResourceManager() {

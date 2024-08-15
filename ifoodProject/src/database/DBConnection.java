@@ -24,7 +24,7 @@ public class DBConnection {
     }
 
     public DBConnection() {
-        this("localhost", "3306", "bdelivery", "root", "Amo-voce28");
+        this("localhost", "3307", "bddelivery", "root", "2024Root.");
     }
 
     private void doConnection() {

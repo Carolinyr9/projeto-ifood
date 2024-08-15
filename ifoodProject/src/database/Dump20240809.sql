@@ -36,7 +36,7 @@ CREATE TABLE `cardapio` (
 
 LOCK TABLES `cardapio` WRITE;
 /*!40000 ALTER TABLE `cardapio` DISABLE KEYS */;
-INSERT INTO `cardapio` VALUES (1,1,1,1),(1,1,NULL,6639),(1,1,NULL,6007),(1,1,NULL,8646),(1,1,4035,NULL),(1,1,NULL,2712),(1,1,4112,NULL),(1,1,839,NULL),(1,1,2981,NULL),(1,1,6358,NULL),(1,1,9328,NULL),(1,1,7714,NULL),(1,1,NULL,9546),(1,1,NULL,2682),(1,1,NULL,8503),(1,1,NULL,4704),(1,1,NULL,1783);
+INSERT INTO `cardapio` VALUES (1,1,1,1),(1,1,NULL,6639),(1,1,NULL,6007),(1,1,NULL,8646),(1,1,4035,NULL),(1,1,NULL,2712),(1,1,4112,NULL),(1,1,839,NULL),(1,1,2981,NULL),(1,1,6358,NULL),(1,1,9328,NULL),(1,1,7714,NULL),(1,1,NULL,9546),(1,1,NULL,2682),(1,1,NULL,8503),(1,1,NULL,4704),(1,1,NULL,1783),(1,1,1887,NULL),(1,1,NULL,4709);
 /*!40000 ALTER TABLE `cardapio` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -57,7 +57,7 @@ CREATE TABLE `carrinho` (
   `quantidade` int NOT NULL DEFAULT '1',
   `id_cliente` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -89,7 +89,7 @@ CREATE TABLE `pedidos` (
   `data_pedido` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `data_atualizacao` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -126,7 +126,7 @@ CREATE TABLE `prato` (
 
 LOCK TABLES `prato` WRITE;
 /*!40000 ALTER TABLE `prato` DISABLE KEYS */;
-INSERT INTO `prato` VALUES (839,'Pizza de Atum','A pizza de atum é uma opção leve e saborosa, combinando a suculência do atum com a cremosidade do queijo, realçada pelo sabor da cebola e azeitonas.','atum, cebola, azeitonas, queijo mussarela, molho de tomate, pimenta-do-reino',45.00,1,'pizzaAtum.png'),(2981,'Pizza de Bacon','A pizza de bacon é ideal para os amantes de sabores intensos, onde o bacon crocante se destaca em meio ao queijo derretido e à suavidade da cebola.','bacon, molho de tomate, queijo mussarela, cebola, orégano.',34.00,1,'pizzaBacon.png'),(4112,'Pizza de Calabresa','Pizza de Calabresa','a',23.00,1,'pizzaCalabresa.png'),(6358,'Pizza Vegetariana','A pizza vegetariana é uma explosão de cores e sabores, reunindo uma variedade de vegetais frescos sobre uma base de queijo derretido.','molho de tomate, queijo mussarela, pimentão, cebola, tomate, azeitonas, cogumelos, milho, orégano.',30.00,1,'pizzaVegetariana.png'),(7714,'Pizza de Peperoni','A pizza de peperoni é uma escolha clássica, com o sabor picante e levemente defumado do peperoni, equilibrado pela suavidade do queijo mussarela.','peperoni, molho de tomate, queijo mussarela, orégano.',49.00,1,'pizzaPeperoni.png'),(9328,'Pizza de Peito de Peru','A pizza de peito de peru é uma opção leve e saudável, onde o sabor suave do peito de peru é combinado com tomates frescos e azeitonas.','peito de peru, molho de tomate, queijo mussarela, tomate, azeitonas, orégano.',41.00,1,'pizzaPeitoPeru.png');
+INSERT INTO `prato` VALUES (839,'Pizza de Atum','A pizza de atum é uma opção leve e saborosa, combinando a suculência do atum com a cremosidade do queijo, realçada pelo sabor da cebola e azeitonas.','atum, cebola, azeitonas, queijo mussarela, molho de tomate, pimenta-do-reino',45.00,1,'pizzaAtum.png'),(2981,'Pizza de Bacon','A pizza de bacon é ideal para os amantes de sabores intensos, onde o bacon crocante se destaca em meio ao queijo derretido e à suavidade da cebola.','bacon, molho de tomate, queijo mussarela, cebola, orégano.',34.00,1,'pizzaBacon.png'),(4112,'Pizza de Calabresa','A pizza de é uma opção leve e saudável, onde é combinado com queijo.','calabresa, queijo mussarela, molho de tomate',23.00,1,'pizzaCalabresa.png'),(6358,'Pizza Vegetariana','A pizza vegetariana é uma explosão de cores e sabores, reunindo uma variedade de vegetais frescos sobre uma base de queijo derretido.','molho de tomate, queijo mussarela, pimentão, cebola, tomate, azeitonas, cogumelos, milho, orégano.',32.00,1,'pizzaVegetariana.png'),(7714,'Pizza de Peperoni','A pizza de peperoni é uma escolha clássica, com o sabor picante e levemente defumado do peperoni, equilibrado pela suavidade do queijo mussarela.','peperoni, molho de tomate, queijo mussarela, orégano.',49.00,1,'pizzaPeperoni.png'),(9328,'Pizza de Peito de Peru','A pizza de peito de peru é uma opção leve e saudável, onde o sabor suave do peito de peru é combinado com tomates frescos e azeitonas.','peito de peru, molho de tomate, queijo mussarela, tomate, azeitonas, orégano.',41.00,1,'pizzaPeitoPeru.png');
 /*!40000 ALTER TABLE `prato` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -154,7 +154,7 @@ CREATE TABLE `produto` (
 
 LOCK TABLES `produto` WRITE;
 /*!40000 ALTER TABLE `produto` DISABLE KEYS */;
-INSERT INTO `produto` VALUES (1783,'Suco de Morango','Um suco doce e refrescante, com o sabor intenso e natural dos morangos, perfeito para quem aprecia sabores frutados.',12.00,1,'sucoMorango.png'),(2682,'Refrigerante Fanta Laranja','Uma bebida gaseificada e vibrante, com o sabor cítrico e adocicado da laranja, perfeita para momentos de descontração.',15.00,1,'refriFanta.png'),(4704,'Suco de Laranja','Uma bebida clássica e natural, rica em vitamina C, com o sabor fresco e levemente ácido da laranja espremida.',12.00,1,'sucoLaranja.png'),(8503,'Refrigerante Sprite','Um refrigerante claro e refrescante, conhecido por seu sabor limpo e levemente cítrico, ideal para matar a sede.',15.00,1,'refriSprite.png'),(9546,'\nSuco de Pêssego','Um suco refrescante e doce, com o sabor suave e agradável do pêssego, ideal para quem busca uma bebida leve e frutada.',12.00,1,'sucoPessego.png');
+INSERT INTO `produto` VALUES (1783,'Suco de Morango','Um suco doce e refrescante, com o sabor intenso e natural dos morangos, perfeito para quem aprecia sabores frutados.',12.00,1,'sucoMorango.png'),(2682,'Refrigerante Fanta Laranja','Uma bebida gaseificada e vibrante, com o sabor cítrico e adocicado da laranja, perfeita para momentos de descontração.',15.00,1,'refriFanta.png'),(4704,'Suco de Laranja','Uma bebida clássica e natural, rica em vitamina C, com o sabor fresco e levemente ácido da laranja espremida.',10.00,1,'sucoLaranja.png'),(4709,'Refrigerante Cola Cola','Refrigerante sabor Coca-Cola',18.00,1,'refriCoca.png'),(8503,'Refrigerante Sprite','Um refrigerante claro e refrescante, conhecido por seu sabor limpo e levemente cítrico, ideal para matar a sede.',15.00,1,'refriSprite.png'),(9546,'Suco de Pêssego','Um suco refrescante e doce, com o sabor suave e agradável do pêssego, ideal para quem busca uma bebida leve e frutada.',12.00,1,'sucoPessego.png');
 /*!40000 ALTER TABLE `produto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1467,4 +1467,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-08-13 22:06:36
+-- Dump completed on 2024-08-15 14:35:36

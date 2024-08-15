@@ -62,7 +62,6 @@ public class HomeCliente extends Composite {
         createResourceManager();
         setSize(472, 836);
         setBackground(localResourceManager.create(ColorDescriptor.createFrom(new RGB(255, 255, 255))));
-        
 
         bannerImage = new Image(display, "./src/assets/images/Banner.png");
         restauranteLogoImage = new Image(display, "./src/assets/images/restauranteLogo.png");
@@ -179,6 +178,7 @@ public class HomeCliente extends Composite {
         	rl_compositePratos.marginLeft = 20;
         	rl_compositePratos.spacing = 15;
         	compositePratos.setLayout(rl_compositePratos);
+        	
         	
     		for(int j = 0; j < pratoLista.size(); j++) {
     			String imgPratoCaminho = "./src/assets/images/" + pratoLista.get(j).getImagem();

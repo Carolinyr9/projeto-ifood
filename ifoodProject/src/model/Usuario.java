@@ -35,7 +35,6 @@ public abstract class Usuario {
     }
 
     public void cadastrarUsuario() {
-        // Implementar lógica para cadastrar o usuário
         System.out.println("Usuário cadastrado: " + this.toString());
     }
 
@@ -46,7 +45,6 @@ public abstract class Usuario {
     }
 
     public void desativarUsuario() {
-        // Implementar lógica para desativar o usuário
         System.out.println("Usuário desativado: " + this.toString());
     }
 

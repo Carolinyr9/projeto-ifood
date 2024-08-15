@@ -50,5 +50,9 @@ public class Cardapio implements ModelInterface {
         }
         return textoCardapio.toString();
     }
+    
+    public void adicionarItem(ItemCardapio item) {
+        itensCardapio.add(item);
+    }
 }
 

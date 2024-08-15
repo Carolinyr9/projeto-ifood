@@ -15,13 +15,13 @@ public class UsuarioBanco {
         this.connection = connection;
     }
     
-    public Cliente logarCliente(Usuario usuario) {
+    public Cliente logarCliente(String email,String senha) {
         Cliente cliente = new Cliente();
         String sql = "CALL Logar_Cliente(?, ?)";
 
         try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
-            stmt.setString(1, usuario.getEmail());
-            stmt.setString(2, usuario.getSenha());
+            stmt.setString(1, email);
+            stmt.setString(2, senha);
 
             ResultSet rs = stmt.executeQuery();
             
@@ -48,13 +48,13 @@ public class UsuarioBanco {
         return cliente;
     }
     
-    public Funcionario logarFuncionario(Usuario usuario) {
+    public Funcionario logarFuncionario(String email,String senha)  {
         Funcionario funcionario = new Funcionario();
         String sql = "CALL Logar_Funcionario(?, ?)";
 
         try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
-            stmt.setString(1, usuario.getEmail());
-            stmt.setString(2, usuario.getSenha());
+        	stmt.setString(1, email);
+            stmt.setString(2, senha);
 
             ResultSet rs = stmt.executeQuery();
             
@@ -78,13 +78,13 @@ public class UsuarioBanco {
         return funcionario; 
     }
     
-    public Entregador logarEntregador(Usuario usuario) {
+    public Entregador logarEntregador(String email,String senha)  {
         Entregador entregador = new Entregador();
         String sql = "CALL Logar_Entregador(?, ?)";
 
         try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
-            stmt.setString(1, usuario.getEmail());
-            stmt.setString(2, usuario.getSenha());
+        	stmt.setString(1, email);
+            stmt.setString(2, senha);
 
             ResultSet rs = stmt.executeQuery();
             
